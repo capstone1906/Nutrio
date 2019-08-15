@@ -8,6 +8,8 @@ import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import DailyLog from '../screens/DailyLog';
 import FoodSearch from '../screens/FoodSearch'
+import FoodSearchItem from '../screens/FoodSearchItem'
+
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -72,7 +74,8 @@ SettingsStack.path = '';
 const DailyLogStack = createStackNavigator(
   {
     DailyLog: DailyLog,
-    FoodSearch: FoodSearch
+    FoodSearch: FoodSearch,
+    FoodSearchItem: FoodSearchItem
   },
   config
 );
