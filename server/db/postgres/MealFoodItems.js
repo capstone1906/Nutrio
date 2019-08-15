@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('./database');
 
-const MealFoodItem = db.define('mealFoodItems', {
+const MealFoodItems = db.define('MealFoodItems', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -9,18 +9,18 @@ const MealFoodItem = db.define('mealFoodItems', {
   },
   calories: {
     type: Sequelize.INTEGER,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
+    // allowNull: false,
+    // validate: {
+    //   notEmpty: true,
+    // },
   },
   quantity: {
     type: Sequelize.INTEGER,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
+    // allowNull: false,
+    // validate: {
+    //   notEmpty: true,
+    // },
   },
 });
 
-module.exports = MealFoodItem;
+module.exports = MealFoodItems;
