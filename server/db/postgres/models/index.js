@@ -22,10 +22,10 @@ FoodItems.belongsToMany(Meals, { through: MealFoodItems });
 Meals.belongsToMany(FoodItems, { through: MealFoodItems });
 
 Meals.belongsToMany(Users, { through: FavoriteMeals });
-Users.hasMany(Meals, { through: FavoriteMeals });
+Users.belongsToMany(Meals, { through: FavoriteMeals });
 
 Meals.belongsToMany(Users, { through: UserMeals });
-Users.hasMany(Meals, { through: UserMeals });
+Users.belongsToMany(Meals, { through: UserMeals });
 
 module.exports = {
   Checkins,

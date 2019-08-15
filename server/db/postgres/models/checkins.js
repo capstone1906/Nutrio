@@ -3,7 +3,7 @@ const db = require('../db');
 
 const Checkins = db.define('checkins', {
   caloriesBurned: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
   },
   caloriesConsumed: {
     type: Sequelize.INTEGER,
@@ -13,7 +13,7 @@ const Checkins = db.define('checkins', {
     // },
   },
   weight: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
     // allowNull: false,
     // validate: {
     //   notEmpty: true,
