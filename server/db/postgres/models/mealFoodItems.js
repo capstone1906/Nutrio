@@ -9,14 +9,14 @@ const MealFoodItems = db.define('mealFoodItems', {
   },
   calories: {
     type: Sequelize.INTEGER,
-    // allowNull: false,
+    allowNull: false,
     // validate: {
     //   notEmpty: true,
     // },
   },
   quantity: {
     type: Sequelize.INTEGER,
-    // allowNull: false,
+    allowNull: false,
     // validate: {
     //   notEmpty: true,
     // },

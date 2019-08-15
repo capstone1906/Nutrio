@@ -1,4 +1,4 @@
-const Checkins = require('./checkins');
+const CheckIns = require('./checkIns');
 const DailyGoals = require('./dailyGoals');
 const Exercises = require('./exercises');
 const FavoriteMeals = require('./favoriteMeals');
@@ -15,8 +15,8 @@ Users.hasOne(LongTermGoals);
 DailyGoals.belongsTo(Users);
 Users.hasOne(DailyGoals);
 
-Checkins.belongsTo(Users);
-Users.hasMany(Checkins);
+CheckIns.belongsTo(Users);
+Users.hasMany(CheckIns);
 
 FoodItems.belongsToMany(Meals, { through: MealFoodItems });
 Meals.belongsToMany(FoodItems, { through: MealFoodItems });
@@ -28,7 +28,7 @@ Meals.belongsToMany(Users, { through: UserMeals });
 Users.belongsToMany(Meals, { through: UserMeals });
 
 module.exports = {
-  Checkins,
+  CheckIns,
   DailyGoals,
   Exercises,
   FavoriteMeals,

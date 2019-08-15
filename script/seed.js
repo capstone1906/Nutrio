@@ -1,10 +1,10 @@
 'use strict';
-
+const { green, red } = require('chalk');
 const db = require('../server/db/postgres/db');
 const {
   Users,
   FoodItems,
-  Checkins,
+  CheckIns,
   LongTermGoals,
   Exercises,
   Meals,
@@ -14,6 +14,7 @@ async function seed() {
   await db.sync({ force: true });
   console.log('db synced!');
 
+  // Create users
   const users = await Promise.all([
     Users.create({
       email: 'cody@email.com',
@@ -35,6 +36,7 @@ async function seed() {
     }),
   ]);
 
+  // Create checkIns
   for (let i = 1; i < 31; i++) {
     var day = i;
     if (i < 10) {
@@ -43,7 +45,7 @@ async function seed() {
     var yesterday = `07-${day}-2019`;
     var ranDay = new Date(yesterday);
 
-    await Checkins.create({
+    await CheckIns.create({
       weight: 200 - i / 4,
       caloriesBurned: Math.floor(500 - Math.random() * 100),
       caloriesConsumed: Math.floor(1500 - Math.random() * 100),
@@ -52,7 +54,8 @@ async function seed() {
   }
   var yesterday = `07-31-2019`;
   var ranDay = new Date(yesterday);
-  // testing
+
+  // Create longTermGoals
   await LongTermGoals.create({
     startWeight: 200,
     endingWeight: 180,
@@ -62,6 +65,7 @@ async function seed() {
     statedGoal: 'Lose 1 lb a week',
   });
 
+  // Create food items
   for (var i = 1; i < 31; i++) {
     var day = i;
     if (i < 10) {
@@ -110,6 +114,8 @@ async function seed() {
       FoodItems.create(food4),
     ]);
   }
+
+  // Create Exercises
   await Promise.all([
     Exercises.create({
       met: 6.0,
@@ -133,6 +139,7 @@ async function seed() {
     }),
   ]);
 
+  // Create meals
   await Promise.all([
     Meals.create({
       name: 'Great Dish',
@@ -146,8 +153,7 @@ async function seed() {
     }),
   ]);
 
-  console.log(`seeded ${users.length} users`);
-  console.log(`seeded successfully`);
+  console.log(green(`seeded successfully`));
 }
 
 // We've separated the `seed` function from the `runSeed` function.
@@ -158,7 +164,7 @@ async function runSeed() {
   try {
     await seed();
   } catch (err) {
-    console.error(err);
+    console.error(red(err));
     process.exitCode = 1;
   } finally {
     console.log('closing db connection');
@@ -167,12 +173,12 @@ async function runSeed() {
   }
 }
 
+// we export the seed function for testing purposes (see `./seed.spec.js`)
+module.exports = seed;
+
 // Execute the `seed` function, IF we ran this module directly (`node seed`).
 // `Async` functions always return a promise, so we can use `catch` to handle
 // any errors that might occur inside of `seed`.
 if (module === require.main) {
   runSeed();
 }
-
-// we export the seed function for testing purposes (see `./seed.spec.js`)
-module.exports = seed;
