@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const Sequelize = require('sequelize');
 const db = require('../db');
-const {createUser} = require('../../neo4j/models/users')
+const createUser = require('../../neo4j/models/users');
 
 const Users = db.define('users', {
   email: {
@@ -22,23 +22,23 @@ const Users = db.define('users', {
     allowNull: false,
   },
   weight: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
     allowNull: false,
   },
   age: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  activtityLevel: {
+  activityLevel: {
     type: Sequelize.FLOAT,
     allowNull: false,
   },
   bodyType: {
     type: Sequelize.STRING,
     allowNull: false,
-    validate: {
-      isEmpty: false,
-    },
+    // validate: {
+    //   isEmpty: false,
+    // },
   },
   salt: {
     type: Sequelize.STRING,
@@ -93,7 +93,7 @@ Users.beforeBulkCreate(users => {
   users.forEach(setSaltAndPassword);
 });
 
-User.afterSave(async user =>{
+Users.afterSave(async user => {
   const newUser = await createUser(user);
-  return newUser
-})
+  return newUser;
+});

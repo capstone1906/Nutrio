@@ -6,7 +6,13 @@ const createUser = user => {
       `MERGE (u:User {id: $id})
     ON MATCH SET u += {weight: $weight, height: $height, age: $age, bodyType:$bodyType}
     RETURN u`,
-      { id: user.id, weight: user.weight, height: user.height, age: user.age }
+      {
+        id: user.id,
+        weight: user.weight,
+        height: user.height,
+        age: user.age,
+        bodyType: user.bodyType,
+      }
     )
     .then(result => {
       session.close();
@@ -20,4 +26,4 @@ const createUser = user => {
     });
 };
 
-module.exports = createUser
+module.exports = createUser;

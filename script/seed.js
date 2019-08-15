@@ -1,21 +1,21 @@
 'use strict';
 
-const db = require('../server/db');
+const db = require('../server/db/postgres/db');
 const {
-  User,
-  FoodItem,
-  CheckIn,
-  LongTermGoal,
-  Excercises,
+  Users,
+  FoodItems,
+  Checkins,
+  LongTermGoals,
+  Exercises,
   Meals,
-} = require('../server/db/models');
+} = require('../server/db/postgres/models');
 
 async function seed() {
   await db.sync({ force: true });
   console.log('db synced!');
 
   const users = await Promise.all([
-    User.create({
+    Users.create({
       email: 'cody@email.com',
       password: '123',
       height: 72,
@@ -24,7 +24,7 @@ async function seed() {
       activityLevel: 1.375,
       bodyType: 'ectomorph',
     }),
-    User.create({
+    Users.create({
       email: 'murphy@email.com',
       password: '123',
       height: 68,
@@ -43,7 +43,7 @@ async function seed() {
     var yesterday = `07-${day}-2019`;
     var ranDay = new Date(yesterday);
 
-    await CheckIn.create({
+    await Checkins.create({
       weight: 200 - i / 4,
       caloriesBurned: Math.floor(500 - Math.random() * 100),
       caloriesConsumed: Math.floor(1500 - Math.random() * 100),
@@ -53,7 +53,7 @@ async function seed() {
   var yesterday = `07-31-2019`;
   var ranDay = new Date(yesterday);
   // testing
-  await LongTermGoal.create({
+  await LongTermGoals.create({
     startingWeight: 200,
     endingWeight: 180,
     startDate: yesterday,
@@ -104,29 +104,29 @@ async function seed() {
     };
 
     await Promise.all([
-      FoodItem.create(food1),
-      FoodItem.create(food2),
-      FoodItem.create(food3),
-      FoodItem.create(food4),
+      FoodItems.create(food1),
+      FoodItems.create(food2),
+      FoodItems.create(food3),
+      FoodItems.create(food4),
     ]);
 
     await Promise.all([
-      Excercises.create({
+      Exercises.create({
         mets: 6.0,
         activity: 'Bicycling',
         description: '10-11.9 mph, leisure, slow, light effort',
       }),
-      Excercises.create({
+      Exercises.create({
         mets: 10.0,
         activity: 'Bicycling',
         description: '14-15.9 mph, racing, fast, vigorous effort',
       }),
-      Excercises.create({
+      Exercises.create({
         mets: 7.0,
         activity: 'Cycling (stationary)',
         description: '150 watts, moderate effort',
       }),
-      Excercises.create({
+      Exercises.create({
         mets: 8.0,
         activity: 'Running',
         description: '5 mph (12 min mile)',
@@ -136,7 +136,7 @@ async function seed() {
     await Promise.all([
       Meals.create({
         name: 'Great Dish',
-        averageRating: Math.floor(Math.random() * Math.floor(5)),
+        averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
         totalCarbohydrate: Math.floor(Math.random() * 30),
         totalProtein: Math.floor(Math.random() * 10),
         totalFat: Math.floor(Math.random() * 10),
