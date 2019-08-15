@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   addFoodButton: {
     width: 100,
     backgroundColor: "limegreen",
-    fontSize: 5,
+    // fontSize: 5,
   }
 });
 

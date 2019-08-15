@@ -7,6 +7,7 @@ import {
   ThemeProvider,
   Divider, Input
 } from "react-native-elements";
+import FoodSearchItem from '../components/FoodSearchItem'
 
 export default class DailyLog extends React.Component {
   constructor() {
@@ -56,13 +57,8 @@ export default class DailyLog extends React.Component {
 
           {foods.map(food => {
             return (
-              <React.Fragment>
-                <ListItem
-                  key={food.name}
-                  // leftAvatar={{ source: { uri: l.avatar_url } }}
-                  title={food.name}
-                  // subtitle={l.subtitle}
-                />
+              <React.Fragment key={food.name}>
+                  <FoodSearchItem food={food}/>
                 <Divider style={{ backgroundColor: "blue" }} />
               </React.Fragment>
             );
