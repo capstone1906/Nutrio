@@ -7,7 +7,6 @@ module.exports = router
 
 router.get('/', async(req,res,next)=> {
     try{
-        console.log('here')
         const foods = await FoodItems.findAll() 
         res.json(foods)
     }
