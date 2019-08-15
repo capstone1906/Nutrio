@@ -1,19 +1,19 @@
 const Sequelize = require('sequelize');
 const db = require('./database');
 
-const Exercises = db.define('Exercises', {
-  met: {
+const Checkins = db.define('checkins', {
+  caloriesBurned: {
     type: Sequelize.INTEGER
   },
-  activity: {
-    type: Sequelize.STRING,
+  caloriesConsumed: {
+    type: Sequelize.INTEGER,
     // allowNull: false,
     // validate: {
     //   notEmpty: true,
     // },
   },
-  description: {
-    type: Sequelize.STRING,
+  weight: {
+    type: Sequelize.INTEGER,
     // allowNull: false,
     // validate: {
     //   notEmpty: true,
@@ -21,4 +21,4 @@ const Exercises = db.define('Exercises', {
   },
 });
 
-module.exports = Exercises;
+module.exports = Checkins;
