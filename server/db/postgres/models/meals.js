@@ -9,8 +9,8 @@ const Meals = db.define('meals', {
   averageRating: {
     type: Sequelize.FLOAT,
     validate: {
-      min: 0,
-      max: 5,
+      min: 0.1,
+      max: 5.0,
     },
   },
   totalCalories: Sequelize.INTEGER,
