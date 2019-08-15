@@ -4,7 +4,7 @@ const createUser = user => {
   session
     .run(
       `MERGE (u:User {id: $id})
-    ON MATCH SET u += {weight: $weight, height: $height, age: $age, bodyType:$bodyType}
+    ON CREATE SET u += {weight: $weight, height: $height, age: $age, bodyType:$bodyType}
     RETURN u`,
       {
         id: user.id,
