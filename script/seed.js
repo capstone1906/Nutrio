@@ -54,7 +54,7 @@ async function seed() {
   var ranDay = new Date(yesterday);
   // testing
   await LongTermGoals.create({
-    startingWeight: 200,
+    startWeight: 200,
     endingWeight: 180,
     startDate: yesterday,
     endDate: '10-31-2019',
@@ -109,42 +109,42 @@ async function seed() {
       FoodItems.create(food3),
       FoodItems.create(food4),
     ]);
-
-    await Promise.all([
-      Exercises.create({
-        mets: 6.0,
-        activity: 'Bicycling',
-        description: '10-11.9 mph, leisure, slow, light effort',
-      }),
-      Exercises.create({
-        mets: 10.0,
-        activity: 'Bicycling',
-        description: '14-15.9 mph, racing, fast, vigorous effort',
-      }),
-      Exercises.create({
-        mets: 7.0,
-        activity: 'Cycling (stationary)',
-        description: '150 watts, moderate effort',
-      }),
-      Exercises.create({
-        mets: 8.0,
-        activity: 'Running',
-        description: '5 mph (12 min mile)',
-      }),
-    ]);
-
-    await Promise.all([
-      Meals.create({
-        name: 'Great Dish',
-        averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-        totalCarbohydrate: Math.floor(Math.random() * 30),
-        totalProtein: Math.floor(Math.random() * 10),
-        totalFat: Math.floor(Math.random() * 10),
-        dominantMacro: 'carbohydrate',
-        entreeType: 'lunch',
-      }),
-    ]);
   }
+  await Promise.all([
+    Exercises.create({
+      met: 6.0,
+      activity: 'Bicycling',
+      description: '10-11.9 mph, leisure, slow, light effort',
+    }),
+    Exercises.create({
+      met: 10.0,
+      activity: 'Bicycling',
+      description: '14-15.9 mph, racing, fast, vigorous effort',
+    }),
+    Exercises.create({
+      met: 7.0,
+      activity: 'Cycling (stationary)',
+      description: '150 watts, moderate effort',
+    }),
+    Exercises.create({
+      met: 8.0,
+      activity: 'Running',
+      description: '5 mph (12 min mile)',
+    }),
+  ]);
+
+  await Promise.all([
+    Meals.create({
+      name: 'Great Dish',
+      averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
+      totalCalories: Math.floor(Math.random() * 1000),
+      totalCarbs: Math.floor(Math.random() * 30),
+      totalProtein: Math.floor(Math.random() * 10),
+      totalFat: Math.floor(Math.random() * 10),
+      dominantMacro: 'carbohydrate',
+      entreeType: 'lunch',
+    }),
+  ]);
 
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
