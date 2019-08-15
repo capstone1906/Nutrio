@@ -6,6 +6,8 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import DailyLog from '../screens/DailyLog';
+import FoodSearch from '../screens/FoodSearch'
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -67,10 +69,29 @@ SettingsStack.navigationOptions = {
 
 SettingsStack.path = '';
 
+const DailyLogStack = createStackNavigator(
+  {
+    DailyLog: DailyLog,
+    FoodSearch: FoodSearch
+  },
+  config
+);
+
+DailyLogStack.navigationOptions = {
+  tabBarLabel: 'Daily Log',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+  ), 
+};
+
+DailyLogStack.path = '';
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
+  DailyLogStack,
   SettingsStack,
+  
 });
 
 tabNavigator.path = '';
