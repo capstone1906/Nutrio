@@ -3,7 +3,7 @@ const Sequelize = require('sequelize');
 const db = require('../db/postgres/index');
 const {createUser} = require('../../neo4j/user')
 
-const User = db.define('user', {
+const Users = db.define('users', {
   email: {
     type: Sequelize.STRING,
     unique: true,
@@ -53,23 +53,23 @@ const User = db.define('user', {
   },
 });
 
-module.exports = User;
+module.exports = Users;
 
 /**
  * instanceMethods
  */
-User.prototype.correctPassword = function(candidatePwd) {
-  return User.encryptPassword(candidatePwd, this.salt()) === this.password();
+Users.prototype.correctPassword = function(candidatePwd) {
+  return Users.encryptPassword(candidatePwd, this.salt()) === this.password();
 };
 
 /**
  * classMethods
  */
-User.generateSalt = function() {
+Users.generateSalt = function() {
   return crypto.randomBytes(16).toString('base64');
 };
 
-User.encryptPassword = function(plainText, salt) {
+Users.encryptPassword = function(plainText, salt) {
   return crypto
     .createHash('RSA-SHA256')
     .update(plainText)
@@ -80,16 +80,16 @@ User.encryptPassword = function(plainText, salt) {
 /**
  * hooks
  */
-const setSaltAndPassword = user => {
-  if (user.changed('password')) {
-    user.salt = User.generateSalt();
-    user.password = User.encryptPassword(user.password(), user.salt());
+const setSaltAndPassword = users => {
+  if (users.changed('password')) {
+    users.salt = Users.generateSalt();
+    users.password = Users.encryptPassword(users.password(), users.salt());
   }
 };
 
-User.beforeCreate(setSaltAndPassword);
-User.beforeUpdate(setSaltAndPassword);
-User.beforeBulkCreate(users => {
+Users.beforeCreate(setSaltAndPassword);
+Users.beforeUpdate(setSaltAndPassword);
+Users.beforeBulkCreate(users => {
   users.forEach(setSaltAndPassword);
 });
 
