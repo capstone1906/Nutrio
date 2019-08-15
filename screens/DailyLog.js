@@ -1,5 +1,6 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import axios from 'axios'
 
 import {
   Button,
@@ -50,6 +51,12 @@ export default class DailyLog extends React.Component {
     super();
   }
 
+  async componentDidMount() {
+    console.log('here2')
+    var res = await axios.get('https://ead97e56.ngrok.io/api/food')
+    console.log('results', res.data)
+  }
+
   render() {
     return (
       <View style={{ flex: 1, alignItems: "center" }}>
@@ -58,7 +65,6 @@ export default class DailyLog extends React.Component {
         <FoodTimeContainer time="Lunch" navigation={this.props.navigation}/>
         <FoodTimeContainer time="Dinner" navigation={this.props.navigation}/>
         <FoodTimeContainer time="Snacks" navigation={this.props.navigation}/>
-
       </View>
     );
 
@@ -91,7 +97,7 @@ const styles = StyleSheet.create({
 
 
 DailyLog.navigationOptions = {
-    headerTitle: "Today's log",
+    headerTitle: "Daily log",
     headerStyle: {
         backgroundColor: 'crimson'
     },
