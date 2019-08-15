@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { Input, Button } from 'react-native-elements';
 
 import {
   ScrollView,
@@ -8,6 +9,8 @@ import {
   View,
   TouchableOpacity
 } from "react-native";
+import { VictoryPie, VictoryChart, VictoryTheme } from "victory-native";
+
 
 export default class FoodSearchItem extends React.Component {
   constructor() {
@@ -107,8 +110,11 @@ export default class FoodSearchItem extends React.Component {
     );
     data = res.data.report.foods[0];
     data.name = food.name;
+    data.nutrients[0].value = Math.ceil(data.nutrients[0].value)
+    data.nutrients[1].value = Math.ceil(data.nutrients[1].value)
+    data.nutrients[2].value = Math.ceil(data.nutrients[2].value)
+    data.nutrients[3].value = Math.ceil(data.nutrients[3].value)
 
-    // console.log('data', data)
     this.setState({
       foodInfo: data,
       showData: !this.state.showData
@@ -116,30 +122,15 @@ export default class FoodSearchItem extends React.Component {
   }
 
   render() {
-    // var name = this.props.food.name.split(',')
 
-    // var newName = ''
-    // name.forEach((name, index) => {
-    //   if (!name.includes('UPC:') && !name.includes('GTIN:')) {
-    //     newName += name
-    //   }
-    // })
 
-    // newName = newName.split(' ')
-    // newName = newName.map(word => {
-    //   word = word.toLowerCase()
-    //   return word.charAt(0).toUpperCase() + word.slice(1)
-    // })
-
-    // newName = newName.join(' ')
-    console.log("state", this.state);
     return (
       <View>
         <Text>Single Item Page</Text>
         <Text>{this.state.foodInfo.name}</Text>
 
         {this.state.foodInfo.nutrients ? (
-          <View id="foodSearchItem">
+          <ScrollView id="foodSearchItem">
             <Text id="foodSearchItemInfo">
               Calories: {Math.ceil(this.state.foodInfo.nutrients[0].value)}
             </Text>
@@ -158,7 +149,39 @@ export default class FoodSearchItem extends React.Component {
             <Text id="foodSearchItemInfo">
               Grams: {this.state.foodInfo.weight}
             </Text>
-          </View>
+            <VictoryPie
+              colorScale={['crimson', 'limegreen', 'navy']}
+              data={[
+                {
+                  x: `Fat: ${this.state.foodInfo.nutrients[2].value}g`,
+                  y: this.state.foodInfo.nutrients[2].value
+                },
+                {
+                  x: `Carbs: ${this.state.foodInfo.nutrients[3].value}g`,
+                  y: this.state.foodInfo.nutrients[3].value
+                },
+                {
+                  x: `Protein: ${this.state.foodInfo.nutrients[1].value}g`,
+                  y: this.state.foodInfo.nutrients[1].value
+                }
+              ]}
+              labelRadius={87}
+              style={{
+                labels: {
+                  fill: 'white',
+                  fontSize: 14,
+                  padding: '5px',
+                  margin: '5px'
+                }
+              }}
+            />
+
+            <View>
+              <Input/>
+              <Button/>
+            </View>
+            
+          </ScrollView>
         ) : null}
 
         {/* <div style={{display: 'flex', flexDirection: 'row'}}>
