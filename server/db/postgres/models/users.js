@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const Sequelize = require('sequelize');
-const db = require('../db/postgres/index');
-const {createUser} = require('../../neo4j/user')
+const db = require('../db');
+const {createUser} = require('../../neo4j/models/users')
 
 const Users = db.define('users', {
   email: {

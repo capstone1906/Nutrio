@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = require('../db/postgres/index');
+const db = require('../db');
 
 const Meals = db.define('meals', {
   name: {
