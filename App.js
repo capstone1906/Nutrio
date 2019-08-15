@@ -21,7 +21,7 @@ export default function App(props) {
   } else {
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
+        {/* <View style={styles.header}>
         <Image
             source={require('./assets/images/run-fast.png')}
             style={styles.welcomeImage}
@@ -31,7 +31,7 @@ export default function App(props) {
             source={require('./assets/images/account-settings-outline.png')}
             style={styles.welcomeImage}
           />
-        </View>
+        </View> */}
 
         {Platform.OS === "ios" && <StatusBar barStyle="default" />}
         <AppNavigator />
