@@ -1,24 +1,20 @@
 const FoodItems = require('./FoodItems');
 const LongTermGoals = require('./LongTermGoals');
-const DailyGoal = require('./DailyGoal')
-const FavoriteMeals = require('./FavoriteMeals')
+const DailyGoal = require('./DailyGoal');
+const FavoriteMeals = require('./FavoriteMeals');
 const User = require('./User');
 const MealFoodItems = require('./MealFoodItems');
 const Meals = require('./Meals');
 
-
-
-
 LongTermGoals.belongsTo(User);
-DailyGoal.belongsTo(User)
-User.hasOne(DailyGoal)
-
+DailyGoal.belongsTo(User);
+User.hasOne(DailyGoal);
 
 FoodItems.belongsToMany(Meals, { through: MealFoodItems });
 Meals.belongsToMany(FoodItems, { through: MealFoodItems });
 
-Meals.belongsToMany(User, {through: FavoriteMeals})
-User.hasMany(Meal, {through: FavoriteMeals})
+Meals.belongsToMany(User, { through: FavoriteMeals });
+User.hasMany(Meals, { through: FavoriteMeals });
 
 module.exports = {
   FoodItems,
