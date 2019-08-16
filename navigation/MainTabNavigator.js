@@ -7,11 +7,12 @@ import {
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+// import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import DailyLog from '../screens/DailyLog';
 import FoodSearch from '../screens/FoodSearch';
 import FoodSearchItem from '../screens/FoodSearchItem';
+import Meals from '../screens/Meals';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -41,15 +42,15 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = '';
 
-const LinksStack = createStackNavigator(
+const MealsStack = createStackNavigator(
   {
-    Links: LinksScreen,
+    Meals: Meals,
   },
   config
 );
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+MealsStack.navigationOptions = {
+  tabBarLabel: 'Meals',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -58,7 +59,7 @@ LinksStack.navigationOptions = {
   ),
 };
 
-LinksStack.path = '';
+MealsStack.path = '';
 
 const SettingsStack = createStackNavigator(
   {
@@ -102,7 +103,7 @@ DailyLogStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  LinksStack,
+  MealsStack,
   DailyLogStack,
   SettingsStack,
 });

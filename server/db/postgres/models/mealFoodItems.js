@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
+const createMealFoodItems = require('../../neo4j/models/mealFoodItems');
 
 const MealFoodItems = db.define('mealFoodItems', {
   id: {
@@ -24,3 +25,8 @@ const MealFoodItems = db.define('mealFoodItems', {
 });
 
 module.exports = MealFoodItems;
+
+MealFoodItems.afterSave(async mealFoodItem => {
+  const newMealItem = await createMealFoodItems(mealFoodItem);
+  return newMealItem;
+});
