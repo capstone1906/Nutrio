@@ -75,7 +75,9 @@ const FoodTimeContainer = props => {
         buttonStyle={styles.addFoodButton}
         title="Add food"
         onPress={() => {
-          props.navigation.navigate('FoodSearch');
+
+          props.navigation.navigate("FoodSearch", {mealId: props.meal.id});
+
         }}
       />
     </View>
@@ -85,8 +87,25 @@ const FoodTimeContainer = props => {
 class DailyLog extends React.Component {
   constructor() {
     super();
+
+    const dateNow = new Date();
+    var todaysDate;
+
+    var year = dateNow.getFullYear().toString();
+    var month = (dateNow.getMonth() + 1).toString();
+    var day = dateNow.getDate().toString();
+
+    if (month < 10) {
+      month = "0" + month;
+    }
+    if (day < 10) {
+      day = "0" + day;
+    }
+
+    todaysDate = year + "-" + month + "-" + day;
+
     this.state = {
-      date: new Date(),
+      date: todaysDate,
       meals: [],
 
       showDatePicker: false
@@ -105,8 +124,6 @@ class DailyLog extends React.Component {
   }
 
   render() {
-    console.log("date is", this.state.date);
-    // console.log("date is", this.state.date.getDay());
 
     var foods = this.props.meals;
     var breakfast = {};
@@ -158,6 +175,7 @@ class DailyLog extends React.Component {
       }
     }
 
+    console.log('meals', breakfast,lunch,dinner,snacks)
     return (
       <ScrollView style={styles.container}>
         <View style={styles.date}>
@@ -185,7 +203,6 @@ class DailyLog extends React.Component {
             }}
           />
         </View>
-
 
         <FoodTimeContainer
           time="Breakfast"
@@ -269,7 +286,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
     return {
-        getMeals: () => dispatch(getMealsThunk())
+        getMeals: () => dispatch(getMealsThunk()),
     }
 }
 
