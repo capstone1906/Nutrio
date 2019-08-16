@@ -4,10 +4,12 @@ const db = require('../db');
 const Meals = db.define('meals', {
   name: {
     type: Sequelize.STRING,
+    allowNull: false,
     defaultValue: '', //decide later
   },
   averageRating: {
     type: Sequelize.FLOAT,
+    allowNull: false,
     validate: {
       min: 0.1,
       max: 5.0,
@@ -16,11 +18,34 @@ const Meals = db.define('meals', {
       type: Sequelize.STRING
     }
   },
-  totalCalories: Sequelize.INTEGER,
-  totalCarbs: Sequelize.INTEGER,
-  totalFat: Sequelize.INTEGER,
-  totalProtein: Sequelize.INTEGER,
-  dominantMacro: Sequelize.STRING,
+  totalCalories: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  totalCarbs: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  totalFat: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  totalProtein: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  dominantMacro: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  entreeType: {
+    type: Sequelize.ENUM(
+      'Breakfast',
+      'Lunch',
+      'Dinner',
+      'Snacks',
+    ),
+  }
 });
 
 module.exports = Meals;

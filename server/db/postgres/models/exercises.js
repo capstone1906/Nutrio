@@ -3,18 +3,19 @@ const db = require('../db');
 
 const Exercises = db.define('exercises', {
   met: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    allowNull: false,
   },
   activity: {
     type: Sequelize.STRING,
-    // allowNull: false,
+    allowNull: false,
     // validate: {
     //   notEmpty: true,
     // },
   },
   description: {
     type: Sequelize.STRING,
-    // allowNull: false,
+    allowNull: false,
     // validate: {
     //   notEmpty: true,
     // },
