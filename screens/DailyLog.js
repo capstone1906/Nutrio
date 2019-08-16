@@ -132,7 +132,6 @@ class DailyLog extends React.Component {
     var snacks = {};
 
     if (foods !== undefined) {
-        console.log('here', this.state)
       for (let i = 0; i < foods.length; i++) {
         var today = new Date(this.state.date);
         var setDay = today.getDate() + 1;
