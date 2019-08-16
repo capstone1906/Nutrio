@@ -1,9 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-<<<<<<< HEAD
-const FavoriteMeals = db.define('favoriteMeals', {});
-=======
 const FavoriteMeals = db.define('favoriteMeals', {
   id: {
     type: Sequelize.INTEGER,
@@ -19,6 +16,5 @@ const FavoriteMeals = db.define('favoriteMeals', {
     },
   },
 });
->>>>>>> c46fcc1e465daf17379a5d4ba8711372de1b0435
 
 module.exports = FavoriteMeals;
