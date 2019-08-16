@@ -8,6 +8,13 @@ import { Button, Divider } from "react-native-elements";
 import DatePicker from "react-native-datepicker";
 import { getMealsThunk } from "../components/store/meals";
 
+import {
+  Button,
+  ListItem,
+  ThemeProvider,
+  Divider,
+} from 'react-native-elements';
+
 const FoodTimeHeader = props => {
   return (
     <View style={styles.FoodTimeHeader}>
@@ -68,7 +75,9 @@ const FoodTimeContainer = props => {
         buttonStyle={styles.addFoodButton}
         title="Add food"
         onPress={() => {
+
           props.navigation.navigate("FoodSearch", {mealId: props.meal.id});
+
         }}
       />
     </View>
@@ -112,7 +121,6 @@ class DailyLog extends React.Component {
 
   async componentDidMount() {
     await this.props.getMeals()
-
   }
 
   render() {
@@ -192,7 +200,6 @@ class DailyLog extends React.Component {
               }
             }}
             onDateChange={date => {
-              // var newDate = new Date(date)
               this.setState({ date: date });
             }}
           />
@@ -219,6 +226,7 @@ class DailyLog extends React.Component {
           meal={snacks}
         />
       </ScrollView>
+
     );
   }
 }
@@ -241,12 +249,13 @@ const styles = StyleSheet.create({
   FoodTimeHeader: {
     // flex: 1,
     // alignSelf: "stretch",
-    flexDirection: "row",
-    backgroundColor: "lightgrey",
+    flexDirection: 'row',
+    backgroundColor: 'lightgrey',
     height: 40,
     justifyContent: "space-between",
+
     padding: 10,
-    borderRadius: 10
+    borderRadius: 10,
   },
   FoodTimeContainer: {
     // backgroundColor: "crimson",
@@ -256,8 +265,9 @@ const styles = StyleSheet.create({
   addFoodButton: {
     width: 100,
     backgroundColor: "limegreen"
+
     // fontSize: 5,
-  }
+  },
 });
 
 DailyLog.navigationOptions = {
@@ -282,3 +292,4 @@ const mapDispatch = dispatch => {
 }
 
 export default connect(mapState, mapDispatch)(DailyLog)
+
