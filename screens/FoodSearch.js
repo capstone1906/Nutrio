@@ -81,7 +81,7 @@ export default class FoodSearch extends React.Component {
               <TouchableOpacity key={food.ndbno}>
                 {/* <FoodSearchItem food={food} /> */}
                 <Text style={styles.foodName} onPress={() => {
-                    this.props.navigation.navigate('FoodSearchItem', {food: food})
+                    this.props.navigation.navigate('FoodSearchItem', {food: food, mealId: this.props.navigation.getParam("mealId")})
                 }}>{food.name}</Text>
                 <Divider style={{ backgroundColor: "blue" }} />
               </TouchableOpacity>
