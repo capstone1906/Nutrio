@@ -5,13 +5,13 @@ export default function UserJoinScreen(props) {
   const navigate = props.navigation.navigate;
   return (
     <View>
+      <Text>Google Auth Button Here</Text>
       <Text>Login Page</Text>
       <TouchableOpacity onPress={() => navigate('Main')}>
         <View style={styles.joinSignIn}>
           <Text style={styles.buttonText}>Sign Up</Text>
         </View>
       </TouchableOpacity>
-      <Text>Google Auth Button Here</Text>
     </View>
   );
 }
