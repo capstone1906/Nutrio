@@ -4,8 +4,25 @@ const createMeal = meal => {
   session
     .run(
       `MERGE (m:Meal {id: toInteger($id)})
-  ON CREATE SET m += {name: $name, averageRating: $averageRating, totalCalories: $totalCalories, totalCarbs: $totalCarbs, totalFat: $totalFat, totalProtein: $totalProtein, dominantMacro: $dominantMacro}
-  RETURN m`,
+      ON CREATE SET m += {
+        name: $name,
+        averageRating: $averageRating,
+        totalCalories: $totalCalories,
+        totalCarbs: $totalCarbs,
+        totalFat: $totalFat,
+        totalProtein: $totalProtein,
+        dominantMacro: $dominantMacro
+      }
+      ON MATCH SET m += {
+        name: $name,
+        averageRating: $averageRating,
+        totalCalories: $totalCalories,
+        totalCarbs: $totalCarbs,
+        totalFat: $totalFat,
+        totalProtein: $totalProtein,
+        dominantMacro: $dominantMacro
+      }
+      RETURN m`,
       {
         id: meal.id,
         name: meal.name,

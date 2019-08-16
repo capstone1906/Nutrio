@@ -4,8 +4,21 @@ const createFood = food => {
   session
     .run(
       `MERGE (f:Food {id: $id})
-    ON CREATE SET f += {calories: $calories, carbohydrates: $carbohydrates, protein: $protein, fat: $fat, dominantMacro: $dominantMacro}
-    RETURN f`,
+      ON CREATE SET f += {
+        calories: $calories,
+        carbohydrates: $carbohydrates,
+        protein: $protein,
+        fat: $fat,
+        dominantMacro: $dominantMacro
+      }
+      ON MATCH SET f += {
+         calories: $calories,
+         carbohydrates: $carbohydrates,
+         protein: $protein,
+         fat: $fat,
+         dominantMacro: $dominantMacro
+      }
+      RETURN f`,
       {
         id: food.id,
         calories: food.calories,
@@ -27,4 +40,4 @@ const createFood = food => {
     });
 };
 
-module.exports = createFood
+module.exports = createFood;

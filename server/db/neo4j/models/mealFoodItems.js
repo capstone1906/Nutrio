@@ -3,9 +3,13 @@ const { session } = require('../db');
 const createMealFoodItems = mealFoodItem => {
   session
     .run(
-      `MATCH (f:Food {id: $foodId}), (m:Meal {id $mealId})
+      `MATCH (f:Food {id: $foodId}), (m:Meal {id: $mealId})
     MERGE (m)-[r:HAS_FOOD]->(f)
     ON CREATE SET r += {
+      calories: $calories,
+      quantity: $quantity
+    }
+    ON MATCH SET r += {
       calories: $calories,
       quantity: $quantity
     }
