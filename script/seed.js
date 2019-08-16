@@ -70,6 +70,21 @@ async function seed() {
     var yesterday = `07-${day}-2019`;
     var ranDay = new Date(yesterday);
 
+
+    await Promise.all([
+      Meals.create({
+        name: 'Great Dish',
+        averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
+        totalCalories: Math.floor(Math.random() * 1000),
+        totalCarbs: Math.floor(Math.random() * 30),
+        totalProtein: Math.floor(Math.random() * 10),
+        totalFat: Math.floor(Math.random() * 10),
+        dominantMacro: 'carbohydrate',
+        entreeType: 'lunch',
+      }),
+    ]);
+
+    
     var food1 = {
       name: 'chicken',
       calories: Math.floor(500 + Math.random() * 3),
@@ -77,6 +92,7 @@ async function seed() {
       carbohydrates: 0,
       protein: 35,
       dominantMacro: 'protein',
+      mealId: 1
     };
     var food2 = {
       name: 'rice',
@@ -85,6 +101,8 @@ async function seed() {
       carbohydrates: 50,
       protein: 5,
       dominantMacro: 'carbohydrate',
+      mealId: 1
+
     };
     var food3 = {
       name: 'broccoli',
@@ -93,6 +111,8 @@ async function seed() {
       carbohydrates: 10,
       protein: 1,
       dominantMacro: 'carbohydrate',
+      mealId: 1
+
     };
     var food4 = {
       name: 'Protein Shake',
@@ -101,6 +121,8 @@ async function seed() {
       carbohydrates: 10,
       protein: 70,
       dominantMacro: 'protein',
+      mealId: 1
+
     };
 
     await Promise.all([
@@ -133,18 +155,7 @@ async function seed() {
     }),
   ]);
 
-  await Promise.all([
-    Meals.create({
-      name: 'Great Dish',
-      averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-      totalCalories: Math.floor(Math.random() * 1000),
-      totalCarbs: Math.floor(Math.random() * 30),
-      totalProtein: Math.floor(Math.random() * 10),
-      totalFat: Math.floor(Math.random() * 10),
-      dominantMacro: 'carbohydrate',
-      entreeType: 'lunch',
-    }),
-  ]);
+
 
   console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
