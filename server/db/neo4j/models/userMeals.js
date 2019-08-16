@@ -6,6 +6,7 @@ const createUserMeal = userMeal => {
       `MATCH (u:User {id: $userId}), (m:Meal {id $mealId})
     MERGE (u)-[r:HAD_MEAL]->(m)
     ON CREATE SET r.rating = $rating
+    ON MATCH SET r.rating = $rating
     RETURN u, r, m`,
       {
         userId: userMeal.userId,
