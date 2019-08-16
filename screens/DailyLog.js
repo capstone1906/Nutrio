@@ -2,7 +2,6 @@ import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import axios from 'axios';
 import { connect } from 'react-redux';
-
 import DatePicker from 'react-native-datepicker';
 import { getMealsThunk } from '../components/store/meals';
 
@@ -122,11 +121,6 @@ class DailyLog extends React.Component {
   }
 
   render() {
-<<<<<<< HEAD
-    console.log('date is', this.state.date);
-    // console.log("date is", this.state.date.getDay());
-=======
->>>>>>> 4ce806d9a95c205983e602432c53564c55f953a5
 
     var foods = this.props.meals;
     var breakfast = {};
@@ -286,19 +280,18 @@ const mapState = state => {
 };
 
 const mapDispatch = dispatch => {
-<<<<<<< HEAD
+
   return {
     getMeals: () => dispatch(getMealsThunk()),
   };
 };
-=======
+
     return {
         getMeals: () => dispatch(getMealsThunk()),
     }
 }
 
 export default connect(mapState, mapDispatch)(DailyLog)
->>>>>>> 4ce806d9a95c205983e602432c53564c55f953a5
 
 export default connect(
   mapState,
