@@ -193,7 +193,7 @@ async function seed() {
   };
 
   var meal6 = {
-    name: 'Great Dish 1',
+    name: 'Great Dish 6',
     averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
     totalCalories: Math.floor(Math.random() * 1000),
     totalCarbs: Math.floor(Math.random() * 30),
@@ -204,7 +204,7 @@ async function seed() {
   };
 
   var meal7 = {
-    name: 'Great Dish 2',
+    name: 'Great Dish 7',
     averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
     totalCalories: Math.floor(Math.random() * 1000),
     totalCarbs: Math.floor(Math.random() * 30),
@@ -215,7 +215,7 @@ async function seed() {
   };
 
   var meal8 = {
-    name: 'Great Dish 3',
+    name: 'Great Dish 8',
     averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
     totalCalories: Math.floor(Math.random() * 1000),
     totalCarbs: Math.floor(Math.random() * 30),
@@ -226,7 +226,7 @@ async function seed() {
   };
 
   var meal9 = {
-    name: 'Great Dish 4',
+    name: 'Great Dish 9',
     averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
     totalCalories: Math.floor(Math.random() * 1000),
     totalCarbs: Math.floor(Math.random() * 30),
@@ -237,7 +237,7 @@ async function seed() {
   };
 
   var meal10 = {
-    name: 'Great Dish 5',
+    name: 'Great Dish 10',
     averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
     totalCalories: Math.floor(Math.random() * 1000),
     totalCarbs: Math.floor(Math.random() * 30),
@@ -248,7 +248,7 @@ async function seed() {
   };
 
   var meal11 = {
-    name: 'Great Dish 1',
+    name: 'Great Dish 11',
     averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
     totalCalories: Math.floor(Math.random() * 1000),
     totalCarbs: Math.floor(Math.random() * 30),
@@ -259,7 +259,7 @@ async function seed() {
   };
 
   var meal12 = {
-    name: 'Great Dish 2',
+    name: 'Great Dish 12',
     averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
     totalCalories: Math.floor(Math.random() * 1000),
     totalCarbs: Math.floor(Math.random() * 30),
@@ -270,7 +270,7 @@ async function seed() {
   };
 
   var meal13 = {
-    name: 'Great Dish 3',
+    name: 'Great Dish 13',
     averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
     totalCalories: Math.floor(Math.random() * 1000),
     totalCarbs: Math.floor(Math.random() * 30),
@@ -281,7 +281,7 @@ async function seed() {
   };
 
   var meal14 = {
-    name: 'Great Dish 4',
+    name: 'Great Dish 14',
     averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
     totalCalories: Math.floor(Math.random() * 1000),
     totalCarbs: Math.floor(Math.random() * 30),
@@ -292,7 +292,7 @@ async function seed() {
   };
 
   var meal15 = {
-    name: 'Great Dish 5',
+    name: 'Great Dish 15',
     averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
     totalCalories: Math.floor(Math.random() * 1000),
     totalCarbs: Math.floor(Math.random() * 30),
@@ -349,7 +349,7 @@ async function seed() {
     await UserMeals.create({
       rating: 1 + Math.floor(Math.random() * 5),
       mealId: i,
-      userId: 1,
+      userId: 1 + Math.floor(Math.random() * 2),
     });
   }
 
