@@ -1,18 +1,21 @@
-import { AppLoading } from "expo";
-import { Asset } from "expo-asset";
-import * as Font from "expo-font";
-import React, { useState } from "react";
-import { Platform, StatusBar, StyleSheet, View, Text, Image } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { AppLoading } from 'expo';
+import { Asset } from 'expo-asset';
+import * as Font from 'expo-font';
+import React, { useState } from 'react';
+import {
+  Platform,
+  StatusBar,
+  StyleSheet,
+  View,
+  Text,
+  Image,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-import AppNavigator from "./navigation/AppNavigator";
-
-
-
+import AppNavigator from './navigation/AppNavigator';
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
-
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
       <AppLoading
@@ -25,7 +28,7 @@ export default function App(props) {
     return (
       <View style={styles.container}>
         {/* <View style={styles.header}>
-        <Image
+          <Image
             source={require('./assets/images/run-fast.png')}
             style={styles.welcomeImage}
           />
@@ -36,7 +39,7 @@ export default function App(props) {
           />
         </View> */}
 
-        {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <AppNavigator />
       </View>
     );
@@ -46,17 +49,17 @@ export default function App(props) {
 async function loadResourcesAsync() {
   await Promise.all([
     Asset.loadAsync([
-      require("./assets/images/robot-dev.png"),
-      require("./assets/images/robot-prod.png"),
-      require('./assets/images/account-settings-outline.png')
+      require('./assets/images/robot-dev.png'),
+      require('./assets/images/robot-prod.png'),
+      require('./assets/images/account-settings-outline.png'),
     ]),
     Font.loadAsync({
       // This is the font that we are using for our tab bar
       ...Ionicons.font,
       // We include SpaceMono because we use it in HomeScreen.js. Feel free to
       // remove this if you are not using it in your app
-      "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf")
-    })
+      'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+    }),
   ]);
 }
 
@@ -73,19 +76,18 @@ function handleFinishLoading(setLoadingComplete) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: '#fff',
   },
   header: {
     flexDirection: 'row',
-    width: "100%",
-    backgroundColor: "crimson",
+    width: '100%',
+    backgroundColor: 'crimson',
     height: 80,
     paddingTop: 36,
-    alignItems: "center",
-    justifyContent: "space-between",
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingLeft: 15,
-    paddingRight: 15
-
+    paddingRight: 15,
   },
   headerText: {
     color: 'white',
