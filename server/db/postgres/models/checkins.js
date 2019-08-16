@@ -7,14 +7,14 @@ const Checkins = db.define('checkins', {
   },
   caloriesConsumed: {
     type: Sequelize.INTEGER,
-    // allowNull: false,
+    allowNull: false,
     // validate: {
     //   notEmpty: true,
     // },
   },
   weight: {
     type: Sequelize.FLOAT,
-    // allowNull: false,
+    allowNull: false,
     // validate: {
     //   notEmpty: true,
     // },
