@@ -15,6 +15,9 @@ const Meals = db.define('meals', {
       min: 0.1,
       max: 5.0,
     },
+    entreeType: {
+      type: Sequelize.STRING
+    }
   },
   totalCalories: {
     type: Sequelize.INTEGER,
