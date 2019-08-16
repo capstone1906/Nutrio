@@ -1,13 +1,13 @@
-import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import axios from 'axios'
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import axios from 'axios';
 
 import {
   Button,
   ListItem,
   ThemeProvider,
-  Divider
-} from "react-native-elements";
+  Divider,
+} from 'react-native-elements';
 
 const FoodTimeHeader = props => {
   return (
@@ -39,7 +39,7 @@ const FoodTimeContainer = props => {
         buttonStyle={styles.addFoodButton}
         title="Add food"
         onPress={() => {
-          props.navigation.navigate("FoodSearch");
+          props.navigation.navigate('FoodSearch');
         }}
       />
     </View>
@@ -52,22 +52,22 @@ export default class DailyLog extends React.Component {
   }
 
   async componentDidMount() {
-    console.log('here2')
-    var res = await axios.get('https://ead97e56.ngrok.io/api/food')
-    console.log('results', res.data)
+    var res = await axios.get('https://ead97e56.ngrok.io/api/food');
   }
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center" }}>
+      <View style={{ flex: 1, alignItems: 'center' }}>
         <Text>Todays Date</Text>
-        <FoodTimeContainer time="Breakfast" navigation={this.props.navigation}/>
-        <FoodTimeContainer time="Lunch" navigation={this.props.navigation}/>
-        <FoodTimeContainer time="Dinner" navigation={this.props.navigation}/>
-        <FoodTimeContainer time="Snacks" navigation={this.props.navigation}/>
+        <FoodTimeContainer
+          time="Breakfast"
+          navigation={this.props.navigation}
+        />
+        <FoodTimeContainer time="Lunch" navigation={this.props.navigation} />
+        <FoodTimeContainer time="Dinner" navigation={this.props.navigation} />
+        <FoodTimeContainer time="Snacks" navigation={this.props.navigation} />
       </View>
     );
-
   }
 }
 
@@ -75,31 +75,30 @@ const styles = StyleSheet.create({
   FoodTimeHeader: {
     // flex: 1,
     // alignSelf: "stretch",
-    flexDirection: "row",
-    backgroundColor: "lightgrey",
+    flexDirection: 'row',
+    backgroundColor: 'lightgrey',
     height: 40,
-    width: "90%",
-    justifyContent: "space-between",
+    width: '90%',
+    justifyContent: 'space-between',
     padding: 10,
-    borderRadius: 10
+    borderRadius: 10,
   },
   FoodTimeContainer: {
-    backgroundColor: "crimson",
+    backgroundColor: 'crimson',
     height: 100,
     marginBottom: 30,
   },
   addFoodButton: {
     width: 100,
-    backgroundColor: "limegreen",
+    backgroundColor: 'limegreen',
     // fontSize: 5,
-  }
+  },
 });
 
-
 DailyLog.navigationOptions = {
-    headerTitle: "Daily log",
-    headerStyle: {
-        backgroundColor: 'crimson'
-    },
-    headerTintColor: 'white'
-}
+  headerTitle: 'Daily log',
+  headerStyle: {
+    backgroundColor: 'crimson',
+  },
+  headerTintColor: 'white',
+};
