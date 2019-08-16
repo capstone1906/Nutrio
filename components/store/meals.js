@@ -19,8 +19,6 @@ const getMeals = meals => ({type: GET_MEALS, meals})
 /**
  * THUNK CREATORS
  */
-
-
 export const getMealsThunk = () => async dispatch => {
   try {
     var res = await axios.get("https://9e584b3c.ngrok.io/api/meals");
@@ -29,6 +27,18 @@ export const getMealsThunk = () => async dispatch => {
     console.error(err)
   }
 }
+
+export const postFood = (food, mealId) => async dispatch => {
+    try {
+      var res2 = await axios.post(`https://9e584b3c.ngrok.io/api/mealFoodItems/${mealId}`, food);
+  
+      var res = await axios.get("https://9e584b3c.ngrok.io/api/meals");
+      dispatch(getMeals(res.data))
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
 
 /**
  * REDUCER
