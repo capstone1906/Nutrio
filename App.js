@@ -2,13 +2,19 @@ import { AppLoading } from "expo";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { Platform, StatusBar, StyleSheet, View, Text, Image } from "react-native";
+import {
+  Platform,
+  StatusBar,
+  StyleSheet,
+  View,
+  Text,
+  Image
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import AppNavigator from "./navigation/AppNavigator";
-
-
-
+import store from "./components/store";
+import { Provider } from "react-redux";
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -23,22 +29,12 @@ export default function App(props) {
     );
   } else {
     return (
-      <View style={styles.container}>
-        {/* <View style={styles.header}>
-        <Image
-            source={require('./assets/images/run-fast.png')}
-            style={styles.welcomeImage}
-          />
-          <Text style={styles.headerText}>Nutrition Tracker</Text>
-          <Image
-            source={require('./assets/images/account-settings-outline.png')}
-            style={styles.welcomeImage}
-          />
-        </View> */}
-
-        {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-        <AppNavigator />
-      </View>
+      <Provider store={store}>
+        <View style={styles.container}>
+          {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+          <AppNavigator />
+        </View>
+      </Provider>
     );
   }
 }
@@ -48,7 +44,7 @@ async function loadResourcesAsync() {
     Asset.loadAsync([
       require("./assets/images/robot-dev.png"),
       require("./assets/images/robot-prod.png"),
-      require('./assets/images/account-settings-outline.png')
+      require("./assets/images/account-settings-outline.png")
     ]),
     Font.loadAsync({
       // This is the font that we are using for our tab bar
@@ -76,7 +72,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff"
   },
   header: {
-    flexDirection: 'row',
+    flexDirection: "row",
     width: "100%",
     backgroundColor: "crimson",
     height: 80,
@@ -85,14 +81,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 15,
     paddingRight: 15
-
   },
   headerText: {
-    color: 'white',
-    fontSize: 18,
+    color: "white",
+    fontSize: 18
   },
   welcomeImage: {
     width: 25,
-    height: 25,
-  },
+    height: 25
+  }
 });

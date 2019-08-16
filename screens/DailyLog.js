@@ -1,10 +1,12 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import axios from "axios";
+import {connect} from 'react-redux'
 
-import { Button } from "react-native-elements";
+import { Button, Divider } from "react-native-elements";
 
 import DatePicker from "react-native-datepicker";
+import { getMealsThunk } from "../components/store/meals";
 
 const FoodTimeHeader = props => {
   return (
@@ -29,9 +31,39 @@ const FoodTimeHeader = props => {
 };
 
 const FoodTimeContainer = props => {
+  var foodItems = [];
+  if (props.meal.foodItems) {
+    foodItems = props.meal.foodItems;
+  }
+
   return (
     <View style={styles.FoodTimeContainer}>
       <FoodTimeHeader time={props.time} />
+      {foodItems.map(food => {
+        return (
+          <React.Fragment key={food.name}>
+            <View style={styles.foodItem} >
+              <View style={{ flex: 2 }}>
+                <Text>{food.name}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text>{food.carbohydrates}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text>{food.fat}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text>{food.protein}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text>{food.calories}</Text>
+              </View>
+            </View>
+            <Divider style={{ backgroundColor: "blue" }} />
+          </React.Fragment>
+        );
+      })}
+
       <Button
         buttonStyle={styles.addFoodButton}
         title="Add food"
@@ -43,11 +75,12 @@ const FoodTimeContainer = props => {
   );
 };
 
-export default class DailyLog extends React.Component {
+class DailyLog extends React.Component {
   constructor() {
     super();
     this.state = {
       date: new Date(),
+      meals: [],
 
       showDatePicker: false
     };
@@ -57,69 +90,134 @@ export default class DailyLog extends React.Component {
 
   setDate(newDate) {
     this.setState({ chosenDate: newDate });
+    setTimeout({}, 1000);
   }
 
   async componentDidMount() {
-    // console.log('here2')
-    // var res2 = await axios.get('https://9e584b3c.ngrok.io/api/meals')
-    // console.log('results', res2.data)
+    await this.props.getMeals()
+
   }
 
   render() {
-      console.log('date is', this.state.date)
+    console.log("date is", this.state.date);
+    // console.log("date is", this.state.date.getDay());
+
+    var foods = this.props.meals;
+    var breakfast = {};
+    var lunch = {};
+    var dinner = {};
+    var snacks = {};
+
+    if (foods !== undefined) {
+      for (let i = 0; i < foods.length; i++) {
+        var today = new Date(this.state.date);
+        var setDay = today.getDate() + 1;
+        var setMonth = today.getMonth();
+        var setYear = today.getYear();
+
+        var mealTime = new Date(foods[i].createdAt);
+        var mealDay = mealTime.getDate();
+        var mealMonth = mealTime.getMonth();
+        var mealYear = mealTime.getYear();
+
+        if (
+          foods[i].entreeType === "Breakfast" &&
+          mealDay === setDay &&
+          setMonth === mealMonth &&
+          setYear === mealYear
+        ) {
+          breakfast = foods[i];
+        } else if (
+          foods[i].entreeType === "Lunch" &&
+          mealDay === setDay &&
+          setMonth === mealMonth &&
+          setYear === mealYear
+        ) {
+          lunch = foods[i];
+        } else if (
+          foods[i].entreeType === "Dinner" &&
+          mealDay === setDay &&
+          setMonth === mealMonth &&
+          setYear === mealYear
+        ) {
+          dinner = foods[i];
+        } else if (
+          foods[i].entreeType === "Snacks" &&
+          mealDay === setDay &&
+          setMonth === mealMonth &&
+          setYear === mealYear
+        ) {
+          snacks = foods[i];
+        }
+      }
+    }
 
     return (
       <ScrollView style={styles.container}>
         <View style={styles.date}>
-        <DatePicker
-          style={{ width: 150 }}
-          date={this.state.date}
-          mode="date"
-          placeholder="select date"
-          format="MM-DD-YYYY"
-        //   minDate="2016-05-01"
-        //   maxDate="2016-06-01"
-          confirmBtnText="Confirm"
-          cancelBtnText="Cancel"
-          customStyles={{
-            dateIcon: {
-              position: "absolute",
-              left: 0,
-              top: 4,
-              marginLeft: 0
-            },
-            dateInput: {
-              marginLeft: 36
-            }
-            // ... You can check the source to find the other keys.
-          }}
-          onDateChange={date => {
-            this.setState({ date: date });
-          }}
-        />    
+          <DatePicker
+            style={{ width: 150 }}
+            date={this.state.date}
+            mode="date"
+            placeholder="select date"
+            // format="MM-DD-YYYY"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              dateIcon: {
+                position: "absolute",
+                left: 0,
+                top: 4,
+                marginLeft: 0
+              },
+              dateInput: {
+                marginLeft: 36
+              }
+            }}
+            onDateChange={date => {
+              // var newDate = new Date(date)
+              this.setState({ date: date });
+            }}
+          />
         </View>
-
 
         <Text>Todays Date</Text>
         <FoodTimeContainer
           time="Breakfast"
           navigation={this.props.navigation}
+          meal={breakfast}
         />
-        <FoodTimeContainer time="Lunch" navigation={this.props.navigation} />
-        <FoodTimeContainer time="Dinner" navigation={this.props.navigation} />
-        <FoodTimeContainer time="Snacks" navigation={this.props.navigation} />
+        <FoodTimeContainer
+          time="Lunch"
+          navigation={this.props.navigation}
+          meal={lunch}
+        />
+        <FoodTimeContainer
+          time="Dinner"
+          navigation={this.props.navigation}
+          meal={dinner}
+        />
+        <FoodTimeContainer
+          time="Snacks"
+          navigation={this.props.navigation}
+          meal={snacks}
+        />
       </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-    date: {
-        justifyContent: 'center',
-        paddingLeft: 75,
-    },
+  foodItem: {
+    flexDirection: "row",
+    paddingLeft: 10
+  },
+  date: {
+    justifyContent: "center",
+    paddingLeft: 75
+  },
   container: {
-      flex: 1,
+    flex: 1,
     //   justifyContent: 'center'
     padding: 20
   },
@@ -135,8 +233,8 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   FoodTimeContainer: {
-    backgroundColor: "crimson",
-    height: 100,
+    // backgroundColor: "crimson",
+    // height: 100,
     marginBottom: 30
   },
   addFoodButton: {
@@ -153,3 +251,18 @@ DailyLog.navigationOptions = {
   },
   headerTintColor: "white"
 };
+
+
+const mapState = state => {
+    return {
+        meals: state.meals
+    }
+}
+
+const mapDispatch = dispatch => {
+    return {
+        getMeals: () => dispatch(getMealsThunk())
+    }
+}
+
+export default connect(mapState, mapDispatch)(DailyLog)
