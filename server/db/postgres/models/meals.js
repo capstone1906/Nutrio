@@ -35,6 +35,14 @@ const Meals = db.define('meals', {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  entreeType: {
+    type: Sequelize.ENUM(
+      'Breakfast',
+      'Lunch',
+      'Dinner',
+      'Snacks',
+    ),
+  }
 });
 
 module.exports = Meals;

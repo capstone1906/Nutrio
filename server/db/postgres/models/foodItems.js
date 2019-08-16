@@ -5,6 +5,7 @@ const FoodItems = db.define('foodItems', {
   name: {
     type: Sequelize.STRING,
     allowNull: false,
+    unique: true,
   },
   calories: {
     type: Sequelize.INTEGER,

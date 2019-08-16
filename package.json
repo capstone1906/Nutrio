@@ -23,7 +23,6 @@
     "expo-constants": "6.0.0",
     "expo-font": "~6.0.0",
     "expo-web-browser": "6.0.0",
-    "neo4j": "^2.0.0-RC2",
     "neo4j-driver": "^1.7.5",
     "pg": "^7.12.1",
     "react": "16.8.3",

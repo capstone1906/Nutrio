@@ -21,11 +21,26 @@ Users.hasMany(CheckIns);
 FoodItems.belongsToMany(Meals, { through: MealFoodItems });
 Meals.belongsToMany(FoodItems, { through: MealFoodItems });
 
-Meals.belongsToMany(Users, { through: FavoriteMeals });
-Users.belongsToMany(Meals, { through: FavoriteMeals });
+/////////
+Meals.belongsToMany(Users, {
+  as: 'FavoritedByUser',
+  through: 'favoriteMeals',
+});
 
-Meals.belongsToMany(Users, { through: UserMeals });
-Users.belongsToMany(Meals, { through: UserMeals });
+Users.belongsToMany(Meals, {
+  as: 'bookmarkedMeals',
+  through: 'favoriteMeals',
+});
+
+Meals.belongsToMany(Users, {
+  as: 'AddedByUser',
+  through: 'userMeals',
+});
+Users.belongsToMany(Meals, {
+  as: 'previousMeals',
+  through: 'userMeals',
+});
+//////
 
 module.exports = {
   CheckIns,
