@@ -2,6 +2,7 @@ import { AppLoading } from "expo";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
 import React, { useState } from "react";
+
 import {
   Platform,
   StatusBar,
@@ -16,9 +17,9 @@ import AppNavigator from "./navigation/AppNavigator";
 import store from "./components/store";
 import { Provider } from "react-redux";
 
+
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
-
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
       <AppLoading
@@ -45,14 +46,15 @@ async function loadResourcesAsync() {
       require("./assets/images/robot-dev.png"),
       require("./assets/images/robot-prod.png"),
       require("./assets/images/account-settings-outline.png")
+
     ]),
     Font.loadAsync({
       // This is the font that we are using for our tab bar
       ...Ionicons.font,
       // We include SpaceMono because we use it in HomeScreen.js. Feel free to
       // remove this if you are not using it in your app
-      "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf")
-    })
+      'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
+    }),
   ]);
 }
 
@@ -69,18 +71,20 @@ function handleFinishLoading(setLoadingComplete) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: '#fff',
   },
   header: {
     flexDirection: "row",
     width: "100%",
     backgroundColor: "crimson",
+
     height: 80,
     paddingTop: 36,
-    alignItems: "center",
-    justifyContent: "space-between",
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingLeft: 15,
     paddingRight: 15
+
   },
   headerText: {
     color: "white",
