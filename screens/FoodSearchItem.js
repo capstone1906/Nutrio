@@ -51,11 +51,10 @@ class FoodSearchItem extends React.Component {
       calories: this.state.foodInfo.nutrients[0].value,
       fat: this.state.foodInfo.nutrients[2].value,
       protein: this.state.foodInfo.nutrients[1].value,
-      carbohydrates: this.state.foodInfo.nutrients[3].value,      
+      carbohydrates: this.state.foodInfo.nutrients[3].value,
+      ndbno: this.state.foodInfo.ndbno      
     }
 
-
-    console.log('mealId', mealId)
     this.props.postFood(newFood, mealId)
 
   }
@@ -83,8 +82,7 @@ class FoodSearchItem extends React.Component {
   }
 
   render() {
-    // console.log('props', this.props)
-    console.log('state', this.state)
+
 
     return (
       <View>
