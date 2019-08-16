@@ -1,12 +1,10 @@
-import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import axios from "axios";
-import {connect} from 'react-redux'
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import axios from 'axios';
+import { connect } from 'react-redux';
 
-import { Button, Divider } from "react-native-elements";
-
-import DatePicker from "react-native-datepicker";
-import { getMealsThunk } from "../components/store/meals";
+import DatePicker from 'react-native-datepicker';
+import { getMealsThunk } from '../components/store/meals';
 
 import {
   Button,
@@ -49,7 +47,7 @@ const FoodTimeContainer = props => {
       {foodItems.map(food => {
         return (
           <React.Fragment key={food.name}>
-            <View style={styles.foodItem} >
+            <View style={styles.foodItem}>
               <View style={{ flex: 2 }}>
                 <Text>{food.name}</Text>
               </View>
@@ -66,7 +64,7 @@ const FoodTimeContainer = props => {
                 <Text>{food.calories}</Text>
               </View>
             </View>
-            <Divider style={{ backgroundColor: "blue" }} />
+            <Divider style={{ backgroundColor: 'blue' }} />
           </React.Fragment>
         );
       })}
@@ -108,7 +106,7 @@ class DailyLog extends React.Component {
       date: todaysDate,
       meals: [],
 
-      showDatePicker: false
+      showDatePicker: false,
     };
 
     this.setDate = this.setDate.bind(this);
@@ -120,10 +118,15 @@ class DailyLog extends React.Component {
   }
 
   async componentDidMount() {
-    await this.props.getMeals()
+    await this.props.getMeals();
   }
 
   render() {
+<<<<<<< HEAD
+    console.log('date is', this.state.date);
+    // console.log("date is", this.state.date.getDay());
+=======
+>>>>>>> 4ce806d9a95c205983e602432c53564c55f953a5
 
     var foods = this.props.meals;
     var breakfast = {};
@@ -144,28 +147,28 @@ class DailyLog extends React.Component {
         var mealYear = mealTime.getYear();
 
         if (
-          foods[i].entreeType === "Breakfast" &&
+          foods[i].entreeType === 'Breakfast' &&
           mealDay === setDay &&
           setMonth === mealMonth &&
           setYear === mealYear
         ) {
           breakfast = foods[i];
         } else if (
-          foods[i].entreeType === "Lunch" &&
+          foods[i].entreeType === 'Lunch' &&
           mealDay === setDay &&
           setMonth === mealMonth &&
           setYear === mealYear
         ) {
           lunch = foods[i];
         } else if (
-          foods[i].entreeType === "Dinner" &&
+          foods[i].entreeType === 'Dinner' &&
           mealDay === setDay &&
           setMonth === mealMonth &&
           setYear === mealYear
         ) {
           dinner = foods[i];
         } else if (
-          foods[i].entreeType === "Snacks" &&
+          foods[i].entreeType === 'Snacks' &&
           mealDay === setDay &&
           setMonth === mealMonth &&
           setYear === mealYear
@@ -189,14 +192,14 @@ class DailyLog extends React.Component {
             cancelBtnText="Cancel"
             customStyles={{
               dateIcon: {
-                position: "absolute",
+                position: 'absolute',
                 left: 0,
                 top: 4,
-                marginLeft: 0
+                marginLeft: 0,
               },
               dateInput: {
-                marginLeft: 36
-              }
+                marginLeft: 36,
+              },
             }}
             onDateChange={date => {
               this.setState({ date: date });
@@ -225,24 +228,23 @@ class DailyLog extends React.Component {
           meal={snacks}
         />
       </ScrollView>
-
     );
   }
 }
 
 const styles = StyleSheet.create({
   foodItem: {
-    flexDirection: "row",
-    paddingLeft: 10
+    flexDirection: 'row',
+    paddingLeft: 10,
   },
   date: {
-    justifyContent: "center",
-    paddingLeft: 75
+    justifyContent: 'center',
+    paddingLeft: 75,
   },
   container: {
     flex: 1,
     //   justifyContent: 'center'
-    padding: 20
+    padding: 20,
   },
 
   FoodTimeHeader: {
@@ -251,7 +253,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'lightgrey',
     height: 40,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
 
     padding: 10,
     borderRadius: 10,
@@ -259,36 +261,46 @@ const styles = StyleSheet.create({
   FoodTimeContainer: {
     // backgroundColor: "crimson",
     // height: 100,
-    marginBottom: 30
+    marginBottom: 30,
   },
   addFoodButton: {
     width: 100,
-    backgroundColor: "limegreen"
+    backgroundColor: 'limegreen',
 
     // fontSize: 5,
   },
 });
 
 DailyLog.navigationOptions = {
-  headerTitle: "Daily log",
+  headerTitle: 'Daily log',
   headerStyle: {
-    backgroundColor: "crimson"
+    backgroundColor: 'crimson',
   },
-  headerTintColor: "white"
+  headerTintColor: 'white',
 };
 
-
 const mapState = state => {
-    return {
-        meals: state.meals
-    }
-}
+  return {
+    meals: state.meals,
+  };
+};
 
 const mapDispatch = dispatch => {
+<<<<<<< HEAD
+  return {
+    getMeals: () => dispatch(getMealsThunk()),
+  };
+};
+=======
     return {
         getMeals: () => dispatch(getMealsThunk()),
     }
 }
 
 export default connect(mapState, mapDispatch)(DailyLog)
+>>>>>>> 4ce806d9a95c205983e602432c53564c55f953a5
 
+export default connect(
+  mapState,
+  mapDispatch
+)(DailyLog);
