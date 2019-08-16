@@ -27,7 +27,11 @@ const FoodItems = db.define('foodItems', {
   },
   weight: {
     type: Sequelize.INTEGER
+  },
+  ndbno: {
+    type: Sequelize.INTEGER
   }
+  
 
 });
 

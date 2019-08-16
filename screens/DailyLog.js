@@ -1,7 +1,13 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity
+} from "react-native";
 import axios from "axios";
-import {connect} from 'react-redux'
+import { connect } from "react-redux";
 
 import { Button, Divider } from "react-native-elements";
 
@@ -11,10 +17,10 @@ import { getMealsThunk } from "../components/store/meals";
 const FoodTimeHeader = props => {
   return (
     <View style={styles.FoodTimeHeader}>
-      <View style={{ flex: 2 }}>
+      <View style={{ flex: 3 }}>
         <Text>{props.time}</Text>
       </View>
-      <View style={{ flex: 1 }}>
+      {/* <View style={{ flex: 1 }}>
         <Text>Carbs</Text>
       </View>
       <View style={{ flex: 1 }}>
@@ -22,7 +28,7 @@ const FoodTimeHeader = props => {
       </View>
       <View style={{ flex: 1 }}>
         <Text>Protein</Text>
-      </View>
+      </View> */}
       <View style={{ flex: 1 }}>
         <Text>Calories</Text>
       </View>
@@ -42,23 +48,32 @@ const FoodTimeContainer = props => {
       {foodItems.map(food => {
         return (
           <React.Fragment key={food.name}>
-            <View style={styles.foodItem} >
-              <View style={{ flex: 2 }}>
-                <Text>{food.name}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate("FoodSearchItem", {
+                  food: food,
+                  mealId: props.meal.id
+                });
+              }}
+            >
+              <View style={styles.foodItem}>
+                <View style={{ flex: 2, paddingRight: 80}}>
+                  <Text>{food.name}</Text>
+                </View>
+                {/* <View style={{ flex: 1 }}>
+                  <Text>{food.carbohydrates}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text>{food.fat}</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text>{food.protein}</Text>
+                </View> */}
+                <View style={{ flex: 1 }}>
+                  <Text>{food.calories}</Text>
+                </View>
               </View>
-              <View style={{ flex: 1 }}>
-                <Text>{food.carbohydrates}</Text>
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text>{food.fat}</Text>
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text>{food.protein}</Text>
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text>{food.calories}</Text>
-              </View>
-            </View>
+            </TouchableOpacity>
             <Divider style={{ backgroundColor: "blue" }} />
           </React.Fragment>
         );
@@ -68,7 +83,7 @@ const FoodTimeContainer = props => {
         buttonStyle={styles.addFoodButton}
         title="Add food"
         onPress={() => {
-          props.navigation.navigate("FoodSearch", {mealId: props.meal.id});
+          props.navigation.navigate("FoodSearch", { mealId: props.meal.id });
         }}
       />
     </View>
@@ -111,12 +126,10 @@ class DailyLog extends React.Component {
   }
 
   async componentDidMount() {
-    await this.props.getMeals()
-
+    await this.props.getMeals();
   }
 
   render() {
-
     var foods = this.props.meals;
     var breakfast = {};
     var lunch = {};
@@ -124,7 +137,6 @@ class DailyLog extends React.Component {
     var snacks = {};
 
     if (foods !== undefined) {
-        console.log('here', this.state)
       for (let i = 0; i < foods.length; i++) {
         var today = new Date(this.state.date);
         var setDay = today.getDate() + 1;
@@ -168,12 +180,11 @@ class DailyLog extends React.Component {
       }
     }
 
-    console.log('meals', breakfast,lunch,dinner,snacks)
     return (
       <ScrollView style={styles.container}>
         <View style={styles.date}>
           <DatePicker
-            style={{ width: 150 }}
+            style={{ width: 150, paddingBottom: 10 }}
             date={this.state.date}
             mode="date"
             placeholder="select date"
@@ -268,17 +279,19 @@ DailyLog.navigationOptions = {
   headerTintColor: "white"
 };
 
-
 const mapState = state => {
-    return {
-        meals: state.meals
-    }
-}
+  return {
+    meals: state.meals
+  };
+};
 
 const mapDispatch = dispatch => {
-    return {
-        getMeals: () => dispatch(getMealsThunk()),
-    }
-}
+  return {
+    getMeals: () => dispatch(getMealsThunk())
+  };
+};
 
-export default connect(mapState, mapDispatch)(DailyLog)
+export default connect(
+  mapState,
+  mapDispatch
+)(DailyLog);
