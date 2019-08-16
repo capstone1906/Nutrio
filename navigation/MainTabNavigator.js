@@ -1,15 +1,18 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import {
+  createStackNavigator,
+  createBottomTabNavigator,
+} from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+// import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import DailyLog from '../screens/DailyLog';
-import FoodSearch from '../screens/FoodSearch'
-import FoodSearchItem from '../screens/FoodSearchItem'
-
+import FoodSearch from '../screens/FoodSearch';
+import FoodSearchItem from '../screens/FoodSearchItem';
+import Meals from '../screens/Meals';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -39,21 +42,24 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = '';
 
-const LinksStack = createStackNavigator(
+const MealsStack = createStackNavigator(
   {
-    Links: LinksScreen,
+    Meals: Meals,
   },
   config
 );
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+MealsStack.navigationOptions = {
+  tabBarLabel: 'Meals',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+    />
   ),
 };
 
-LinksStack.path = '';
+MealsStack.path = '';
 
 const SettingsStack = createStackNavigator(
   {
@@ -65,7 +71,10 @@ const SettingsStack = createStackNavigator(
 SettingsStack.navigationOptions = {
   tabBarLabel: 'Settings',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    />
   ),
 };
 
@@ -75,7 +84,7 @@ const DailyLogStack = createStackNavigator(
   {
     DailyLog: DailyLog,
     FoodSearch: FoodSearch,
-    FoodSearchItem: FoodSearchItem
+    FoodSearchItem: FoodSearchItem,
   },
   config
 );
@@ -83,18 +92,20 @@ const DailyLogStack = createStackNavigator(
 DailyLogStack.navigationOptions = {
   tabBarLabel: 'Daily Log',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
-  ), 
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    />
+  ),
 };
 
 DailyLogStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  LinksStack,
+  MealsStack,
   DailyLogStack,
   SettingsStack,
-  
 });
 
 tabNavigator.path = '';
