@@ -3,6 +3,8 @@ module.exports = router
 
 router.use('/food', require('./food'))
 router.use('/meals', require('./meals'))
+router.use('/mealFoodItems', require('./mealFoodItems'))
+
 
 
 router.use((req, res, next) => {

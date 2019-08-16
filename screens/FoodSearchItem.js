@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import {connect} from 'react-redux'
 import { Input, Button, Divider } from "react-native-elements";
 
 import {
@@ -10,6 +11,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import { VictoryPie, VictoryChart, VictoryTheme } from "victory-native";
+import {postFood} from '../components/store/meals'
 
 const FoodTimeHeader = props => {
   return (
@@ -30,7 +32,7 @@ const FoodTimeHeader = props => {
   );
 };
 
-export default class FoodSearchItem extends React.Component {
+class FoodSearchItem extends React.Component {
   constructor() {
     super();
 
@@ -39,6 +41,23 @@ export default class FoodSearchItem extends React.Component {
       showData: false,
       isOpen: false
     };
+    this.postFood = this.postFood.bind(this)
+  }
+
+  postFood() {
+    var mealId = this.props.navigation.getParam("mealId")
+    var newFood = {
+      name: this.state.foodInfo.name,
+      calories: this.state.foodInfo.nutrients[0].value,
+      fat: this.state.foodInfo.nutrients[2].value,
+      protein: this.state.foodInfo.nutrients[1].value,
+      carbohydrates: this.state.foodInfo.nutrients[3].value,      
+    }
+
+
+    console.log('mealId', mealId)
+    this.props.postFood(newFood, mealId)
+
   }
 
   async componentDidMount() {
@@ -64,6 +83,9 @@ export default class FoodSearchItem extends React.Component {
   }
 
   render() {
+    // console.log('props', this.props)
+    console.log('state', this.state)
+
     return (
       <View>
         {this.state.foodInfo.nutrients ? (
@@ -120,6 +142,8 @@ export default class FoodSearchItem extends React.Component {
               <Divider style={{ backgroundColor: "blue" }} />
             </View>
             <Divider style={{ backgroundColor: "blue" }} />
+
+            <Button title='add' onPress={() => this.postFood()}/>
 
             <VictoryPie
               colorScale={["crimson", "limegreen", "navy"]}
@@ -191,3 +215,19 @@ FoodSearchItem.navigationOptions = {
   },
   headerTintColor: "white"
 };
+
+const mapState = state => {
+  return {
+      meals: state.meals
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+      // getMeals: () => dispatch(getMealsThunk()),
+      postFood: (food, mealId) => dispatch(postFood(food, mealId))
+
+  }
+}
+
+export default connect(mapState, mapDispatch)(FoodSearchItem)
