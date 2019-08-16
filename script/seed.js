@@ -192,6 +192,115 @@ async function seed() {
     entreeType: 'Breakfast',
   };
 
+  var meal6 = {
+    name: 'Great Dish 6',
+    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
+    totalCalories: Math.floor(Math.random() * 1000),
+    totalCarbs: Math.floor(Math.random() * 30),
+    totalProtein: Math.floor(Math.random() * 10),
+    totalFat: Math.floor(Math.random() * 10),
+    dominantMacro: 'Protein',
+    entreeType: 'Breakfast',
+  };
+
+  var meal7 = {
+    name: 'Great Dish 7',
+    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
+    totalCalories: Math.floor(Math.random() * 1000),
+    totalCarbs: Math.floor(Math.random() * 30),
+    totalProtein: Math.floor(Math.random() * 10),
+    totalFat: Math.floor(Math.random() * 10),
+    dominantMacro: 'Protein',
+    entreeType: 'Lunch',
+  };
+
+  var meal8 = {
+    name: 'Great Dish 8',
+    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
+    totalCalories: Math.floor(Math.random() * 1000),
+    totalCarbs: Math.floor(Math.random() * 30),
+    totalProtein: Math.floor(Math.random() * 10),
+    totalFat: Math.floor(Math.random() * 10),
+    dominantMacro: 'Protein',
+    entreeType: 'Dinner',
+  };
+
+  var meal9 = {
+    name: 'Great Dish 9',
+    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
+    totalCalories: Math.floor(Math.random() * 1000),
+    totalCarbs: Math.floor(Math.random() * 30),
+    totalProtein: Math.floor(Math.random() * 10),
+    totalFat: Math.floor(Math.random() * 10),
+    dominantMacro: 'Protein',
+    entreeType: 'Snacks',
+  };
+
+  var meal10 = {
+    name: 'Great Dish 10',
+    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
+    totalCalories: Math.floor(Math.random() * 1000),
+    totalCarbs: Math.floor(Math.random() * 30),
+    totalProtein: Math.floor(Math.random() * 10),
+    totalFat: Math.floor(Math.random() * 10),
+    dominantMacro: 'Fat',
+    entreeType: 'Breakfast',
+  };
+
+  var meal11 = {
+    name: 'Great Dish 11',
+    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
+    totalCalories: Math.floor(Math.random() * 1000),
+    totalCarbs: Math.floor(Math.random() * 30),
+    totalProtein: Math.floor(Math.random() * 10),
+    totalFat: Math.floor(Math.random() * 10),
+    dominantMacro: 'Fat',
+    entreeType: 'Breakfast',
+  };
+
+  var meal12 = {
+    name: 'Great Dish 12',
+    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
+    totalCalories: Math.floor(Math.random() * 1000),
+    totalCarbs: Math.floor(Math.random() * 30),
+    totalProtein: Math.floor(Math.random() * 10),
+    totalFat: Math.floor(Math.random() * 10),
+    dominantMacro: 'Fat',
+    entreeType: 'Lunch',
+  };
+
+  var meal13 = {
+    name: 'Great Dish 13',
+    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
+    totalCalories: Math.floor(Math.random() * 1000),
+    totalCarbs: Math.floor(Math.random() * 30),
+    totalProtein: Math.floor(Math.random() * 10),
+    totalFat: Math.floor(Math.random() * 10),
+    dominantMacro: 'Fat',
+    entreeType: 'Dinner',
+  };
+
+  var meal14 = {
+    name: 'Great Dish 14',
+    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
+    totalCalories: Math.floor(Math.random() * 1000),
+    totalCarbs: Math.floor(Math.random() * 30),
+    totalProtein: Math.floor(Math.random() * 10),
+    totalFat: Math.floor(Math.random() * 10),
+    dominantMacro: 'Fat',
+    entreeType: 'Snacks',
+  };
+
+  var meal15 = {
+    name: 'Great Dish 15',
+    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
+    totalCalories: Math.floor(Math.random() * 1000),
+    totalCarbs: Math.floor(Math.random() * 30),
+    totalProtein: Math.floor(Math.random() * 10),
+    totalFat: Math.floor(Math.random() * 10),
+    dominantMacro: 'Fat',
+    entreeType: 'Breakfast',
+  };
   // Create meals
   await Promise.all([
     Meals.create(meal1),
@@ -199,6 +308,16 @@ async function seed() {
     Meals.create(meal3),
     Meals.create(meal4),
     Meals.create(meal5),
+    Meals.create(meal6),
+    Meals.create(meal7),
+    Meals.create(meal8),
+    Meals.create(meal9),
+    Meals.create(meal10),
+    Meals.create(meal11),
+    Meals.create(meal12),
+    Meals.create(meal13),
+    Meals.create(meal14),
+    Meals.create(meal15),
   ]);
 
   var yesterday = `07-31-2019`;
@@ -226,18 +345,18 @@ async function seed() {
     });
   }
 
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 15; i++) {
     await UserMeals.create({
-      rating: 3,
+      rating: 1 + Math.floor(Math.random() * 5),
       mealId: i,
-      userId: 1,
+      userId: 1 + Math.floor(Math.random() * 2),
     });
   }
 
   // Create Favorite meal
   for (let i = 1; i <= 5; i++) {
     await FavoriteMeals.create({
-      rating: i,
+      rating: 1 + Math.floor(Math.random() * 5),
       mealId: i,
       userId: 1,
     });

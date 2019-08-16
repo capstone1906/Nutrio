@@ -9,10 +9,15 @@ import {
 import axios from "axios";
 import { connect } from "react-redux";
 
-import { Button, Divider } from "react-native-elements";
+import DatePicker from 'react-native-datepicker';
+import { getMealsThunk } from '../components/store/meals';
 
-import DatePicker from "react-native-datepicker";
-import { getMealsThunk } from "../components/store/meals";
+import {
+  Button,
+  ListItem,
+  ThemeProvider,
+  Divider,
+} from 'react-native-elements';
 
 const FoodTimeHeader = props => {
   return (
@@ -20,15 +25,6 @@ const FoodTimeHeader = props => {
       <View style={{ flex: 3 }}>
         <Text>{props.time}</Text>
       </View>
-      {/* <View style={{ flex: 1 }}>
-        <Text>Carbs</Text>
-      </View>
-      <View style={{ flex: 1 }}>
-        <Text>Fat</Text>
-      </View>
-      <View style={{ flex: 1 }}>
-        <Text>Protein</Text>
-      </View> */}
       <View style={{ flex: 1 }}>
         <Text>Calories</Text>
       </View>
@@ -60,15 +56,7 @@ const FoodTimeContainer = props => {
                 <View style={{ flex: 2, paddingRight: 80}}>
                   <Text>{food.name}</Text>
                 </View>
-                {/* <View style={{ flex: 1 }}>
-                  <Text>{food.carbohydrates}</Text>
-                </View>
-                <View style={{ flex: 1 }}>
-                  <Text>{food.fat}</Text>
-                </View>
-                <View style={{ flex: 1 }}>
-                  <Text>{food.protein}</Text>
-                </View> */}
+ 
                 <View style={{ flex: 1 }}>
                   <Text>{food.calories}</Text>
                 </View>
@@ -114,7 +102,7 @@ class DailyLog extends React.Component {
       date: todaysDate,
       meals: [],
 
-      showDatePicker: false
+      showDatePicker: false,
     };
 
     this.setDate = this.setDate.bind(this);
@@ -130,6 +118,7 @@ class DailyLog extends React.Component {
   }
 
   render() {
+
     var foods = this.props.meals;
     var breakfast = {};
     var lunch = {};
@@ -149,28 +138,28 @@ class DailyLog extends React.Component {
         var mealYear = mealTime.getYear();
 
         if (
-          foods[i].entreeType === "Breakfast" &&
+          foods[i].entreeType === 'Breakfast' &&
           mealDay === setDay &&
           setMonth === mealMonth &&
           setYear === mealYear
         ) {
           breakfast = foods[i];
         } else if (
-          foods[i].entreeType === "Lunch" &&
+          foods[i].entreeType === 'Lunch' &&
           mealDay === setDay &&
           setMonth === mealMonth &&
           setYear === mealYear
         ) {
           lunch = foods[i];
         } else if (
-          foods[i].entreeType === "Dinner" &&
+          foods[i].entreeType === 'Dinner' &&
           mealDay === setDay &&
           setMonth === mealMonth &&
           setYear === mealYear
         ) {
           dinner = foods[i];
         } else if (
-          foods[i].entreeType === "Snacks" &&
+          foods[i].entreeType === 'Snacks' &&
           mealDay === setDay &&
           setMonth === mealMonth &&
           setYear === mealYear
@@ -193,17 +182,16 @@ class DailyLog extends React.Component {
             cancelBtnText="Cancel"
             customStyles={{
               dateIcon: {
-                position: "absolute",
+                position: 'absolute',
                 left: 0,
                 top: 4,
-                marginLeft: 0
+                marginLeft: 0,
               },
               dateInput: {
-                marginLeft: 36
-              }
+                marginLeft: 36,
+              },
             }}
             onDateChange={date => {
-              // var newDate = new Date(date)
               this.setState({ date: date });
             }}
           />
@@ -236,47 +224,49 @@ class DailyLog extends React.Component {
 
 const styles = StyleSheet.create({
   foodItem: {
-    flexDirection: "row",
-    paddingLeft: 10
+    flexDirection: 'row',
+    paddingLeft: 10,
   },
   date: {
-    justifyContent: "center",
-    paddingLeft: 75
+    justifyContent: 'center',
+    paddingLeft: 75,
   },
   container: {
     flex: 1,
     //   justifyContent: 'center'
-    padding: 20
+    padding: 20,
   },
 
   FoodTimeHeader: {
     // flex: 1,
     // alignSelf: "stretch",
-    flexDirection: "row",
-    backgroundColor: "lightgrey",
+    flexDirection: 'row',
+    backgroundColor: 'lightgrey',
     height: 40,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
+
     padding: 10,
-    borderRadius: 10
+    borderRadius: 10,
   },
   FoodTimeContainer: {
     // backgroundColor: "crimson",
     // height: 100,
-    marginBottom: 30
+    marginBottom: 30,
   },
   addFoodButton: {
     width: 100,
-    backgroundColor: "limegreen"
+    backgroundColor: 'limegreen',
+
     // fontSize: 5,
-  }
+  },
 });
 
 DailyLog.navigationOptions = {
-  headerTitle: "Daily log",
+  headerTitle: 'Daily log',
   headerStyle: {
-    backgroundColor: "crimson"
+    backgroundColor: 'crimson',
   },
-  headerTintColor: "white"
+  headerTintColor: 'white',
 };
 
 const mapState = state => {
@@ -290,6 +280,9 @@ const mapDispatch = dispatch => {
     getMeals: () => dispatch(getMealsThunk())
   };
 };
+
+
+
 
 export default connect(
   mapState,
