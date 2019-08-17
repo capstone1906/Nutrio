@@ -9,7 +9,6 @@ module.exports = router;
 
 router.delete('/:foodId/:mealId', async(req, res, next)=> {
     try{
-        console.log('here', req.params.foodId), req.params.mealId
         const mealFoodItem = await MealFoodItems.findOne({
             where: {
                 foodItemId: req.params.foodId,
