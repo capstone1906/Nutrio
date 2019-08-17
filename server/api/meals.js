@@ -2,13 +2,11 @@ const router = require("express").Router();
 const { Meals } = require("../db/postgres/models/index");
 module.exports = router;
 
-
 router.get("/", async (req, res, next) => {
   try {
     const meals = await Meals.findAll({
-        include: [{ all: true }]
-      });
-    console.log('current meals are', meals.length)
+      include: [{ all: true }]
+    });
     const dateNow = new Date();
     var todaysDate;
 
@@ -41,66 +39,58 @@ router.get("/", async (req, res, next) => {
 
       var newDate = newyear + "-" + newmonth + "-" + newday;
       if (newDate === todaysDate) {
-        todaysMeals.push(meals[i])
-        
+        todaysMeals.push(meals[i]);
       }
     }
 
     if (todaysMeals.length < 1) {
       var breakfast = await Meals.create({
         userId: 1,
-        entreeType: 'Breakfast',
+        entreeType: "Breakfast",
         totalCalories: 0,
         averageRating: 2.0,
         totalCarbs: 0,
         totalProtein: 0,
         totalFat: 0,
-        dominantMacro: 'protein'        
+        dominantMacro: "protein"
       });
       var Lunch = await Meals.create({
         userId: 1,
-        entreeType: 'Lunch',
+        entreeType: "Lunch",
         totalCalories: 0,
         averageRating: 2.0,
         totalCarbs: 0,
         totalProtein: 0,
         totalFat: 0,
-        dominantMacro: 'protein'        
-
+        dominantMacro: "protein"
       });
       var Dinner = await Meals.create({
         userId: 1,
-        entreeType: 'Dinner',
+        entreeType: "Dinner",
         totalCalories: 0,
         averageRating: 2.0,
         totalCarbs: 0,
         totalProtein: 0,
         totalFat: 0,
-        dominantMacro: 'protein'        
-
+        dominantMacro: "protein"
       });
       var Snacks = await Meals.create({
         userId: 1,
-        entreeType: 'Snacks',
+        entreeType: "Snacks",
         totalCalories: 0,
         averageRating: 2.0,
         totalCarbs: 0,
         totalProtein: 0,
         totalFat: 0,
-        dominantMacro: 'protein'        
-
+        dominantMacro: "protein"
       });
 
-
-      todaysMeals.push(breakfast,Lunch,Dinner, Snacks)
+      todaysMeals.push(breakfast, Lunch, Dinner, Snacks);
     }
 
     const meals2 = await Meals.findAll({
-        include: [{ all: true }]
-      });
-
-      console.log('now meals are', meals2.length)
-
+      include: [{ all: true }]
+    });
 
     res.json(meals2);
   } catch (err) {
