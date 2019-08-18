@@ -3,7 +3,7 @@ const db = require('../db');
 
 const Exercises = db.define('exercises', {
   met: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
     allowNull: false,
   },
   activity: {

@@ -390,7 +390,7 @@ async function seed() {
   // Create food items
   var food1 = {
     name: 'Chicken',
-    calories: Math.floor(500 + Math.random() * 3),
+    calories: 200,
     fat: 5,
     carbohydrates: 0,
     protein: 35,
@@ -398,7 +398,7 @@ async function seed() {
   };
   var food2 = {
     name: 'Rice',
-    calories: Math.floor(500 + Math.random() * 3),
+    calories: 200,
     fat: 5,
     carbohydrates: 50,
     protein: 5,
@@ -406,7 +406,7 @@ async function seed() {
   };
   var food3 = {
     name: 'Broccoli',
-    calories: Math.floor(300 - Math.random() * 3),
+    calories: 200,
     fat: 1,
     carbohydrates: 10,
     protein: 1,
@@ -414,7 +414,7 @@ async function seed() {
   };
   var food4 = {
     name: 'Protein Shake',
-    calories: Math.floor(700 - Math.random() * 3),
+    calories: 200,
     fat: 5,
     carbohydrates: 10,
     protein: 70,
@@ -431,10 +431,6 @@ async function seed() {
   var meal1 = {
     name: 'Great Dish 1',
     averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
     dominantMacro: 'Carbohydrate',
     entreeType: 'Breakfast',
   };
@@ -652,7 +648,6 @@ async function seed() {
       userId: 1,
     });
   }
-
   console.log(green(`seeded successfully`));
 }
 
