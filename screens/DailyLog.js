@@ -11,10 +11,7 @@ import { connect } from "react-redux";
 import DatePicker from "react-native-datepicker";
 import { getMealsThunk } from "../components/store/meals";
 
-import {
-  Button,
-  Divider
-} from "react-native-elements";
+import { Button, Divider } from "react-native-elements";
 
 import Swipeout from "react-native-swipeout";
 import { deleteMealItem } from "../components/store/meals";
@@ -68,7 +65,7 @@ const FoodTimeContainer = props => {
             >
               <View style={styles.foodItem}>
                 <View style={{ flex: 2, paddingRight: 80 }}>
-                  <Text style={styles.foodName}>{food.name}</Text>
+                  <Text style={styles.foodName}>{food.food_name}</Text>
                 </View>
 
                 <View style={{ flex: 1 }}>
@@ -134,6 +131,7 @@ class DailyLog extends React.Component {
 
   async componentDidMount() {
     await this.props.getMeals();
+
   }
 
   render() {

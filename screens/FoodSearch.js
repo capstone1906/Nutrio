@@ -21,25 +21,6 @@ export default class FoodSearch extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  formatName(oldName) {
-    var name = oldName.split(',')
-
-    var newName = ''
-    name.forEach((name, index) => {
-      if (!name.includes('UPC:') && !name.includes('GTIN:')) {
-        newName += name
-      }
-    })
-
-    newName = newName.split(' ')
-    newName = newName.map(word => {
-      word = word.toLowerCase()
-      return word.charAt(0).toUpperCase() + word.slice(1)
-    })
-
-    return newName.join(' ')
-  }
-
   async handleChange(event) {
     event.preventDefault();
 
@@ -47,15 +28,21 @@ export default class FoodSearch extends React.Component {
       searchName: event.nativeEvent.text
     });
 
-    const res = await axios.get(
-      `https://api.nal.usda.gov/ndb/search/?format=json&q=${
-        event.nativeEvent.text
-      }&sort=n&max=50&offset=0&api_key=VfLLSxw4Odcu042mZ1dySCS2hLJULj5zkhtx1lLy`
-    );
 
-    if (res.data.list) {
+    const res = await axios.get(`https://trackapi.nutritionix.com/v2/search/instant?query=${event.nativeEvent.text}`, {
+      headers: {
+        'x-app-id': 'fa4f9042',
+        'x-app-key': '997023a117b76d83e33a7ae290a6b5ba',
+      }
+
+     })
+
+    console.log('results are1!!!!:::::', res.data)
+
+
+    if (res.data.common) {
       this.setState({
-        currentSearch: res.data.list.item,
+        currentSearch: res.data.common.concat(res.data.branded),
         showError: false
       });
     } else {
@@ -76,13 +63,11 @@ export default class FoodSearch extends React.Component {
         <ScrollView style={styles.results}>
           {foods.map(food => {
 
-            food.name = this.formatName(food.name)
             return (
-              <TouchableOpacity key={food.ndbno}>
-                {/* <FoodSearchItem food={food} /> */}
+              <TouchableOpacity key={food.food_name}>
                 <Text style={styles.foodName} onPress={() => {
                     this.props.navigation.navigate('FoodSearchItem', {food: food, mealId: this.props.navigation.getParam("mealId")})
-                }}>{food.name}</Text>
+                }}>{food.food_name}</Text>
                 <Divider style={{ backgroundColor: "blue" }} />
               </TouchableOpacity>
             );
