@@ -8,7 +8,7 @@ import {
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 // import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import ProfileScreen from '../screens/profile';
 import DailyLog from '../screens/DailyLog';
 import FoodSearch from '../screens/FoodSearch';
 import FoodSearchItem from '../screens/FoodSearchItem';
@@ -25,6 +25,7 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
   },
+  
   config
 );
 
@@ -65,15 +66,15 @@ MealsStack.navigationOptions = {
 
 MealsStack.path = '';
 
-const SettingsStack = createStackNavigator(
+const Profile = createStackNavigator(
   {
-    Settings: SettingsScreen,
+    Profile: ProfileScreen,
   },
   config
 );
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+Profile.navigationOptions = {
+  tabBarLabel: 'Profile',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -82,7 +83,7 @@ SettingsStack.navigationOptions = {
   ),
 };
 
-SettingsStack.path = '';
+Profile.path = '';
 
 const DailyLogStack = createStackNavigator(
   {
@@ -109,7 +110,7 @@ const tabNavigator = createBottomTabNavigator({
   HomeStack,
   MealsStack,
   DailyLogStack,
-  SettingsStack,
+  Profile,
 });
 
 tabNavigator.path = '';
