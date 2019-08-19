@@ -75,9 +75,19 @@ async function seed() {
   // Create Exercises
   await Promise.all([
     Exercises.create({
+      met: 4.0,
+      activity: 'Bicycling',
+      description: '<10 mph, general leisure',
+    }),
+    Exercises.create({
       met: 6.0,
       activity: 'Bicycling',
       description: '10-11.9 mph, leisure, slow, light effort',
+    }),
+    Exercises.create({
+      met: 8.0,
+      activity: 'Bicycling',
+      description: '12-13.9 mph, leisure, moderate effort',
     }),
     Exercises.create({
       met: 10.0,
@@ -85,21 +95,302 @@ async function seed() {
       description: '14-15.9 mph, racing, fast, vigorous effort',
     }),
     Exercises.create({
+      met: 12.0,
+      activity: 'Bicycling',
+      description:
+        '16-19 mph, racing/not drafing or > 19 mph drafting, very fast',
+    }),
+    Exercises.create({
+      met: 16.0,
+      activity: 'Bicycling',
+      description: '>20 mph, racing, not drafting',
+    }),
+    Exercises.create({
+      met: 3.0,
+      activity: 'Cycling (stationary)',
+      description: '50 watts, very light effort',
+    }),
+    Exercises.create({
+      met: 5.5,
+      activity: 'Cycling (stationary)',
+      description: '100 watts, light effort',
+    }),
+    Exercises.create({
       met: 7.0,
       activity: 'Cycling (stationary)',
       description: '150 watts, moderate effort',
+    }),
+    Exercises.create({
+      met: 10.5,
+      activity: 'Cycling (stationary)',
+      description: '200 watts, vigorous effort',
+    }),
+    Exercises.create({
+      met: 12.5,
+      activity: 'Cycling (stationary)',
+      description: '250 watts, very vigorous effort',
+    }),
+    Exercises.create({
+      met: 4.5,
+      activity: 'Calisthenics',
+      description: 'home exercise, light or moderate effort',
+    }),
+    Exercises.create({
+      met: 8.0,
+      activity: 'Calisthenics',
+      description: 'vigorous effort (pushups, pullups, situps)',
+    }),
+    Exercises.create({
+      met: 5.0,
+      activity: 'Dancing',
+      description: 'low impact, aerobic',
+    }),
+    Exercises.create({
+      met: 6.0,
+      activity: 'Dancing',
+      description: 'aerobic, ballet or modern',
+    }),
+    Exercises.create({
+      met: 7.0,
+      activity: 'Dancing',
+      description: 'high impact aerobic',
     }),
     Exercises.create({
       met: 8.0,
       activity: 'Running',
       description: '5 mph (12 min mile)',
     }),
+    Exercises.create({
+      met: 9.0,
+      activity: 'Running',
+      description: '5.2 mph (11.5 min mile)',
+    }),
+    Exercises.create({
+      met: 10.0,
+      activity: 'Running',
+      description: '6.0 mph (10 min mile)',
+    }),
+    Exercises.create({
+      met: 11.0,
+      activity: 'Running',
+      description: '6.7 mph, (9 min mile)',
+    }),
+    Exercises.create({
+      met: 11.5,
+      activity: 'Running',
+      description: '7 mph, (8.5 min mile)',
+    }),
+    Exercises.create({
+      met: 12.5,
+      activity: 'Running',
+      description: '7.5 mph, (8 min mile)',
+    }),
+    Exercises.create({
+      met: 13.5,
+      activity: 'Running',
+      description: '8 mph, (7.5 min mile)',
+    }),
+    Exercises.create({
+      met: 14.0,
+      activity: 'Running',
+      description: '8.6 mph, (7 min mile)',
+    }),
+    Exercises.create({
+      met: 15.0,
+      activity: 'Running',
+      description: '9 mph, (6.5 min mile)',
+    }),
+    Exercises.create({
+      met: 16.0,
+      activity: 'Running',
+      description: '10 mph, (6 min mile)',
+    }),
+    Exercises.create({
+      met: 18.0,
+      activity: 'Running',
+      description: '10.9 mph, (5.5 min mile)',
+    }),
+    Exercises.create({
+      met: 15.0,
+      activity: 'Running',
+      description: 'Running stairs',
+    }),
+    Exercises.create({
+      met: 8.5,
+      activity: 'Rowing machine',
+      description: '150 watts, vigorous effort',
+    }),
+    Exercises.create({
+      met: 12.0,
+      activity: 'Rowing machine',
+      description: '200 watts, very vigorous effort',
+    }),
+    Exercises.create({
+      met: 7.0,
+      activity: 'Skiing, cross country',
+      description: '2.5 mph, slow or light effort, ski walking',
+    }),
+    Exercises.create({
+      met: 8.0,
+      activity: 'Skiing, cross country',
+      description: '4.0-4.9 mph, moderate speed and effort',
+    }),
+    Exercises.create({
+      met: 9.0,
+      activity: 'Skiing, cross country',
+      description: '5.0-7.9 mph, brisk speed, vigorous effort',
+    }),
+    Exercises.create({
+      met: 14.0,
+      activity: 'Skiing, cross country',
+      description: '>8 mph, racing',
+    }),
+    Exercises.create({
+      met: 16.5,
+      activity: 'Skiing, cross country',
+      description: 'hard snow, uphill, maximum',
+    }),
+    Exercises.create({
+      met: 5.0,
+      activity: 'Skiing, downhill',
+      description: 'light effort',
+    }),
+    Exercises.create({
+      met: 6.0,
+      activity: 'Skiing, downhill',
+      description: 'moderate effort',
+    }),
+    Exercises.create({
+      met: 8.0,
+      activity: 'Skiing, downhill',
+      description: 'vigorous effort, racing',
+    }),
+    Exercises.create({
+      met: 4.4,
+      activity: 'Stairmaster 4400 PT',
+      description: 'manual program, level 2',
+    }),
+    Exercises.create({
+      met: 6.5,
+      activity: 'Stairmaster 4400 PT',
+      description: 'manual program, level 4',
+    }),
+    Exercises.create({
+      met: 8.6,
+      activity: 'Stairmaster 4400 PT',
+      description: 'manual program, level 6',
+    }),
+    Exercises.create({
+      met: 10.7,
+      activity: 'Stairmaster 4400 PT',
+      description: 'manual program, level 8',
+    }),
+    Exercises.create({
+      met: 12.7,
+      activity: 'Stairmaster 4400 PT',
+      description: 'manual program, level 10',
+    }),
+    Exercises.create({
+      met: 14.8,
+      activity: 'Stairmaster 4400 PT',
+      description: 'manual program, level 12',
+    }),
+    Exercises.create({
+      met: 16.9,
+      activity: 'Stairmaster 4400 PT',
+      description: 'manual program, level 14',
+    }),
+    Exercises.create({
+      met: 5.0,
+      activity: 'Stairmaster Stepmill 7000 PT',
+      description: 'exercise stage 2',
+    }),
+    Exercises.create({
+      met: 7.0,
+      activity: 'Stairmaster Stepmill 7000 PT',
+      description: 'exercise stage 4',
+    }),
+    Exercises.create({
+      met: 9.0,
+      activity: 'Stairmaster Stepmill 7000 PT',
+      description: 'exercise stage 6',
+    }),
+    Exercises.create({
+      met: 11.0,
+      activity: 'Stairmaster Stepmill 7000 PT',
+      description: 'exercise stage 8',
+    }),
+    Exercises.create({
+      met: 13.0,
+      activity: 'Stairmaster Stepmill 7000 PT',
+      description: 'exercise stage 10',
+    }),
+    Exercises.create({
+      met: 15.0,
+      activity: 'Stairmaster Stepmill 7000 PT',
+      description: 'exercise stage 12',
+    }),
+    Exercises.create({
+      met: 17.0,
+      activity: 'Stairmaster Stepmill 7000 PT',
+      description: 'exercise stage 14',
+    }),
+    Exercises.create({
+      met: 6.0,
+      activity: 'Swimming',
+      description: 'leisurely, not lap swimming',
+    }),
+    Exercises.create({
+      met: 8.0,
+      activity: 'Swimming',
+      description: 'backstroke, general',
+    }),
+    Exercises.create({
+      met: 10.0,
+      activity: 'Swimming',
+      description: 'breaststroke, general',
+    }),
+    Exercises.create({
+      met: 11.0,
+      activity: 'Swimming',
+      description: 'butterfly, general',
+    }),
+    Exercises.create({
+      met: 2.5,
+      activity: 'Walking',
+      description: '2 mph, level, slow pace, firm surface',
+    }),
+    Exercises.create({
+      met: 3.0,
+      activity: 'Walking',
+      description: '2.5 mph, firm surface',
+    }),
+    Exercises.create({
+      met: 3.5,
+      activity: 'Walking',
+      description: '3 mph, level, moderate pace, firm surface',
+    }),
+    Exercises.create({
+      met: 4.0,
+      activity: 'Walking',
+      description: '3.5-4 mph, level, brisk, firm surface',
+    }),
+    Exercises.create({
+      met: 4.5,
+      activity: 'Walking',
+      description: '4.5 mph, level, firm surface, very very brisk',
+    }),
+    Exercises.create({
+      met: 6.5,
+      activity: 'Walking',
+      description: 'racewalking',
+    }),
   ]);
 
   // Create food items
   var food1 = {
     name: 'Chicken',
-    calories: Math.floor(500 + Math.random() * 3),
+    calories: 200,
     fat: 5,
     carbohydrates: 0,
     protein: 35,
@@ -107,7 +398,7 @@ async function seed() {
   };
   var food2 = {
     name: 'Rice',
-    calories: Math.floor(500 + Math.random() * 3),
+    calories: 200,
     fat: 5,
     carbohydrates: 50,
     protein: 5,
@@ -115,7 +406,7 @@ async function seed() {
   };
   var food3 = {
     name: 'Broccoli',
-    calories: Math.floor(300 - Math.random() * 3),
+    calories: 200,
     fat: 1,
     carbohydrates: 10,
     protein: 1,
@@ -123,7 +414,7 @@ async function seed() {
   };
   var food4 = {
     name: 'Protein Shake',
-    calories: Math.floor(700 - Math.random() * 3),
+    calories: 200,
     fat: 5,
     carbohydrates: 10,
     protein: 70,
@@ -140,10 +431,6 @@ async function seed() {
   var meal1 = {
     name: 'Great Dish 1',
     averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
     dominantMacro: 'Carbohydrate',
     entreeType: 'Breakfast',
   };
@@ -361,7 +648,6 @@ async function seed() {
       userId: 1,
     });
   }
-
   console.log(green(`seeded successfully`));
 }
 

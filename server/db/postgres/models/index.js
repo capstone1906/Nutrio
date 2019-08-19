@@ -40,7 +40,7 @@ Users.belongsToMany(Meals, {
   as: 'previousMeals',
   through: 'userMeals',
 });
-//////
+
 
 module.exports = {
   CheckIns,

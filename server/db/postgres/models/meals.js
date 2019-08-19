@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../db');
 const createMeal = require('../../neo4j/models/meals');
 
+
 const Meals = db.define('meals', {
   name: {
     type: Sequelize.STRING,
@@ -14,10 +15,7 @@ const Meals = db.define('meals', {
       max: 5.0,
     },
   },
-  entreeType: {
-    type: Sequelize.STRING
-  },
-  
+
   totalCalories: {
     type: Sequelize.INTEGER,
   },
@@ -34,18 +32,16 @@ const Meals = db.define('meals', {
     type: Sequelize.STRING,
   },
   entreeType: {
-    type: Sequelize.ENUM(
-      'Breakfast',
-      'Lunch',
-      'Dinner',
-      'Snacks',
-    ),
-  }
+    type: Sequelize.ENUM('Breakfast', 'Lunch', 'Dinner', 'Snacks'),
+  },
+});
+
+Meals.beforeUpdate(async meal => {
+  await createMeal(meal);
 });
 
 Meals.afterSave(async meal => {
-  const newMeal = await createMeal(meal);
-  return newMeal;
+  await createMeal(meal);
 });
 
 module.exports = Meals;
