@@ -1,25 +1,32 @@
-import React from "react";
+import React from 'react';
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
-} from "react-native";
-import { connect } from "react-redux";
+  TouchableOpacity,
+  AsyncStorage,
+} from 'react-native';
+import { connect } from 'react-redux';
 
-import { Button, Divider } from "react-native-elements";
-import { getUserThunk } from "../components/store/user";
-import ProgressCircle from "react-native-progress-circle";
+import { Button, Divider } from 'react-native-elements';
+import { getUserThunk } from '../components/store/user';
+import ProgressCircle from 'react-native-progress-circle';
 
 class Profile extends React.Component {
   constructor() {
     super();
+
+    this.removeItem = this.removeItem.bind(this);
   }
 
   async componentDidMount() {
     await this.props.getUser();
   }
+
+  removeItem = async () => {
+    await AsyncStorage.removeItem('user');
+  };
 
   render() {
     var user = this.props.user;
@@ -49,7 +56,7 @@ class Profile extends React.Component {
             shadowColor="#999"
             bgColor="#E76B74"
           >
-            <Text style={{ fontSize: 18, color: "white" }}>{`${per}%`}</Text>
+            <Text style={{ fontSize: 18, color: 'white' }}>{`${per}%`}</Text>
           </ProgressCircle>
 
           <Text style={styles.currWeight}>
@@ -87,7 +94,7 @@ class Profile extends React.Component {
           <TouchableOpacity>
             <View style={styles.card}>
               <Text style={styles.attrib}>
-                Starting weight:{" "}
+                Starting weight:{' '}
                 {user.longTermGoal ? user.longTermGoal.startWeight : 0}
               </Text>
             </View>
@@ -96,7 +103,7 @@ class Profile extends React.Component {
           <TouchableOpacity>
             <View style={styles.card}>
               <Text style={styles.attrib}>
-                Goal weight:{" "}
+                Goal weight:{' '}
                 {user.longTermGoal ? user.longTermGoal.endingWeight : 0}
               </Text>
             </View>
@@ -115,7 +122,14 @@ class Profile extends React.Component {
               <Text style={styles.attrib}>Bmr: {bmr}</Text>
             </View>
           </TouchableOpacity>
+
+          <TouchableOpacity title="Logout" onPress={() => this.removeItem()}>
+            <View style={styles.logOutCard}>
+              <Text style={styles.attrib}>Logout</Text>
+            </View>
+          </TouchableOpacity>
         </View>
+        <Button />
       </View>
     );
   }
@@ -124,23 +138,23 @@ class Profile extends React.Component {
 const styles = StyleSheet.create({
   weight: {
     flex: 1,
-    backgroundColor: "#E76B74",
-    height: "30%",
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
+    backgroundColor: '#E76B74',
+    height: '30%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
 
-    marginBottom: 20
+    marginBottom: 20,
   },
   container: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   cardsContainer: {
     flex: 2,
-    flexWrap: "wrap",
-    justifyContent: "center",
-    flexDirection: "row"
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
   card: {
     padding: 10,
@@ -149,43 +163,58 @@ const styles = StyleSheet.create({
     width: 110,
     height: 110,
     // backgroundColor: "#82D4BB",
-    backgroundColor: "#4CEF90",
+    backgroundColor: '#4CEF90',
 
-    justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
     shadowOffset: { width: 5, height: 5 },
-    shadowColor: "black",
+    shadowColor: 'black',
     shadowOpacity: 0.7,
-    borderRadius: 10
+    borderRadius: 10,
+  },
+  logOutCard: {
+    padding: 10,
+    paddingTop: 30,
+    margin: 5,
+    width: 110,
+    height: 110,
+    backgroundColor: 'crimson',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    shadowOffset: { width: 5, height: 5 },
+    shadowColor: 'black',
+    shadowOpacity: 0.7,
+    borderRadius: 10,
   },
   attrib: {
-    color: "white"
+    color: 'white',
   },
   currWeight: {
-    color: "white",
+    color: 'white',
     paddingTop: 15,
-    fontSize: 18
-  }
+    fontSize: 18,
+  },
 });
 
 Profile.navigationOptions = {
-  headerTitle: "Profile",
+  headerTitle: 'Profile',
   headerStyle: {
-    backgroundColor: "crimson"
+    backgroundColor: 'crimson',
   },
-  headerTintColor: "white"
+  headerTintColor: 'white',
 };
 
 const mapState = state => {
   return {
-    user: state.user
+    user: state.user,
   };
 };
 
 const mapDispatch = dispatch => {
   return {
-    getUser: () => dispatch(getUserThunk())
+    getUser: () => dispatch(getUserThunk()),
   };
 };
 
