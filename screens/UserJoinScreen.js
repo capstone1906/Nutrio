@@ -83,7 +83,7 @@ class UserJoinScreen extends React.Component {
                   value={1.55}
                 />
                 <Picker.Item
-                  label="Very active (hard exercise6-7 days a week)"
+                  label="Very active (hard exercise 6-7 days/week)"
                   value={1.725}
                 />
                 {/* <Picker.Item
@@ -131,7 +131,7 @@ class UserJoinScreen extends React.Component {
                   value="downOneHalf"
                 />
                 <Picker.Item label="Lose 2 pounds per week" value="downTwo" />
-                <Picker.Item label="Gain half pound per week" value="upHalf" />
+                <Picker.Item label="Gain half a pound per week" value="upHalf" />
                 <Picker.Item label="Gain 1 pound per week" value="upOne" />
               </Picker>
             </View>
