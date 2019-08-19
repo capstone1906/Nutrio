@@ -61,7 +61,7 @@ class FoodSearchItem extends React.Component {
   }
 
   async componentDidMount() {
-    var food = this.props.navigation.getParam("food", "hi");
+    var food = this.props.navigation.getParam("food");
     // console.log("name is", food.food_name);
 
     const res = await axios.post(
