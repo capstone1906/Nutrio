@@ -23,15 +23,26 @@ const FoodItems = db.define('foodItems', {
     type: Sequelize.STRING,
   },
   servingSize: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
   },
   weight: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
   },
-  
 });
 
 module.exports = FoodItems;
+FoodItems.beforeCreate(food => {
+  if (food.fat > food.carbohydrates && food.fat > food.protein) {
+    food.dominantMacro = 'fat';
+  } else if (
+    food.carbohydrates > food.fat &&
+    food.carbohydrates > food.protein
+  ) {
+    food.dominantMacro = 'carbohydrates';
+  } else {
+    food.dominantMacro = 'protein';
+  }
+});
 
 FoodItems.afterSave(async food => {
   const newFood = await createFood(food);

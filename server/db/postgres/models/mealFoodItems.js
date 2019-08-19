@@ -26,7 +26,7 @@ const MealFoodItems = db.define('mealFoodItems', {
   },
 });
 
-module.exports = MealFoodItems;
+module.exports = MealFoodItems
 
 MealFoodItems.afterSave(async mealFoodItem => {
   const meal = await Meals.findByPk(mealFoodItem.mealId);
@@ -44,6 +44,7 @@ MealFoodItems.afterSave(async mealFoodItem => {
     },
     { where: { id: mealFoodItem.mealId } }
   );
+
   const newMealItem = await createMealFoodItems(mealFoodItem);
   return newMealItem;
 });

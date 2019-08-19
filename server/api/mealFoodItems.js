@@ -45,8 +45,7 @@ router.post("/:id", async (req, res, next) => {
     });
 
 
-    console.log('mealFoodItem', mealFoodItem[1])
-    
+
 
     if(mealFoodItem[1] === false) {
       await mealFoodItem[0].update({

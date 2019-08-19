@@ -62,7 +62,6 @@ class FoodSearchItem extends React.Component {
 
   async componentDidMount() {
     var food = this.props.navigation.getParam("food", "hi");
-    // console.log("name is", food.food_name);
 
     const res = await axios.post(
       `https://trackapi.nutritionix.com/v2/natural/nutrients`,
@@ -86,7 +85,6 @@ class FoodSearchItem extends React.Component {
     food.nf_total_carbohydrate = Math.ceil(food.nf_total_carbohydrate);
     food.serving_weight_grams = Math.ceil(food.serving_weight_grams);
 
-    console.log("results", food);
 
     this.setState({
       foodInfo: food,
@@ -95,7 +93,6 @@ class FoodSearchItem extends React.Component {
   }
 
   render() {
-    // console.log('state is,', this.state)
     return (
       <View>
         {this.state.foodInfo.nf_calories ? (

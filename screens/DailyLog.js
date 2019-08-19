@@ -39,7 +39,7 @@ const FoodTimeContainer = props => {
     <View style={styles.FoodTimeContainer}>
       <FoodTimeHeader time={props.time} />
 
-      {foodItems.map(food => {
+      {foodItems.map((food, idx) => {
         var swipeoutBtns = [
           {
             text: "Delete",
@@ -54,6 +54,7 @@ const FoodTimeContainer = props => {
             right={swipeoutBtns}
             key={food.name}
             backgroundColor="white"
+            key={idx}
           >
             <TouchableOpacity
               onPress={() => {

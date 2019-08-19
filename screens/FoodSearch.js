@@ -37,7 +37,7 @@ export default class FoodSearch extends React.Component {
 
      })
 
-    console.log('results are1!!!!:::::', res.data)
+
 
 
     if (res.data.common) {
