@@ -6,7 +6,6 @@ import {
   View,
   TouchableOpacity
 } from "react-native";
-import axios from "axios";
 import { connect } from "react-redux";
 
 import DatePicker from "react-native-datepicker";
@@ -14,13 +13,11 @@ import { getMealsThunk } from "../components/store/meals";
 
 import {
   Button,
-  ListItem,
-  ThemeProvider,
   Divider
 } from "react-native-elements";
 
 import Swipeout from "react-native-swipeout";
-import {deleteMealItem} from '../components/store/meals'
+import { deleteMealItem } from "../components/store/meals";
 
 const FoodTimeHeader = props => {
   return (
@@ -127,15 +124,12 @@ class DailyLog extends React.Component {
   }
 
   async deleteItem(foodId, mealId) {
-    console.log("deleting item", foodId, mealId);
-    this.props.deleteMealItem(foodId, mealId)
+    this.props.deleteMealItem(foodId, mealId);
     await this.props.getMeals();
-
   }
 
   setDate(newDate) {
     this.setState({ chosenDate: newDate });
-    setTimeout({}, 1000);
   }
 
   async componentDidMount() {
@@ -201,7 +195,6 @@ class DailyLog extends React.Component {
             date={this.state.date}
             mode="date"
             placeholder="select date"
-            // format="MM-DD-YYYY"
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             customStyles={{
