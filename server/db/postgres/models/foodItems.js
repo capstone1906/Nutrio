@@ -3,9 +3,9 @@ const db = require('../db');
 const createFood = require('../../neo4j/models/foodItems');
 
 const FoodItems = db.define('foodItems', {
-  name: {
+  food_name: {
     type: Sequelize.STRING,
-    unique: true,
+    // unique: true,
   },
   calories: {
     type: Sequelize.INTEGER,
@@ -28,11 +28,7 @@ const FoodItems = db.define('foodItems', {
   weight: {
     type: Sequelize.INTEGER
   },
-  ndbno: {
-    type: Sequelize.INTEGER
-  }
   
-
 });
 
 module.exports = FoodItems;
