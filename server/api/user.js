@@ -16,3 +16,15 @@ router.get('/', async (req, res, next) => {
     next(err);
   }
 });
+<<<<<<< HEAD
+=======
+
+router.post('/', async (req, res, next) => {
+  try {
+    const addUser = await Users.findOrCreate({});
+    res.json(addUser);
+  } catch (err) {
+    next(err);
+  }
+});
+>>>>>>> 1a64a55554b5661883550c2b08bbd907288a0f40
