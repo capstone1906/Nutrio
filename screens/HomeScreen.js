@@ -9,10 +9,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {connect} from 'react-redux'
 
 import { MonoText } from '../components/StyledText';
+import { getMealsThunk } from "../components/store/meals";
 
-export default function HomeScreen() {
+
+class HomeScreen extends React.Component {
+
+
+  async componentDidMount() {
+    await this.props.getMeals()
+
+  }
+
+  render() {
   return (
     <View style={styles.container}>
       <ScrollView
@@ -67,6 +78,8 @@ export default function HomeScreen() {
       </View>
     </View>
   );
+}
+
 }
 
 HomeScreen.navigationOptions = {
@@ -196,3 +209,21 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
+
+
+const mapState = state => {
+  return {
+    meals: state.meals
+  };
+};
+
+const mapDispatch = dispatch => {
+  return {
+    getMeals: () => dispatch(getMealsThunk()),
+  };
+};
+
+export default connect(
+  mapState,
+  mapDispatch
+)(HomeScreen);

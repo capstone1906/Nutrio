@@ -9,7 +9,8 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Image
+  Image,
+  TextInput
 } from "react-native";
 import { VictoryPie, VictoryChart, VictoryTheme } from "victory-native";
 import { postFood } from "../components/store/meals";
@@ -40,7 +41,8 @@ class FoodSearchItem extends React.Component {
     this.state = {
       foodInfo: {},
       showData: false,
-      isOpen: false
+      isOpen: false,
+      quantity: 0
     };
     this.postFood = this.postFood.bind(this);
   }
@@ -57,12 +59,21 @@ class FoodSearchItem extends React.Component {
       servingSize: this.state.foodInfo.serving_unit
     };
 
-    this.props.postFood(newFood, mealId);
+    var quantity = 0;
+
+    if(this.state.quantity === 0) {
+      quantity = 1
+    }
+    else {
+      quantity = this.state.quantity
+    }
+
+    this.props.postFood(newFood, mealId, quantity);
   }
 
   async componentDidMount() {
     var food = this.props.navigation.getParam("food", "hi");
-    // console.log("name is", food.food_name);
+    var mealId = this.props.navigation.getParam("mealId");
 
     const res = await axios.post(
       `https://trackapi.nutritionix.com/v2/natural/nutrients`,
@@ -86,18 +97,27 @@ class FoodSearchItem extends React.Component {
     food.nf_total_carbohydrate = Math.ceil(food.nf_total_carbohydrate);
     food.serving_weight_grams = Math.ceil(food.serving_weight_grams);
 
-    console.log("results", food);
+    var quantity = 0;
+
+    var findFood = await axios.get(`https://9e584b3c.ngrok.io/api/food/${food.food_name}`)
+    if(findFood.data) {
+      var mealFoodItem = await axios.get(`https://9e584b3c.ngrok.io/api/mealFoodItems/${findFood.data.id}/${mealId}`)
+      if(mealFoodItem.data) {
+        quantity = mealFoodItem.data.quantity
+      }
+    }
+    
 
     this.setState({
       foodInfo: food,
-      showData: !this.state.showData
+      showData: !this.state.showData,
+      quantity
     });
   }
 
   render() {
-    // console.log('state is,', this.state)
     return (
-      <View>
+      <ScrollView>
         {this.state.foodInfo.nf_calories ? (
           <View style={styles.foodItemInfo}>
             <View>
@@ -149,10 +169,12 @@ class FoodSearchItem extends React.Component {
               </View>
 
               <View>
-                {/* <Text style={styles.info} style={styles.value}>
-                  {this.state.foodInfo.serving_unit}
-                </Text> */}
-                <Input />
+                <TextInput
+                  style={{ height: 40, borderColor: "gray", borderWidth: 1, width: 40 }}
+                  onChangeText={text => this.setState({ quantity: text })}
+                  value={this.state.quantity.toString()}
+                  placeholder={this.state.quantity.toString()}
+                />
               </View>
 
               <Divider style={{ backgroundColor: "blue" }} />
@@ -160,17 +182,17 @@ class FoodSearchItem extends React.Component {
 
             <Divider style={{ backgroundColor: "blue" }} />
 
-            <View style={styles.servingSize}>
+            {/* <View style={styles.servingSize}>
               <View style={styles.size}>
                 <Text style={styles.info}>Grams:</Text>
               </View>
               <View>
                 <Text style={styles.info} style={styles.value}>
-                  {this.state.foodInfo.serving_weight_grams} g
+                  {this.state.foodInfo.serving_weight_grams}g
                 </Text>
               </View>
               <Divider style={{ backgroundColor: "blue" }} />
-            </View>
+            </View> */}
 
             <Divider style={{ backgroundColor: "blue" }} />
 
@@ -205,7 +227,7 @@ class FoodSearchItem extends React.Component {
             <Divider style={{ backgroundColor: "blue" }} />
           </View>
         ) : null}
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -255,8 +277,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    // getMeals: () => dispatch(getMealsThunk()),
-    postFood: (food, mealId) => dispatch(postFood(food, mealId))
+    postFood: (food, mealId, quantity) => dispatch(postFood(food, mealId, quantity))
   };
 };
 

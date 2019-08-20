@@ -6,6 +6,23 @@ const {
 } = require("../db/postgres/models/index");
 module.exports = router;
 
+
+router.get('/:foodId/:mealId', async(req, res, next) => {
+  try{
+    const mealFoodItem = await MealFoodItems.findOne({
+      where: {
+        foodItemId: req.params.foodId,
+        mealId: req.params.mealId
+      }
+    });
+
+    res.json(mealFoodItem)
+    }
+  catch(err) {
+    next(err)
+  }
+})
+
 router.delete("/:foodId/:mealId", async (req, res, next) => {
   try {
     const mealFoodItem = await MealFoodItems.findOne({
@@ -21,7 +38,7 @@ router.delete("/:foodId/:mealId", async (req, res, next) => {
   }
 });
 
-router.post("/:id", async (req, res, next) => {
+router.post("/:id/:quantity", async (req, res, next) => {
   try {
     const foodItem = await FoodItems.findOrCreate({
       where: {
@@ -29,7 +46,6 @@ router.post("/:id", async (req, res, next) => {
       },
       defaults: req.body
     });
-
 
     const mealFoodItem = await MealFoodItems.findOrCreate({
       where: {
@@ -39,18 +55,16 @@ router.post("/:id", async (req, res, next) => {
       defaults: {
         foodItemId: foodItem[0].id,
         mealId: req.params.id,
-        quantity: 1,
-        calories: foodItem[0].calories * 1
+        quantity: req.params.quantity,
+        calories: foodItem[0].calories * req.params.quantity
       }
-    });
-
-
-    console.log('mealFoodItem', mealFoodItem[1])
-    
+    });    
 
     if(mealFoodItem[1] === false) {
+      var quantity = parseInt(req.params.quantity)
       await mealFoodItem[0].update({
-        quantity: mealFoodItem[0].quantity += 1
+        quantity: quantity,
+        calories: foodItem[0].calories * quantity
       })
     }
 
