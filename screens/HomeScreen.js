@@ -10,6 +10,7 @@ import {
   View,
   AsyncStorage,
 } from 'react-native';
+
 import { connect } from 'react-redux';
 import { MonoText } from '../components/StyledText';
 import { getUserThunk } from '../components/store/user';
@@ -92,6 +93,8 @@ class HomeScreen extends React.Component {
       </View>
     );
   }
+}
+
 }
 
 HomeScreen.navigationOptions = {
@@ -222,6 +225,7 @@ const styles = StyleSheet.create({
   },
 });
 
+
 const mapState = state => {
   return {
     user: state.user,
@@ -230,6 +234,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
+
     getUser: () => dispatch(getUserThunk()),
   };
 };

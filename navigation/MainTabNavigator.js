@@ -25,7 +25,7 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
   },
-  
+
   config
 );
 
@@ -89,6 +89,7 @@ const DailyLogStack = createStackNavigator(
   {
     DailyLog: DailyLog,
     FoodSearch: FoodSearch,
+
     FoodSearchItem: FoodSearchItem,
   },
   config

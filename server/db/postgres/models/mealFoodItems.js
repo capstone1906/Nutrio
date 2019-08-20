@@ -12,21 +12,31 @@ const MealFoodItems = db.define('mealFoodItems', {
   },
   calories: {
     type: Sequelize.INTEGER,
-    allowNull: false,
     // validate: {
     //   notEmpty: true,
     // },
   },
   quantity: {
     type: Sequelize.INTEGER,
-    allowNull: false,
+    defaultValue: 1,
     // validate: {
     //   notEmpty: true,
     // },
   },
 });
 
-module.exports = MealFoodItems
+module.exports = MealFoodItems;
+
+MealFoodItems.beforeValidate(async mealFoodItem => {
+  const prevMeal = await MealFoodItems.findOne({
+    where: { foodItemId: mealFoodItem.foodItemId, mealId: mealFoodItem.mealId },
+  });
+  if (prevMeal) {
+    console.log(prevMeal.mealId);
+    mealFoodItem.quantity = prevMeal.quantity + 1
+    await prevMeal.destroy()
+  }
+});
 
 MealFoodItems.afterSave(async mealFoodItem => {
   const meal = await Meals.findByPk(mealFoodItem.mealId);
