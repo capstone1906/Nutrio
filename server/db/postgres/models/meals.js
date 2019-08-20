@@ -7,14 +7,6 @@ const Meals = db.define('meals', {
     type: Sequelize.STRING,
     defaultValue: '', //decide later
   },
-  averageRating: {
-    type: Sequelize.FLOAT,
-    validate: {
-      min: 0.1,
-      max: 5.0,
-    },
-  },
-
   totalCalories: {
     type: Sequelize.FLOAT,
   },

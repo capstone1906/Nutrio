@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable max-statements */
 'use strict';
 const { green, red } = require('chalk');
@@ -20,8 +21,9 @@ async function seed() {
   await db.sync({ force: true });
   console.log('db synced!');
 
-  var user1 = {
+  const user1 = {
     email: 'cody@email.com',
+    firstName: 'Cody',
     password: '123',
     height: 72,
     weight: 185,
@@ -30,18 +32,70 @@ async function seed() {
     bodyType: 'Ectomorph',
   };
 
-  var user2 = {
+  const user2 = {
     email: 'murphy@email.com',
+    firstName: 'Murphy',
+    password: '123',
+    height: 56,
+    weight: 85,
+    age: 18,
+    activityLevel: 1.375,
+    bodyType: 'Endomorph',
+  };
+
+  const user3 = {
+    email: 'brad@email.com',
+    firstName: 'Brad',
+    password: '123',
+    height: 80,
+    weight: 270,
+    age: 27,
+    activityLevel: 1.5,
+    bodyType: 'Ectomorph',
+  };
+
+  const user4 = {
+    email: 'emily@email.com',
+    firstName: 'Emily',
     password: '123',
     height: 68,
-    weight: 165,
+    weight: 170,
     age: 22,
-    activityLevel: 1.375,
+    activityLevel: 1.2,
+    bodyType: 'Endomorph',
+  };
+
+  const user5 = {
+    email: 'tasha@email.com',
+    firstName: 'Tasha',
+    password: '123',
+    height: 69,
+    weight: 182,
+    age: 32,
+    activityLevel: 1.2,
     bodyType: 'Mesomorph',
   };
 
+  var user6 = {
+    email: 'eddy@email.com',
+    firstName: 'Eddy',
+    password: '123',
+    height: 72,
+    weight: 205,
+    age: 18,
+    activityLevel: 1.375,
+    bodyType: 'Endomorph',
+  };
+
   // Create users
-  await Promise.all([Users.create(user1), Users.create(user2)]);
+  await Promise.all([
+    Users.create(user1),
+    Users.create(user2),
+    Users.create(user3),
+    Users.create(user4),
+    Users.create(user5),
+    Users.create(user6),
+  ]);
 
   // Create checkIns
   for (let i = 1; i < 31; i++) {
@@ -802,120 +856,74 @@ async function seed() {
     FoodItems.create(food40),
   ]);
 
-  var yesterday = `07-31-2019`;
-  // var ranDay = new Date(yesterday);
-
+  const userList = ['Cody', 'Murphy', 'Brad', 'Emily', 'Tasha', 'Eddy'];
+  let counter = 0;
 
   //Breakfast
-  const meal1 = {
-    name: 'Power Breakfast',
-    entreeType: 'Breakfast',
-    createdAt: yesterday
-  };
-
-  var meal2 = {
-    name: 'Great Dish 2',
-    entreeType: 'Breakfast',
-    createdAt: yesterday
-  };
-
-  var meal3 = {
-    name: 'Great Dish 3',
-    entreeType: 'Breakfast',
-    createdAt: yesterday
-  };
-
-  var meal4 = {
-    name: 'Great Dish 4',
-    entreeType: 'Breakfast',
-    createdAt: yesterday
-  };
-
-  var meal5 = {
-    name: 'Great Dish 5',
-    entreeType: 'Breakfast',
-    createdAt: yesterday
-  };
-
-  //lunch
-  var meal6 = {
-    name: 'Great Dish 6',
-    entreeType: 'Lunch',
-    createdAt: yesterday
-  };
-
-  var meal7 = {
-    name: 'Great Dish 7',
-    entreeType: 'Lunch',
-    createdAt: yesterday
-  };
-
-  var meal8 = {
-    name: 'Great Dish 8',
-    entreeType: 'Lunch',
-    createdAt: yesterday
-  };
-
-  var meal9 = {
-    name: 'Great Dish 9',
-    entreeType: 'Lunch',
-    createdAt: yesterday
-  };
-  //dinner
-  var meal10 = {
-    name: 'Great Dish 10',
-    entreeType: 'Dinner',
-    createdAt: yesterday
-  };
-
-  var meal11 = {
-    name: 'Great Dish 11',
-    entreeType: 'Dinner',
-    createdAt: yesterday
-  };
-
-  var meal12 = {
-    name: 'Great Dish 12',
-    entreeType: 'Dinner',
-    createdAt: yesterday
-  };
-
-  var meal13 = {
-    name: 'Great Dish 13',
-    entreeType: 'Dinner',
-    createdAt: yesterday
-  };
-
-  //snacks
-  var meal14 = {
-    name: 'Great Dish 14',
-    entreeType: 'Snacks',
-    createdAt: yesterday
-  };
-
-  var meal15 = {
-    name: 'Great Dish 15',
-    entreeType: 'Snacks',
-    createdAt: yesterday
-  };
-  // Create meals
-  await Promise.all([
-    Meals.create(meal1),
-    Meals.create(meal2),
-    Meals.create(meal3),
-    Meals.create(meal4),
-    Meals.create(meal5),
-    Meals.create(meal6),
-    Meals.create(meal7),
-    Meals.create(meal8),
-    Meals.create(meal9),
-    Meals.create(meal10),
-    Meals.create(meal11),
-    Meals.create(meal12),
-    Meals.create(meal13),
-    Meals.create(meal14),
-    Meals.create(meal15),
-  ]);
+  const mealsBreakfast = [];
+  for (let i = 0; i < 60; i++) {
+    mealsBreakfast.push(
+      Meals.create({
+        name: `${userList[counter]}'s Breakfast`,
+        entreeType: 'Breakfast',
+      })
+    );
+    if (counter < 5) {
+      counter++;
+    } else {
+      counter = 0;
+    }
+  }
+  //Lunch
+  const mealsLunch = [];
+  for (let i = 0; i < 60; i++) {
+    mealsLunch.push(
+      Meals.create({
+        name: `${userList[counter]}'s Lunch`,
+        entreeType: 'Lunch',
+      })
+    );
+    if (counter < 5) {
+      counter++;
+    } else {
+      counter = 0;
+    }
+  }
+  //Dinner
+  const mealsDinner = [];
+  for (let i = 0; i < 60; i++) {
+    mealsDinner.push(
+      Meals.create({
+        name: `${userList[counter]}'s Dinner`,
+        entreeType: 'Dinner',
+      })
+    );
+    if (counter < 5) {
+      counter++;
+    } else {
+      counter = 0;
+    }
+  }
+  //Snack
+  const mealsSnack = [];
+  for (let i = 0; i < 60; i++) {
+    mealsSnack.push(
+      Meals.create({
+        name: `${userList[counter]}'s Snack`,
+        entreeType: 'Snacks',
+      })
+    );
+    if (counter < 5) {
+      counter++;
+    } else {
+      counter = 0;
+    }
+  }
+  // await Promise.all(mealsBreakfast, mealsDinner, mealsLunch, mealsSnack);
+  await Promise.all(mealsBreakfast);
+  await Promise.all(mealsDinner);
+  await Promise.all(mealsLunch);
+  await Promise.all(mealsSnack);
 
 
 
@@ -931,40 +939,82 @@ async function seed() {
     });
   }
 
-  //  Create mealFoodItems breakfast
-  // for (let i = 1; i <= 15; i++) {
-  //   for (let j = 1; j <= 3; j++) {
-  //     await MealFoodItems.create({
-  //       foodItemId: 1 + Math.floor(Math.random() * 10),
-  //       mealId: i,
-  //     });
-  //   }
-  // }
-
-  const breakfastMeals = [];
-  for (let i = 1; i < 15; i++) {
+  // mealFoodItems - Breakfast
+  for (let i = 1; i <= 60; i++) {
     let arr = [];
     while (arr.length < 3) {
       let random = Math.floor(Math.random() * 10) + 1;
       if (arr.indexOf(random) === -1) arr.push(random);
     }
     for (let j = 0; j < arr.length; j++) {
-      breakfastMeals.push(
-        // MealFoodItems.create({
-        //   foodItemId: arr[j],
-        //   mealId: i,
-        // })
-      );
+      await MealFoodItems.create({
+        foodItemId: arr[j],
+        mealId: i,
+        quantity: 1,
+      });
     }
   }
 
-  await Promise.all(breakfastMeals);
+  // mealFoodItems - Lunch
+  for (let i = 61; i <= 120; i++) {
+    let arr = [];
+    while (arr.length < 3) {
+      let random = Math.floor(Math.random() * 10) + 1;
+      if (arr.indexOf(random) === -1) arr.push(random);
+    }
+    for (let j = 0; j < arr.length; j++) {
+      await MealFoodItems.create({
+        foodItemId: arr[j] + 10,
+        mealId: i,
+        quantity: 1,
+      });
+    }
+  }
 
-  for (let i = 1; i <= 15; i++) {
+  // mealFoodItems - Dinner
+  for (let i = 121; i <= 180; i++) {
+    let arr = [];
+    while (arr.length < 3) {
+      let random = Math.floor(Math.random() * 10) + 1;
+      if (arr.indexOf(random) === -1) arr.push(random);
+    }
+    for (let j = 0; j < arr.length; j++) {
+      await MealFoodItems.create({
+        foodItemId: arr[j] + 20,
+        mealId: i,
+        quantity: 1,
+      });
+    }
+  }
+
+  // mealFoodItems - Snacks
+  for (let i = 181; i <= 240; i++) {
+    let arr = [];
+    while (arr.length < 3) {
+      let random = Math.floor(Math.random() * 10) + 1;
+      if (arr.indexOf(random) === -1) arr.push(random);
+    }
+    for (let j = 0; j < arr.length; j++) {
+      await MealFoodItems.create({
+        foodItemId: arr[j] + 30,
+        mealId: i,
+        quantity: 1,
+      });
+    }
+  }
+
+  // UserMeals
+  for (let i = 1; i <= 240; i++) {
     await UserMeals.create({
+      timesEaten: 1 + Math.floor(Math.random() * 6),
       mealId: i,
-      userId: 1 + Math.floor(Math.random() * 2),
+      userId: [counter + 1],
     });
+    if (counter < 5) {
+      counter++;
+    } else {
+      counter = 0;
+    }
   }
 
   // Create Favorite meal
