@@ -16,12 +16,3 @@ router.get('/', async (req, res, next) => {
     next(err);
   }
 });
-
-router.post('/', async (req, res, next) => {
-  try {
-    const addUser = await Users.findOrCreate({});
-    res.json(addUser);
-  } catch (err) {
-    next(err);
-  }
-});

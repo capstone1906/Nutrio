@@ -13,6 +13,8 @@ import DailyLog from '../screens/DailyLog';
 import FoodSearch from '../screens/FoodSearch';
 import FoodSearchItem from '../screens/FoodSearchItem';
 import Meals from '../screens/Meals';
+import RecommendedMeals from '../screens/RecommendedMeals';
+import RecommendedFoods from '../screens/RecommendedFoods';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -46,6 +48,8 @@ HomeStack.path = '';
 const MealsStack = createStackNavigator(
   {
     Meals: Meals,
+    RecommendedMeals: RecommendedMeals,
+    RecommendedFoods: RecommendedFoods,
   },
   config
 );

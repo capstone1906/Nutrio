@@ -58,7 +58,7 @@ router.post("/:id/:quantity", async (req, res, next) => {
         quantity: req.params.quantity,
         calories: foodItem[0].calories * req.params.quantity
       }
-    });    
+    });
 
     if(mealFoodItem[1] === false) {
       var quantity = parseInt(req.params.quantity)

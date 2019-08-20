@@ -5,13 +5,13 @@ const createUserMeal = userMeal => {
     .run(
       `MATCH (u:User {id: $userId}), (m:Meal {id: $mealId})
       MERGE (u)-[r:HAD_MEAL]->(m)
-      ON CREATE SET r.rating = $rating
-      ON MATCH SET r.rating = $rating
+      ON CREATE SET r.timesEaten = $timesEaten
+      ON MATCH SET r.timesEaten = $timesEaten
       RETURN u, r, m`,
       {
         userId: userMeal.userId,
         mealId: userMeal.mealId,
-        rating: userMeal.rating,
+        timesEaten: userMeal.timesEaten,
       }
     )
     .then(result => {

@@ -107,7 +107,7 @@ class FoodSearchItem extends React.Component {
         quantity = mealFoodItem.data.quantity
       }
     }
-    
+
 
     this.setState({
       foodInfo: food,
