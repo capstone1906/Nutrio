@@ -18,13 +18,6 @@ import {
 } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
-import * as Permissions from 'expo-permissions';
-import { Camera } from 'expo-camera';
-import * as ImageManipulator from 'expo-image-manipulator';
-import * as ImagePicker from 'expo-image-picker';
-import Constants from 'expo-constants';
-
-// import FoodSearchItem from "../components/FoodSearchItem";
 
 const Clarifai = require('clarifai');
 
@@ -40,8 +33,6 @@ export default class FoodSearch extends React.Component {
       currentSearch: [],
       showError: false,
       searchName: '',
-      hasCameraPermission: null,
-      type: Camera.Constants.Type.back,
       predictions: [],
       chosenImage: null,
     };
@@ -67,7 +58,7 @@ export default class FoodSearch extends React.Component {
       }
     );
 
-    // console.log('results are1!!!!:::::', res.data);
+    console.log('results are1!!!!:::::', res.data);
 
     if (res.data.common) {
       this.setState({
@@ -81,80 +72,6 @@ export default class FoodSearch extends React.Component {
     }
   }
 
-  // **************   Image recognition *******************  //////////
-  async componentDidMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ hasCameraPermission: status === 'granted' });
-  }
-
-  // After getting permission to use the camera, code for capturing the photo
-  capturePhoto = async () => {
-    if (this.camera) {
-      let photo = await this.camera.takePictureAsync();
-      return photo.uri;
-    }
-  };
-
-  // Photo resized for optimization
-  resize = async photo => {
-    let manipulatedImage = await ImageManipulator.manipulateAsync(
-      photo,
-      [{ resize: { height: 300, width: 300 } }], // Scale the photo
-      { base64: true }
-    );
-    return manipulatedImage.base64;
-  };
-
-  // Get the predictions from Clarifai
-  predict = async image => {
-    let predictions = await clarifai.models.predict(Clarifai.FOOD_MODEL, image);
-    return predictions;
-  };
-
-  objectDetection = async () => {
-    let photo = await this.capturePhoto();
-    let resized = await this.resize(photo);
-    let predictions = await this.predict(resized);
-
-    console.log(photo);
-    this.setState({ chosenImage: photo });
-    this.setState({ predictions: predictions.outputs[0].data.concepts });
-  };
-
-  getPermissionAsync = async () => {
-    if (Constants.platform.ios) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
-      }
-    }
-  };
-
-  // Getting photos for the camera roll
-  _pickImage = async () => {
-    this.getPermissionAsync();
-    let selectedImage = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
-
-    if (!selectedImage.cancelled) {
-      this.setState({ chosenImage: selectedImage.uri });
-      let resized = await this.resize(selectedImage.uri);
-      let predictions = await this.predict(resized);
-
-      console.log(selectedImage.uri);
-
-      this.setState({ predictions: predictions.outputs[0].data.concepts });
-    }
-  };
-
-  closeWindow = () => {
-    this.setState({
-      chosenImage: null,
-    });
-  };
-
   render() {
     var foods = this.state.currentSearch;
 
@@ -164,18 +81,12 @@ export default class FoodSearch extends React.Component {
         <View style={styles.cameraToolbar}>
           <TouchableOpacity>
             <Ionicons
-              // onPress={}
+              onPress={() => {
+                this.props.navigation.navigate('CameraInterface');
+              }}
               name="ios-camera"
               color="red"
               size={90}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons
-              onPress={this._pickImage}
-              name="ios-photos"
-              color="red"
-              size={65}
             />
           </TouchableOpacity>
         </View>
@@ -235,7 +146,7 @@ const styles = StyleSheet.create({
 });
 
 FoodSearch.navigationOptions = {
-  headerTitle: "Today's log",
+  headerTitle: "Today's Log",
   headerStyle: {
     backgroundColor: 'crimson',
   },

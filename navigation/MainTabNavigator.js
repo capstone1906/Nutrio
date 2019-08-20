@@ -13,6 +13,7 @@ import DailyLog from '../screens/DailyLog';
 import FoodSearch from '../screens/FoodSearch';
 import FoodSearchItem from '../screens/FoodSearchItem';
 import Meals from '../screens/Meals';
+import CameraInterface from '../screens/CameraInterface'
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -85,7 +86,7 @@ const DailyLogStack = createStackNavigator(
   {
     DailyLog: DailyLog,
     FoodSearch: FoodSearch,
-
+    CameraInterface: CameraInterface,
     FoodSearchItem: FoodSearchItem,
   },
   config
