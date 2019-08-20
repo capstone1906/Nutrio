@@ -17,16 +17,16 @@ const Meals = db.define('meals', {
   },
 
   totalCalories: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
   },
   totalCarbs: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
   },
   totalFat: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
   },
   totalProtein: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
   },
   dominantMacro: {
     type: Sequelize.STRING,

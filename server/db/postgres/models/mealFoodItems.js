@@ -11,20 +11,19 @@ const MealFoodItems = db.define('mealFoodItems', {
     autoIncrement: true,
   },
   calories: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    // validate: {
-    //   notEmpty: true,
-    // },
+    type: Sequelize.FLOAT,
+
   },
   quantity: {
     type: Sequelize.INTEGER,
-    allowNull: false,
-    // validate: {
-    //   notEmpty: true,
-    // },
+
   },
+  grams: {
+    type: Sequelize.INTEGER, //added new property
+  }
 });
+
+
 
 module.exports = MealFoodItems;
 

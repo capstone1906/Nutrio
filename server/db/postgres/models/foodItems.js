@@ -8,16 +8,16 @@ const FoodItems = db.define('foodItems', {
     // unique: true,
   },
   calories: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
   },
   carbohydrates: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
   },
   protein: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
   },
   fat: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
   },
   dominantMacro: {
     type: Sequelize.STRING,
@@ -26,7 +26,7 @@ const FoodItems = db.define('foodItems', {
     type: Sequelize.STRING
   },
   weight: {
-    type: Sequelize.INTEGER
+    type: Sequelize.FLOAT
   },
   
 });
