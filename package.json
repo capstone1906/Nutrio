@@ -29,6 +29,7 @@
     "expo-permissions": "^6.0.0",
     "expo-web-browser": "6.0.0",
     "express": "^4.17.1",
+    "faker": "^4.1.0",
     "neo4j-driver": "^1.7.5",
     "passport": "^0.4.0",
     "passport-google-oauth": "^2.0.0",
