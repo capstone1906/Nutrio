@@ -50,8 +50,6 @@ const FoodTimeContainer = props => {
             backgroundColor: "red",
             onPress() {
               props.deleteItem(food.id, props.meal.id);
-              // props.getMeals()
-              
             }
           }
         ];
@@ -74,9 +72,9 @@ const FoodTimeContainer = props => {
                 <View style={{ flex: 2, paddingRight: 80 }}>
                   <Text style={styles.foodName}>{food.food_name}</Text>
 
-                  <Text style={styles.foodAmount}>Serving size: {food.mealFoodItems.quantity}</Text>
-
-
+                  <Text style={styles.foodAmount}>
+                    Serving size: {food.mealFoodItems.quantity}
+                  </Text>
                 </View>
 
                 <View style={{ flex: 1 }}>
@@ -229,31 +227,24 @@ class DailyLog extends React.Component {
           navigation={this.props.navigation}
           meal={breakfast}
           deleteItem={this.deleteItem}
-          getMeals={this.props.getMeals}
         />
         <FoodTimeContainer
           time="Lunch"
           navigation={this.props.navigation}
           meal={lunch}
           deleteItem={this.deleteItem}
-          getMeals={this.props.getMeals}
-
         />
         <FoodTimeContainer
           time="Dinner"
           navigation={this.props.navigation}
           meal={dinner}
           deleteItem={this.deleteItem}
-          getMeals={this.props.getMeals}
-
         />
         <FoodTimeContainer
           time="Snacks"
           navigation={this.props.navigation}
           meal={snacks}
           deleteItem={this.deleteItem}
-          getMeals={this.props.getMeals}
-
         />
       </ScrollView>
     );
@@ -297,7 +288,7 @@ const styles = StyleSheet.create({
   },
   foodAmount: {
     fontSize: 12,
-    color: 'grey'
+    color: "grey"
   }
 });
 
