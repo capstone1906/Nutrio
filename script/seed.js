@@ -940,11 +940,6 @@ async function seed() {
     });
   }
 
-<<<<<<< HEAD
-
-  const breakfastMeals = [];
-  for (let i = 1; i < 15; i++) {
-=======
   // mealFoodItems - Breakfast
   for (let i = 1; i <= 60; i++) {
     let arr = [];
@@ -979,7 +974,6 @@ async function seed() {
 
   // mealFoodItems - Dinner
   for (let i = 121; i <= 180; i++) {
->>>>>>> a1e8f86870fd845ea227771421a2414fd9787bcf
     let arr = [];
     while (arr.length < 3) {
       let random = Math.floor(Math.random() * 10) + 1;
