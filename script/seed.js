@@ -388,37 +388,375 @@ async function seed() {
   ]);
 
   // Create food items
-  var food1 = {
-    name: 'Chicken',
-    calories: 200,
+  //breakfast
+  const food1 = {
+    food_name: 'banana',
+    calories: 105,
+    fat: 1,
+    carbohydrates: 27,
+    protein: 2,
+    servingSize: `medium (7" to 7-7/8" long)`,
+    weight: 118,
+  };
+
+  const food2 = {
+    food_name: 'cocoa puffs',
+    calories: 138,
+    fat: 2,
+    carbohydrates: 30,
+    protein: 2,
+    servingSize: 'cup',
+    weight: 36,
+  };
+  const food3 = {
+    food_name: 'Protein Shake',
+    calories: 171,
+    fat: 9,
+    carbohydrates: 3,
+    protein: 20,
+    servingSize: 'bottle',
+    weight: 295,
+  };
+  const food4 = {
+    food_name: 'egg',
+    calories: 72,
+    fat: 5,
+    carbohydrates: 1,
+    protein: 7,
+    servingSize: 'large',
+    weight: 50,
+  };
+  const food5 = {
+    food_name: 'cottage cheese',
+    calories: 214,
+    fat: 10,
+    carbohydrates: 8,
+    protein: 24,
+    servingSize: 'cup',
+    weight: 218,
+  };
+  const food6 = {
+    food_name: 'oatmeal',
+    calories: 167,
+    fat: 4,
+    carbohydrates: 29,
+    protein: 6,
+    servingSize: 'cup',
+    weight: 234,
+  };
+  const food7 = {
+    food_name: 'bacon',
+    calories: 54,
+    fat: 5,
+    carbohydrates: 1,
+    protein: 4,
+    servingSize: 'strip',
+    weight: 12,
+  };
+  const food8 = {
+    food_name: 'english muffin',
+    calories: 134,
+    fat: 1,
+    carbohydrates: 27,
+    protein: 5,
+    servingSize: 'muffin',
+    weight: 57,
+  };
+  const food9 = {
+    food_name: 'breakfast sausage',
+    calories: 75,
+    fat: 7,
+    carbohydrates: 1,
+    protein: 5,
+    servingSize: 'link',
+    weight: 23,
+  };
+  const food10 = {
+    food_name: 'toast',
+    calories: 64,
+    fat: 1,
+    carbohydrates: 12,
+    protein: 2,
+    servingSize: 'slice',
+    weight: 22,
+  };
+
+  //lunch
+  const food11 = {
+    food_name: 'rice',
+    calories: 205,
+    fat: 1,
+    carbohydrates: 45,
+    protein: 5,
+    servingSize: '1 cup',
+    weight: 158,
+  };
+  const food12 = {
+    food_name: 'broccoli',
+    calories: 13,
+    fat: 1,
+    carbohydrates: 3,
+    protein: 1,
+    servingSize: `spear (about 5" long)`,
+    weight: 37,
+  };
+  const food13 = {
+    food_name: 'chicken breast',
+    calories: 198,
     fat: 5,
     carbohydrates: 0,
-    protein: 35,
-    dominantMacro: 'Protein',
+    protein: 38,
+    servingSize: 'breast',
+    weight: 120,
   };
-  var food2 = {
-    name: 'Rice',
-    calories: 200,
-    fat: 5,
-    carbohydrates: 50,
-    protein: 5,
-    dominantMacro: 'Carbohydrate',
-  };
-  var food3 = {
-    name: 'Broccoli',
-    calories: 200,
+  const food14 = {
+    food_name: 'brussel sprouts',
+    calories: 61,
     fat: 1,
-    carbohydrates: 10,
-    protein: 1,
-    dominantMacro: 'Carbohydrate',
+    carbohydrates: 12,
+    protein: 5,
+    servingSize: '8 sprouts',
+    weight: 168,
   };
-  var food4 = {
-    name: 'Protein Shake',
-    calories: 200,
+  const food15 = {
+    food_name: 'cheddar cheese',
+    calories: 115,
+    fat: 10,
+    carbohydrates: 1,
+    protein: 7,
+    servingSize: 'oz',
+    weight: 29,
+  };
+  const food16 = {
+    food_name: 'tomato',
+    calories: 23,
+    fat: 1,
+    carbohydrates: 5,
+    protein: 1,
+    servingSize: `medium whole (2.5" dia)`,
+    weight: 123,
+  };
+  const food17 = {
+    food_name: 'hamburger',
+    calories: 540,
+    fat: 27,
+    carbohydrates: 41,
+    protein: 35,
+    servingSize: 'sandwich',
+    weight: 226,
+  };
+  const food18 = {
+    food_name: 'pickle',
+    calories: 5,
+    fat: 0,
+    carbohydrates: 1,
+    protein: 0,
+    servingSize: 'spear',
+    weight: 35,
+  };
+  const food19 = {
+    food_name: 'hummus',
+    calories: 400,
+    fat: 24,
+    carbohydrates: 36,
+    protein: 20,
+    servingSize: 'cup',
+    weight: 240,
+  };
+  const food20 = {
+    food_name: 'pita chips',
+    calories: 130,
+    fat: 4,
+    carbohydrates: 20,
+    protein: 4,
+    servingSize: 'oz',
+    weight: 29,
+  };
+
+  //dinner
+  const food21 = {
+    food_name: 'pizza',
+    calories: 285,
+    fat: 11,
+    carbohydrates: 36,
+    protein: 13,
+    servingSize: 'slice',
+    weight: 108,
+  };
+  const food22 = {
+    food_name: 'can of tuna',
+    calories: 220,
     fat: 5,
+    carbohydrates: 0,
+    protein: 41,
+    servingSize: 'can',
+    weight: 172,
+  };
+
+  const food23 = {
+    food_name: 'salmon',
+    calories: 468,
+    fat: 28,
+    carbohydrates: 0,
+    protein: 51,
+    servingSize: 'fillet',
+    weight: 227,
+  };
+  const food24 = {
+    food_name: 'pasta',
+    calories: 196,
+    fat: 2,
+    carbohydrates: 39,
+    protein: 8,
+    servingSize: 'cup',
+    weight: 124,
+  };
+
+  const food25 = {
+    food_name: 'sushi',
+    calories: 349,
+    fat: 19,
+    carbohydrates: 38,
+    protein: 8,
+    servingSize: `roll (8 pieces)`,
+    weight: 211,
+  };
+  const food26 = {
+    food_name: 'meatloaf',
+    calories: 330,
+    fat: 19,
+    carbohydrates: 14,
+    protein: 27,
+    servingSize: 'slice',
+    weight: 183,
+  };
+  const food27 = {
+    food_name: 'sweet potato',
+    calories: 115,
+    fat: 1,
+    carbohydrates: 27,
+    protein: 2,
+    servingSize: 'medium',
+    weight: 151,
+  };
+  const food28 = {
+    food_name: 'steak',
+    calories: 79,
+    fat: 6,
+    carbohydrates: 0,
+    protein: 8,
+    servingSize: 'oz',
+    weight: 29,
+  };
+  const food29 = {
+    food_name: 'zucchini',
+    calories: 33,
+    fat: 1,
+    carbohydrates: 6,
+    protein: 3,
+    servingSize: 'medium',
+    weight: 217,
+  };
+  const food30 = {
+    food_name: 'bread roll',
+    calories: 77,
+    fat: 2,
+    carbohydrates: 13,
+    protein: 3,
+    servingSize: 'roll',
+    weight: 28,
+  };
+  //snacks
+  const food31 = {
+    food_name: 'apple',
+    calories: 95,
+    fat: 1,
+    carbohydrates: 25,
+    protein: 1,
+    servingSize: `medium (3" dia)`,
+    weight: 182,
+  };
+  const food32 = {
+    food_name: 'ritz crackers',
+    calories: 17,
+    fat: 1,
+    carbohydrates: 2,
+    protein: 1,
+    servingSize: 'cracker',
+    weight: 4,
+  };
+
+  const food33 = {
+    food_name: 'almond',
+    calories: 8,
+    fat: 1,
+    carbohydrates: 1,
+    protein: 1,
+    servingSize: 'almond',
+    weight: 2,
+  };
+  const food34 = {
+    food_name: 'avocado',
+    calories: 321,
+    fat: 30,
+    carbohydrates: 18,
+    protein: 4,
+    servingSize: 'medium',
+    weight: 201,
+  };
+  const food35 = {
+    food_name: 'blueberries',
+    calories: 1,
+    fat: 0,
+    carbohydrates: 1,
+    protein: 0,
+    servingSize: 'berry',
+    weight: 2,
+  };
+  const food36 = {
+    food_name: 'granola bar',
+    calories: 118,
+    fat: 5,
+    carbohydrates: 20,
+    protein: 2,
+    servingSize: 'bar',
+    weight: 28,
+  };
+  const food37 = {
+    food_name: 'cashews',
+    calories: 162,
+    fat: 14,
     carbohydrates: 10,
-    protein: 70,
-    dominantMacro: 'Protein',
+    protein: 5,
+    servingSize: 'oz',
+    weight: 28,
+  };
+  const food38 = {
+    food_name: 'dried apricot',
+    calories: 69,
+    fat: 1,
+    carbohydrates: 18,
+    protein: 1,
+    servingSize: 'oz',
+    weight: 28,
+  };
+  const food39 = {
+    food_name: 'beef stick',
+    calories: 116,
+    fat: 11,
+    carbohydrates: 1,
+    protein: 5,
+    servingSize: 'stick',
+    weight: 23,
+  };
+  const food40 = {
+    food_name: 'strawberry',
+    calories: 6,
+    fat: 0,
+    carbohydrates: 2,
+    protein: 1,
+    servingSize: 'large',
+    weight: 18,
   };
 
   await Promise.all([
@@ -426,167 +764,120 @@ async function seed() {
     FoodItems.create(food2),
     FoodItems.create(food3),
     FoodItems.create(food4),
+    FoodItems.create(food5),
+    FoodItems.create(food6),
+    FoodItems.create(food7),
+    FoodItems.create(food8),
+    FoodItems.create(food9),
+    FoodItems.create(food10),
+    FoodItems.create(food11),
+    FoodItems.create(food12),
+    FoodItems.create(food13),
+    FoodItems.create(food14),
+    FoodItems.create(food15),
+    FoodItems.create(food16),
+    FoodItems.create(food17),
+    FoodItems.create(food18),
+    FoodItems.create(food19),
+    FoodItems.create(food20),
+    FoodItems.create(food21),
+    FoodItems.create(food22),
+    FoodItems.create(food23),
+    FoodItems.create(food24),
+    FoodItems.create(food25),
+    FoodItems.create(food26),
+    FoodItems.create(food27),
+    FoodItems.create(food28),
+    FoodItems.create(food29),
+    FoodItems.create(food30),
+    FoodItems.create(food31),
+    FoodItems.create(food32),
+    FoodItems.create(food33),
+    FoodItems.create(food34),
+    FoodItems.create(food35),
+    FoodItems.create(food36),
+    FoodItems.create(food37),
+    FoodItems.create(food38),
+    FoodItems.create(food39),
+    FoodItems.create(food40),
   ]);
 
-  var meal1 = {
-    name: 'Great Dish 1',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    dominantMacro: 'Carbohydrate',
+  //Breakfast
+  const meal1 = {
+    name: 'Power Breakfast',
     entreeType: 'Breakfast',
   };
 
   var meal2 = {
     name: 'Great Dish 2',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Carbohydrate',
-    entreeType: 'Lunch',
+    entreeType: 'Breakfast',
   };
 
   var meal3 = {
     name: 'Great Dish 3',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Carbohydrate',
-    entreeType: 'Dinner',
+    entreeType: 'Breakfast',
   };
 
   var meal4 = {
     name: 'Great Dish 4',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Carbohydrate',
-    entreeType: 'Snacks',
+    entreeType: 'Breakfast',
   };
 
   var meal5 = {
     name: 'Great Dish 5',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Carbohydrate',
     entreeType: 'Breakfast',
   };
 
+  //lunch
   var meal6 = {
     name: 'Great Dish 6',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Protein',
-    entreeType: 'Breakfast',
+    entreeType: 'Lunch',
   };
 
   var meal7 = {
     name: 'Great Dish 7',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Protein',
     entreeType: 'Lunch',
   };
 
   var meal8 = {
     name: 'Great Dish 8',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Protein',
-    entreeType: 'Dinner',
+    entreeType: 'Lunch',
   };
 
   var meal9 = {
     name: 'Great Dish 9',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Protein',
-    entreeType: 'Snacks',
+    entreeType: 'Lunch',
   };
-
+  //dinner
   var meal10 = {
     name: 'Great Dish 10',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Fat',
-    entreeType: 'Breakfast',
+    entreeType: 'Dinner',
   };
 
   var meal11 = {
     name: 'Great Dish 11',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Fat',
-    entreeType: 'Breakfast',
+    entreeType: 'Dinner',
   };
 
   var meal12 = {
     name: 'Great Dish 12',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Fat',
-    entreeType: 'Lunch',
+    entreeType: 'Dinner',
   };
 
   var meal13 = {
     name: 'Great Dish 13',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Fat',
     entreeType: 'Dinner',
   };
 
+  //snacks
   var meal14 = {
     name: 'Great Dish 14',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Fat',
     entreeType: 'Snacks',
   };
 
   var meal15 = {
     name: 'Great Dish 15',
-    averageRating: Math.floor(Math.random() * Math.floor(5) + 1),
-    totalCalories: Math.floor(Math.random() * 1000),
-    totalCarbs: Math.floor(Math.random() * 30),
-    totalProtein: Math.floor(Math.random() * 10),
-    totalFat: Math.floor(Math.random() * 10),
-    dominantMacro: 'Fat',
-    entreeType: 'Breakfast',
+    entreeType: 'Snacks',
   };
   // Create meals
   await Promise.all([
@@ -622,19 +913,37 @@ async function seed() {
     });
   }
 
-  // Create mealFoodItems
-  for (let i = 1; i <= 4; i++) {
-    await MealFoodItems.create({
-      calories: 200,
-      quantity: 2,
-      foodItemId: i,
-      mealId: 1,
-    });
+  //  Create mealFoodItems breakfast
+  // for (let i = 1; i <= 15; i++) {
+  //   for (let j = 1; j <= 3; j++) {
+  //     await MealFoodItems.create({
+  //       foodItemId: 1 + Math.floor(Math.random() * 10),
+  //       mealId: i,
+  //     });
+  //   }
+  // }
+
+  const breakfastMeals = [];
+  for (let i = 1; i < 15; i++) {
+    let arr = [];
+    while (arr.length < 3) {
+      let random = Math.floor(Math.random() * 10) + 1;
+      if (arr.indexOf(random) === -1) arr.push(random);
+    }
+    for (let j = 0; j < arr.length; j++) {
+      breakfastMeals.push(
+        MealFoodItems.create({
+          foodItemId: arr[j],
+          mealId: i,
+        })
+      );
+    }
   }
+
+  await Promise.all(breakfastMeals);
 
   for (let i = 1; i <= 15; i++) {
     await UserMeals.create({
-      rating: 1 + Math.floor(Math.random() * 5),
       mealId: i,
       userId: 1 + Math.floor(Math.random() * 2),
     });
@@ -643,7 +952,6 @@ async function seed() {
   // Create Favorite meal
   for (let i = 1; i <= 5; i++) {
     await FavoriteMeals.create({
-      rating: 1 + Math.floor(Math.random() * 5),
       mealId: i,
       userId: 1,
     });

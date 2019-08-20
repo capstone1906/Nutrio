@@ -5,20 +5,13 @@ const createMealFoodItems = mealFoodItem => {
     .run(
       `MATCH (f:Food {id: $foodId}), (m:Meal {id: $mealId})
     MERGE (m)-[r:HAS_FOOD]->(f)
-    ON CREATE SET r += {
-      calories: $calories,
-      quantity: $quantity
-    }
-    ON MATCH SET r += {
-      calories: $calories,
-      quantity: $quantity
-    }
+    ON CREATE SET r.quantity = $quantity
+    ON MATCH SET r.quantity = $quantity
     RETURN f, r, m`,
       {
         foodId: mealFoodItem.foodItemId,
         mealId: mealFoodItem.mealId,
         quantity: mealFoodItem.quantity,
-        calories: mealFoodItem.calories,
       }
     )
     .then(result => {

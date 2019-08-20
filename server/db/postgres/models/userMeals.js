@@ -8,13 +8,9 @@ const UserMeals = db.define('userMeals', {
     primaryKey: true,
     autoIncrement: true,
   },
-  rating: {
+  timesEaten: {
     type: Sequelize.INTEGER,
-    allowNull: false,
-    validate: {
-      min: 1,
-      max: 5,
-    },
+    defaultValue: 1,
   },
 });
 

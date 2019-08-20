@@ -11,12 +11,26 @@ const MealFoodItems = db.define('mealFoodItems', {
     autoIncrement: true,
   },
   calories: {
+<<<<<<< HEAD
     type: Sequelize.FLOAT,
 
   },
   quantity: {
     type: Sequelize.INTEGER,
 
+=======
+    type: Sequelize.INTEGER,
+    // validate: {
+    //   notEmpty: true,
+    // },
+  },
+  quantity: {
+    type: Sequelize.INTEGER,
+    defaultValue: 1,
+    // validate: {
+    //   notEmpty: true,
+    // },
+>>>>>>> 05403c2aed7c9d6073da04a272687310702ca33a
   },
   grams: {
     type: Sequelize.INTEGER, //added new property
@@ -43,6 +57,7 @@ MealFoodItems.afterSave(async mealFoodItem => {
     },
     { where: { id: mealFoodItem.mealId } }
   );
+
   const newMealItem = await createMealFoodItems(mealFoodItem);
   return newMealItem;
 });
