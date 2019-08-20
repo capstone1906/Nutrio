@@ -11,7 +11,7 @@ const MealFoodItems = db.define('mealFoodItems', {
     autoIncrement: true,
   },
   calories: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
   },
   quantity: {
     type: Sequelize.INTEGER,

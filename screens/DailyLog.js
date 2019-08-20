@@ -73,9 +73,15 @@ const FoodTimeContainer = props => {
                 <View style={{ flex: 2, paddingRight: 80 }}>
                   <Text style={styles.foodName}>{food.food_name}</Text>
 
-                  <Text style={styles.foodAmount}>
-                    Serving size: {food.mealFoodItems.quantity}
-                  </Text>
+                  {food.mealFoodItems.quantity > 0 ? (
+                    <Text style={styles.foodAmount}>
+                      Serving size: {food.mealFoodItems.quantity}
+                    </Text>
+                  ) : (
+                    <Text style={styles.foodAmount}>
+                      {food.mealFoodItems.grams} grams
+                    </Text>
+                  )}
                 </View>
 
                 <View style={{ flex: 1 }}>

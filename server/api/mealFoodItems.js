@@ -6,9 +6,8 @@ const {
 } = require("../db/postgres/models/index");
 module.exports = router;
 
-
-router.get('/:foodId/:mealId', async(req, res, next) => {
-  try{
+router.get("/:foodId/:mealId", async (req, res, next) => {
+  try {
     const mealFoodItem = await MealFoodItems.findOne({
       where: {
         foodItemId: req.params.foodId,
@@ -16,12 +15,11 @@ router.get('/:foodId/:mealId', async(req, res, next) => {
       }
     });
 
-    res.json(mealFoodItem)
-    }
-  catch(err) {
-    next(err)
+    res.json(mealFoodItem);
+  } catch (err) {
+    next(err);
   }
-})
+});
 
 router.delete("/:foodId/:mealId", async (req, res, next) => {
   try {
@@ -38,14 +36,26 @@ router.delete("/:foodId/:mealId", async (req, res, next) => {
   }
 });
 
-router.post("/:id/:quantity", async (req, res, next) => {
+router.post("/:id/:quantity/:grams", async (req, res, next) => {
   try {
+
+
+
     const foodItem = await FoodItems.findOrCreate({
       where: {
         food_name: req.body.food_name
       },
       defaults: req.body
     });
+
+    var quantity = parseInt(req.params.quantity);
+    var grams = parseInt(req.params.grams);
+
+    var calsGram = foodItem[0].calories/foodItem[0].weight
+
+    var fatGram = foodItem[0].fat/foodItem[0].weight
+    var carbsGram = foodItem[0].carbohydrates/foodItem[0].weight
+    var proteinGram = foodItem[0].protein/foodItem[0].weight
 
     const mealFoodItem = await MealFoodItems.findOrCreate({
       where: {
@@ -55,17 +65,19 @@ router.post("/:id/:quantity", async (req, res, next) => {
       defaults: {
         foodItemId: foodItem[0].id,
         mealId: req.params.id,
-        quantity: req.params.quantity,
-        calories: foodItem[0].calories * req.params.quantity
+        quantity: (grams === 0 ? quantity : 0),
+        grams: (grams === 1 ? quantity : 0),
+        calories: (quantity * (grams === 0 ? foodItem[0].calories : calsGram))
       }
     });
 
-    if(mealFoodItem[1] === false) {
-      var quantity = parseInt(req.params.quantity)
+    if (mealFoodItem[1] === false) {
+
       await mealFoodItem[0].update({
-        quantity: quantity,
-        calories: foodItem[0].calories * quantity
-      })
+        quantity: (grams === 0 ? quantity : 0),
+        grams: (grams === 1 ? quantity : 0),
+        calories: (quantity * (grams === 0 ? foodItem[0].calories : calsGram))
+      });
     }
 
     res.json({ foodItem, mealFoodItem });
