@@ -914,6 +914,25 @@ async function seed() {
   }
 
 
+  const breakfastMeals = [];
+  for (let i = 1; i < 15; i++) {
+    let arr = [];
+    while (arr.length < 3) {
+      let random = Math.floor(Math.random() * 10) + 1;
+      if (arr.indexOf(random) === -1) arr.push(random);
+    }
+    for (let j = 0; j < arr.length; j++) {
+      breakfastMeals.push(
+        MealFoodItems.create({
+          foodItemId: arr[j],
+          mealId: i,
+        })
+      );
+    }
+  }
+
+  await Promise.all(breakfastMeals);
+
   for (let i = 1; i <= 15; i++) {
     await UserMeals.create({
       mealId: i,
