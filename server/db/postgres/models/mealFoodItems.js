@@ -27,17 +27,6 @@ const MealFoodItems = db.define('mealFoodItems', {
 
 module.exports = MealFoodItems;
 
-MealFoodItems.beforeValidate(async mealFoodItem => {
-  const prevMeal = await MealFoodItems.findOne({
-    where: { foodItemId: mealFoodItem.foodItemId, mealId: mealFoodItem.mealId },
-  });
-  if (prevMeal) {
-    console.log(prevMeal.mealId);
-    mealFoodItem.quantity = prevMeal.quantity + 1
-    await prevMeal.destroy()
-  }
-});
-
 MealFoodItems.afterSave(async mealFoodItem => {
   const meal = await Meals.findByPk(mealFoodItem.mealId);
   const foodItem = await FoodItems.findByPk(mealFoodItem.foodItemId);
