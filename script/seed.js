@@ -391,7 +391,7 @@ async function seed() {
   // Create food items
   //breakfast
   const food1 = {
-    foodName: 'banana',
+    food_name: 'banana',
     calories: 105,
     fat: 1,
     carbohydrates: 27,
@@ -401,7 +401,7 @@ async function seed() {
   };
 
   const food2 = {
-    foodName: 'cocoa puffs',
+    food_name: 'cocoa puffs',
     calories: 138,
     fat: 2,
     carbohydrates: 30,
@@ -410,7 +410,7 @@ async function seed() {
     weight: 36,
   };
   const food3 = {
-    foodName: 'Protein Shake',
+    food_name: 'Protein Shake',
     calories: 171,
     fat: 9,
     carbohydrates: 3,
@@ -419,7 +419,7 @@ async function seed() {
     weight: 295,
   };
   const food4 = {
-    foodName: 'egg',
+    food_name: 'egg',
     calories: 72,
     fat: 5,
     carbohydrates: 1,
@@ -428,7 +428,7 @@ async function seed() {
     weight: 50,
   };
   const food5 = {
-    foodName: 'cottage cheese',
+    food_name: 'cottage cheese',
     calories: 214,
     fat: 10,
     carbohydrates: 8,
@@ -437,7 +437,7 @@ async function seed() {
     weight: 218,
   };
   const food6 = {
-    foodName: 'oatmeal',
+    food_name: 'oatmeal',
     calories: 167,
     fat: 4,
     carbohydrates: 29,
@@ -446,7 +446,7 @@ async function seed() {
     weight: 234,
   };
   const food7 = {
-    foodName: 'bacon',
+    food_name: 'bacon',
     calories: 54,
     fat: 5,
     carbohydrates: 1,
@@ -455,7 +455,7 @@ async function seed() {
     weight: 12,
   };
   const food8 = {
-    foodName: 'english muffin',
+    food_name: 'english muffin',
     calories: 134,
     fat: 1,
     carbohydrates: 27,
@@ -464,7 +464,7 @@ async function seed() {
     weight: 57,
   };
   const food9 = {
-    foodName: 'breakfast sausage',
+    food_name: 'breakfast sausage',
     calories: 75,
     fat: 7,
     carbohydrates: 1,
@@ -473,7 +473,7 @@ async function seed() {
     weight: 23,
   };
   const food10 = {
-    foodName: 'toast',
+    food_name: 'toast',
     calories: 64,
     fat: 1,
     carbohydrates: 12,
@@ -484,7 +484,7 @@ async function seed() {
 
   //lunch
   const food11 = {
-    foodName: 'rice',
+    food_name: 'rice',
     calories: 205,
     fat: 1,
     carbohydrates: 45,
@@ -493,7 +493,7 @@ async function seed() {
     weight: 158,
   };
   const food12 = {
-    foodName: 'broccoli',
+    food_name: 'broccoli',
     calories: 13,
     fat: 1,
     carbohydrates: 3,
@@ -502,7 +502,7 @@ async function seed() {
     weight: 37,
   };
   const food13 = {
-    foodName: 'chicken breast',
+    food_name: 'chicken breast',
     calories: 198,
     fat: 5,
     carbohydrates: 0,
@@ -511,7 +511,7 @@ async function seed() {
     weight: 120,
   };
   const food14 = {
-    foodName: 'brussel sprouts',
+    food_name: 'brussel sprouts',
     calories: 61,
     fat: 1,
     carbohydrates: 12,
@@ -520,7 +520,7 @@ async function seed() {
     weight: 168,
   };
   const food15 = {
-    foodName: 'cheddar cheese',
+    food_name: 'cheddar cheese',
     calories: 115,
     fat: 10,
     carbohydrates: 1,
@@ -529,7 +529,7 @@ async function seed() {
     weight: 29,
   };
   const food16 = {
-    foodName: 'tomato',
+    food_name: 'tomato',
     calories: 23,
     fat: 1,
     carbohydrates: 5,
@@ -538,7 +538,7 @@ async function seed() {
     weight: 123,
   };
   const food17 = {
-    foodName: 'hamburger',
+    food_name: 'hamburger',
     calories: 540,
     fat: 27,
     carbohydrates: 41,
@@ -547,7 +547,7 @@ async function seed() {
     weight: 226,
   };
   const food18 = {
-    foodName: 'pickle',
+    food_name: 'pickle',
     calories: 5,
     fat: 0,
     carbohydrates: 1,
@@ -556,7 +556,7 @@ async function seed() {
     weight: 35,
   };
   const food19 = {
-    foodName: 'hummus',
+    food_name: 'hummus',
     calories: 400,
     fat: 24,
     carbohydrates: 36,
@@ -565,7 +565,7 @@ async function seed() {
     weight: 240,
   };
   const food20 = {
-    foodName: 'pita chips',
+    food_name: 'pita chips',
     calories: 130,
     fat: 4,
     carbohydrates: 20,
@@ -576,7 +576,7 @@ async function seed() {
 
   //dinner
   const food21 = {
-    foodName: 'pizza',
+    food_name: 'pizza',
     calories: 285,
     fat: 11,
     carbohydrates: 36,
@@ -585,7 +585,7 @@ async function seed() {
     weight: 108,
   };
   const food22 = {
-    foodName: 'can of tuna',
+    food_name: 'can of tuna',
     calories: 220,
     fat: 5,
     carbohydrates: 0,
@@ -595,7 +595,7 @@ async function seed() {
   };
 
   const food23 = {
-    foodName: 'salmon',
+    food_name: 'salmon',
     calories: 468,
     fat: 28,
     carbohydrates: 0,
@@ -604,7 +604,7 @@ async function seed() {
     weight: 227,
   };
   const food24 = {
-    foodName: 'pasta',
+    food_name: 'pasta',
     calories: 196,
     fat: 2,
     carbohydrates: 39,
@@ -614,7 +614,7 @@ async function seed() {
   };
 
   const food25 = {
-    foodName: 'sushi',
+    food_name: 'sushi',
     calories: 349,
     fat: 19,
     carbohydrates: 38,
@@ -623,7 +623,7 @@ async function seed() {
     weight: 211,
   };
   const food26 = {
-    foodName: 'meatloaf',
+    food_name: 'meatloaf',
     calories: 330,
     fat: 19,
     carbohydrates: 14,
@@ -632,7 +632,7 @@ async function seed() {
     weight: 183,
   };
   const food27 = {
-    foodName: 'sweet potato',
+    food_name: 'sweet potato',
     calories: 115,
     fat: 1,
     carbohydrates: 27,
@@ -641,7 +641,7 @@ async function seed() {
     weight: 151,
   };
   const food28 = {
-    foodName: 'steak',
+    food_name: 'steak',
     calories: 79,
     fat: 6,
     carbohydrates: 0,
@@ -650,7 +650,7 @@ async function seed() {
     weight: 29,
   };
   const food29 = {
-    foodName: 'zucchini',
+    food_name: 'zucchini',
     calories: 33,
     fat: 1,
     carbohydrates: 6,
@@ -659,7 +659,7 @@ async function seed() {
     weight: 217,
   };
   const food30 = {
-    foodName: 'bread roll',
+    food_name: 'bread roll',
     calories: 77,
     fat: 2,
     carbohydrates: 13,
@@ -669,7 +669,7 @@ async function seed() {
   };
   //snacks
   const food31 = {
-    foodName: 'apple',
+    food_name: 'apple',
     calories: 95,
     fat: 1,
     carbohydrates: 25,
@@ -678,7 +678,7 @@ async function seed() {
     weight: 182,
   };
   const food32 = {
-    foodName: 'ritz crackers',
+    food_name: 'ritz crackers',
     calories: 17,
     fat: 1,
     carbohydrates: 2,
@@ -688,7 +688,7 @@ async function seed() {
   };
 
   const food33 = {
-    foodName: 'almond',
+    food_name: 'almond',
     calories: 8,
     fat: 1,
     carbohydrates: 1,
@@ -697,7 +697,7 @@ async function seed() {
     weight: 2,
   };
   const food34 = {
-    foodName: 'avocado',
+    food_name: 'avocado',
     calories: 321,
     fat: 30,
     carbohydrates: 18,
@@ -706,7 +706,7 @@ async function seed() {
     weight: 201,
   };
   const food35 = {
-    foodName: 'blueberries',
+    food_name: 'blueberries',
     calories: 1,
     fat: 0,
     carbohydrates: 1,
@@ -715,7 +715,7 @@ async function seed() {
     weight: 2,
   };
   const food36 = {
-    foodName: 'granola bar',
+    food_name: 'granola bar',
     calories: 118,
     fat: 5,
     carbohydrates: 20,
@@ -724,7 +724,7 @@ async function seed() {
     weight: 28,
   };
   const food37 = {
-    foodName: 'cashews',
+    food_name: 'cashews',
     calories: 162,
     fat: 14,
     carbohydrates: 10,
@@ -733,7 +733,7 @@ async function seed() {
     weight: 28,
   };
   const food38 = {
-    foodName: 'dried apricot',
+    food_name: 'dried apricot',
     calories: 69,
     fat: 1,
     carbohydrates: 18,
@@ -742,7 +742,7 @@ async function seed() {
     weight: 28,
   };
   const food39 = {
-    foodName: 'beef stick',
+    food_name: 'beef stick',
     calories: 116,
     fat: 11,
     carbohydrates: 1,
@@ -751,7 +751,7 @@ async function seed() {
     weight: 23,
   };
   const food40 = {
-    foodName: 'strawberry',
+    food_name: 'strawberry',
     calories: 6,
     fat: 0,
     carbohydrates: 2,
