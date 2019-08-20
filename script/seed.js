@@ -913,15 +913,6 @@ async function seed() {
     });
   }
 
-  //  Create mealFoodItems breakfast
-  // for (let i = 1; i <= 15; i++) {
-  //   for (let j = 1; j <= 3; j++) {
-  //     await MealFoodItems.create({
-  //       foodItemId: 1 + Math.floor(Math.random() * 10),
-  //       mealId: i,
-  //     });
-  //   }
-  // }
 
   for (let i = 1; i <= 15; i++) {
     await UserMeals.create({
