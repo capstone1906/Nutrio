@@ -38,10 +38,10 @@ export const getMealsThunk = () => async dispatch => {
   }
 };
 
-export const postFood = (food, mealId) => async dispatch => {
+export const postFood = (food, mealId, quantity) => async dispatch => {
   try {
     var res2 = await axios.post(
-      `https://9e584b3c.ngrok.io/api/mealFoodItems/${mealId}`,
+      `https://9e584b3c.ngrok.io/api/mealFoodItems/${mealId}/${quantity}`,
       food
     );
     var res = await axios.get("https://9e584b3c.ngrok.io/api/meals");

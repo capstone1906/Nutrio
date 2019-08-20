@@ -15,6 +15,7 @@ import { Button, Divider } from "react-native-elements";
 
 import Swipeout from "react-native-swipeout";
 import { deleteMealItem } from "../components/store/meals";
+import axios from "axios";
 
 const FoodTimeHeader = props => {
   return (
@@ -31,6 +32,7 @@ const FoodTimeHeader = props => {
 
 const FoodTimeContainer = props => {
   var foodItems = [];
+
   if (props.meal.foodItems) {
     foodItems = props.meal.foodItems;
   }
@@ -40,6 +42,8 @@ const FoodTimeContainer = props => {
       <FoodTimeHeader time={props.time} />
 
       {foodItems.map(food => {
+        var calories = food.mealFoodItems.calories;
+
         var swipeoutBtns = [
           {
             text: "Delete",
@@ -49,10 +53,11 @@ const FoodTimeContainer = props => {
             }
           }
         ];
+
         return (
           <Swipeout
             right={swipeoutBtns}
-            key={food.name}
+            key={food.food_name}
             backgroundColor="white"
           >
             <TouchableOpacity
@@ -66,10 +71,14 @@ const FoodTimeContainer = props => {
               <View style={styles.foodItem}>
                 <View style={{ flex: 2, paddingRight: 80 }}>
                   <Text style={styles.foodName}>{food.food_name}</Text>
+
+                  <Text style={styles.foodAmount}>
+                    Serving size: {food.mealFoodItems.quantity}
+                  </Text>
                 </View>
 
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.foodName}>{food.calories}</Text>
+                  <Text style={styles.foodName}>{calories}</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -82,7 +91,9 @@ const FoodTimeContainer = props => {
         buttonStyle={styles.addFoodButton}
         title="Add food"
         onPress={() => {
-          props.navigation.navigate("FoodSearch", { mealId: props.meal.id });
+          props.navigation.navigate("FoodSearch", {
+            mealId: props.meal.id
+          });
         }}
       />
     </View>
@@ -131,7 +142,6 @@ class DailyLog extends React.Component {
 
   async componentDidMount() {
     await this.props.getMeals();
-
   }
 
   render() {
@@ -243,11 +253,13 @@ class DailyLog extends React.Component {
 
 const styles = StyleSheet.create({
   foodName: {
-    fontSize: 16
+    fontSize: 18
   },
   foodItem: {
     flexDirection: "row",
-    paddingLeft: 10
+    paddingLeft: 10,
+    paddingTop: 5,
+    paddingBottom: 5
   },
   date: {
     justifyContent: "center",
@@ -273,6 +285,10 @@ const styles = StyleSheet.create({
   addFoodButton: {
     width: 100,
     backgroundColor: "limegreen"
+  },
+  foodAmount: {
+    fontSize: 12,
+    color: "grey"
   }
 });
 
