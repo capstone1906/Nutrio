@@ -15,7 +15,8 @@ import { Button, Divider } from "react-native-elements";
 
 import Swipeout from "react-native-swipeout";
 import { deleteMealItem } from "../components/store/meals";
-import axios from "axios";
+import * as Progress from "react-native-progress";
+import { getUserThunk } from "../components/store/user";
 
 const FoodTimeHeader = props => {
   return (
@@ -41,7 +42,7 @@ const FoodTimeContainer = props => {
     <View style={styles.FoodTimeContainer}>
       <FoodTimeHeader time={props.time} />
 
-      {foodItems.map((food,idx) => {
+      {foodItems.map((food, idx) => {
         var calories = food.mealFoodItems.calories;
 
         var swipeoutBtns = [
@@ -85,7 +86,9 @@ const FoodTimeContainer = props => {
                 </View>
 
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.foodName}>{calories}</Text>
+                  <Text style={styles.foodName}>
+                    {Number(calories).toFixed(0)}
+                  </Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -149,6 +152,7 @@ class DailyLog extends React.Component {
 
   async componentDidMount() {
     await this.props.getMeals();
+    await this.props.getUser();
   }
 
   render() {
@@ -202,6 +206,41 @@ class DailyLog extends React.Component {
       }
     }
 
+    var calorieLimit = 0;
+    var totalCals = 0;
+
+    if (this.props.user.dailyGoal) {
+      calorieLimit = this.props.user.dailyGoal.calorieLimit;
+      totalCals =
+        breakfast.totalCalories +
+        lunch.totalCalories +
+        dinner.totalCalories +
+        snacks.totalCalories;
+    }
+
+    var percent = Number(totalCals / calorieLimit).toFixed(1);
+    var barColor;
+    if (isNaN(percent)) {
+      percent = 0;
+    }
+    if(percent < 0.5) {
+      barColor = 'blue'
+    }
+    if(percent > 0.5) {
+      barColor='orange'
+    }
+
+    if(percent >= 0.8) {
+      barColor = 'red'
+    }
+    if(percent >= 0.9) {
+      barColor = 'crimson'
+    }
+
+    console.log('meals are', breakfast, lunch, dinner, snacks)
+
+
+
     return (
       <ScrollView style={styles.container}>
         <View style={styles.date}>
@@ -229,6 +268,26 @@ class DailyLog extends React.Component {
           />
         </View>
 
+        <View style={styles.progress}>
+
+          <View style={{ justifyContent: "center", flexDirection: "column" }}>
+            <Text>Calories: </Text>
+            <Text> {totalCals.toFixed(0)}</Text>
+          </View>
+
+          <Progress.Bar
+            progress={percent}
+            width={225}
+            height={15}
+            color={barColor}
+          />
+
+          <View style={{ justifyContent: "center", flexDirection: "column" }}>
+            <Text>Limit: </Text>
+            <Text> {calorieLimit.toFixed(0)}</Text>
+          </View>
+        </View>
+
         <FoodTimeContainer
           time="Breakfast"
           navigation={this.props.navigation}
@@ -253,6 +312,12 @@ class DailyLog extends React.Component {
           meal={snacks}
           deleteItem={this.deleteItem}
         />
+        {/* <FoodTimeContainer
+          time="Exercise"
+          navigation={this.props.navigation}
+          meal={{}}
+          deleteItem={this.deleteItem}
+        /> */}
       </ScrollView>
     );
   }
@@ -271,6 +336,15 @@ const styles = StyleSheet.create({
   date: {
     justifyContent: "center",
     paddingLeft: 75
+  },
+  progress: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignContent: 'center',
+    alignItems: 'center',
+    // paddingLeft: 40,
+    paddingTop: 20,
+    paddingBottom: 25
   },
   container: {
     flex: 1,
@@ -309,13 +383,16 @@ DailyLog.navigationOptions = {
 
 const mapState = state => {
   return {
-    meals: state.meals
+    meals: state.meals,
+    user: state.user
   };
 };
 
 const mapDispatch = dispatch => {
   return {
     getMeals: () => dispatch(getMealsThunk()),
+    getUser: () => dispatch(getUserThunk()),
+
     deleteMealItem: (foodId, mealId) => dispatch(deleteMealItem(foodId, mealId))
   };
 };

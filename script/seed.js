@@ -925,6 +925,7 @@ async function seed() {
   await Promise.all(mealsLunch);
   await Promise.all(mealsSnack);
 
+  var yesterday = '8-3-2019'
 
 
   // Create longTermGoals

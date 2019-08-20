@@ -46,8 +46,8 @@ router.post("/:id/:quantity/:grams", async (req, res, next) => {
       defaults: req.body
     });
 
-    var quantity = parseInt(req.params.quantity);
-    var grams = parseInt(req.params.grams);
+    var quantity = req.params.quantity;
+    var grams = req.params.grams;
 
     var calsGram = foodItem[0].calories/foodItem[0].weight
 
