@@ -18,14 +18,29 @@ class Profile extends React.Component {
     super();
 
     this.removeItem = this.removeItem.bind(this);
+    this.retrieveData = this.retrieveData.bind(this);
   }
 
   async componentDidMount() {
     await this.props.getUser();
+    this.retrieveData();
   }
+
+  retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user');
+      console.log(value);
+      if (value !== null) {
+        this.props.navigation.navigate('Main');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   removeItem = async () => {
     await AsyncStorage.removeItem('user');
+    this.props.navigation.navigate('Auth');
   };
 
   render() {

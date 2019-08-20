@@ -24,6 +24,7 @@ class AuthHomeScreen extends React.Component {
   retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('user');
+      console.log(value);
       if (value !== null) {
         this.props.navigation.navigate('Main');
       }
