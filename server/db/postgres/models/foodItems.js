@@ -3,7 +3,7 @@ const db = require('../db');
 const createFood = require('../../neo4j/models/foodItems');
 
 const FoodItems = db.define('foodItems', {
-  food_name: {
+  foodName: {
     type: Sequelize.STRING,
     // unique: true,
   },

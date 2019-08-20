@@ -26,6 +26,7 @@ class Profile extends React.Component {
 
   removeItem = async () => {
     await AsyncStorage.removeItem('user');
+    this.props.navigation.navigate('Main');
   };
 
   render() {
