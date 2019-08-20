@@ -8,44 +8,67 @@ import {
   TouchableOpacity,
   View,
   ImageBackground,
+  AsyncStorage,
 } from 'react-native';
 
-export default function AuthHomeScreen(props) {
-  const navigate = props.navigation.navigate;
-  return (
-    <ImageBackground
-      style={styles.backgroundImage}
-      source={require('../assets/images/trail-in-the-woods.jpg')}
-      blurRadius={2}
-    >
-      <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={require('../assets/images/robot-dev.png')}
-              style={styles.welcomeImage}
-            />
-            <Text style={styles.name}>Wellness Tracker</Text>
-          </View>
-          <View>
-            <TouchableOpacity onPress={() => navigate('UserJoin')}>
-              <View style={styles.joinSignIn}>
-                <Text style={styles.buttonText}>Join Now </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigate('ExistingUser')}>
-              <View style={styles.joinSignIn}>
-                <Text style={styles.buttonText}>Existing Users </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
-    </ImageBackground>
-  );
+class AuthHomeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.retrieveData = this.retrieveData.bind(this);
+  }
+  componentDidMount() {
+    this.retrieveData();
+  }
+
+  retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user');
+      if (value !== null) {
+        this.props.navigation.navigate('Main');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  render() {
+    const navigate = this.props.navigation.navigate;
+    return (
+      <ImageBackground
+        style={styles.backgroundImage}
+        source={require('../assets/images/trail-in-the-woods.jpg')}
+        blurRadius={2}
+      >
+        <View style={styles.container}>
+          <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.contentContainer}
+          >
+            <View style={styles.welcomeContainer}>
+              <Image
+                source={require('../assets/images/robot-dev.png')}
+                style={styles.welcomeImage}
+              />
+              <Text style={styles.name}>Wellness Tracker</Text>
+            </View>
+            <View>
+              <TouchableOpacity onPress={() => navigate('UserJoin')}>
+                <View style={styles.joinSignIn}>
+                  <Text style={styles.buttonText}>Join Now </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigate('ExistingUser')}>
+                <View style={styles.joinSignIn}>
+                  <Text style={styles.buttonText}>Existing Users </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
+      </ImageBackground>
+    );
+  }
 }
 
 AuthHomeScreen.navigationOptions = {
@@ -120,3 +143,5 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
   },
 });
+
+export default AuthHomeScreen;

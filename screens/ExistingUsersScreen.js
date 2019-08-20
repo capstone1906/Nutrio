@@ -1,19 +1,69 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  AsyncStorage,
+} from 'react-native';
+import { Input } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { getUserThunk } from '../components/store/user';
 
-export default function ExistingUsersScreen(props) {
-  const navigate = props.navigation.navigate;
-  return (
-    <View>
-      <Text>Login Page</Text>
-      <TouchableOpacity onPress={() => navigate('Main')}>
-        <View style={styles.joinSignIn}>
-          <Text style={styles.buttonText}>Sign In </Text>
+class ExistingUsersScreen extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: '',
+      password: '',
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.retrieveData = this.retrieveData.bind(this);
+  }
+
+  componentDidMount() {
+    this.retrieveData();
+  }
+
+  async handleSubmit() {
+    await this.props.getUser(this.state.email);
+    this.props.navigation.navigate('Main');
+  }
+
+  retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('user');
+      if (value !== null) {
+        this.props.navigation.navigate('Main');
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  render() {
+    return (
+      <View>
+        <View style={styles.inputFields}>
+          <Input onChangeText={text => this.setState({ email: text })} />
+          <Text style={styles.formLabelText}>Email</Text>
         </View>
-      </TouchableOpacity>
-    </View>
-  );
+        <View style={styles.inputFields}>
+          <Input onChangeText={text => this.setState({ password: text })} />
+          <Text style={styles.formLabelText}>Password</Text>
+        </View>
+        <TouchableOpacity onPress={() => this.handleSubmit()}>
+          <View style={styles.joinSignIn}>
+            <Text style={styles.buttonText}>Sign In </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }
+
 const styles = StyleSheet.create({
   joinSignIn: {
     alignItems: 'center',
@@ -27,3 +77,14 @@ const styles = StyleSheet.create({
     margin: 20,
   },
 });
+
+const mapDispatch = dispatch => {
+  return {
+    getUser: () => dispatch(getUserThunk()),
+  };
+};
+
+export default connect(
+  null,
+  mapDispatch
+)(ExistingUsersScreen);

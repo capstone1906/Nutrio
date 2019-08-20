@@ -75,6 +75,7 @@ class FoodSearchItem extends React.Component {
     var food = this.props.navigation.getParam("food", "hi");
     var mealId = this.props.navigation.getParam("mealId");
 
+
     const res = await axios.post(
       `https://trackapi.nutritionix.com/v2/natural/nutrients`,
       {
