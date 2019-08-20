@@ -39,8 +39,6 @@ router.delete("/:foodId/:mealId", async (req, res, next) => {
 router.post("/:id/:quantity/:grams", async (req, res, next) => {
   try {
 
-
-
     const foodItem = await FoodItems.findOrCreate({
       where: {
         food_name: req.body.food_name

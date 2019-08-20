@@ -41,7 +41,7 @@ const FoodTimeContainer = props => {
     <View style={styles.FoodTimeContainer}>
       <FoodTimeHeader time={props.time} />
 
-      {foodItems.map(food => {
+      {foodItems.map((food,idx) => {
         var calories = food.mealFoodItems.calories;
 
         var swipeoutBtns = [

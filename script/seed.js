@@ -802,82 +802,101 @@ async function seed() {
     FoodItems.create(food40),
   ]);
 
+  var yesterday = `07-31-2019`;
+  // var ranDay = new Date(yesterday);
+
+
   //Breakfast
   const meal1 = {
     name: 'Power Breakfast',
     entreeType: 'Breakfast',
+    createdAt: yesterday
   };
 
   var meal2 = {
     name: 'Great Dish 2',
     entreeType: 'Breakfast',
+    createdAt: yesterday
   };
 
   var meal3 = {
     name: 'Great Dish 3',
     entreeType: 'Breakfast',
+    createdAt: yesterday
   };
 
   var meal4 = {
     name: 'Great Dish 4',
     entreeType: 'Breakfast',
+    createdAt: yesterday
   };
 
   var meal5 = {
     name: 'Great Dish 5',
     entreeType: 'Breakfast',
+    createdAt: yesterday
   };
 
   //lunch
   var meal6 = {
     name: 'Great Dish 6',
     entreeType: 'Lunch',
+    createdAt: yesterday
   };
 
   var meal7 = {
     name: 'Great Dish 7',
     entreeType: 'Lunch',
+    createdAt: yesterday
   };
 
   var meal8 = {
     name: 'Great Dish 8',
     entreeType: 'Lunch',
+    createdAt: yesterday
   };
 
   var meal9 = {
     name: 'Great Dish 9',
     entreeType: 'Lunch',
+    createdAt: yesterday
   };
   //dinner
   var meal10 = {
     name: 'Great Dish 10',
     entreeType: 'Dinner',
+    createdAt: yesterday
   };
 
   var meal11 = {
     name: 'Great Dish 11',
     entreeType: 'Dinner',
+    createdAt: yesterday
   };
 
   var meal12 = {
     name: 'Great Dish 12',
     entreeType: 'Dinner',
+    createdAt: yesterday
   };
 
   var meal13 = {
     name: 'Great Dish 13',
     entreeType: 'Dinner',
+    createdAt: yesterday
   };
 
   //snacks
   var meal14 = {
     name: 'Great Dish 14',
     entreeType: 'Snacks',
+    createdAt: yesterday
   };
 
   var meal15 = {
     name: 'Great Dish 15',
     entreeType: 'Snacks',
+    createdAt: yesterday
   };
   // Create meals
   await Promise.all([
@@ -898,8 +917,7 @@ async function seed() {
     Meals.create(meal15),
   ]);
 
-  var yesterday = `07-31-2019`;
-  // var ranDay = new Date(yesterday);
+
 
   // Create longTermGoals
   for (let i = 1; i <= 2; i++) {
@@ -932,10 +950,10 @@ async function seed() {
     }
     for (let j = 0; j < arr.length; j++) {
       breakfastMeals.push(
-        MealFoodItems.create({
-          foodItemId: arr[j],
-          mealId: i,
-        })
+        // MealFoodItems.create({
+        //   foodItemId: arr[j],
+        //   mealId: i,
+        // })
       );
     }
   }
