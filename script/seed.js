@@ -1,7 +1,6 @@
 /* eslint-disable complexity */
 /* eslint-disable max-statements */
 'use strict';
-const faker = require('faker');
 const { green, red } = require('chalk');
 const db = require('../server/db/postgres/db');
 
