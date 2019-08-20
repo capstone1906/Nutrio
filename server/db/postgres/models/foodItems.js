@@ -26,11 +26,7 @@ const FoodItems = db.define('foodItems', {
     type: Sequelize.STRING,
   },
   weight: {
-<<<<<<< HEAD
-    type: Sequelize.FLOAT
-=======
-    type: Sequelize.INTEGER,
->>>>>>> 05403c2aed7c9d6073da04a272687310702ca33a
+    type: Sequelize.FLOAT,
   },
 });
 

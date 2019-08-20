@@ -6,7 +6,7 @@ import {
 } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
+import ProgressScreen from '../screens/ProgressScreen';
 // import LinksScreen from '../screens/LinksScreen';
 import ProfileScreen from '../screens/profile';
 import DailyLog from '../screens/DailyLog';
@@ -21,16 +21,16 @@ const config = Platform.select({
   default: {},
 });
 
-const HomeStack = createStackNavigator(
+const Progress = createStackNavigator(
   {
-    Home: HomeScreen,
+    Home: ProgressScreen,
   },
 
   config
 );
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+Progress.navigationOptions = {
+  tabBarLabel: 'Progress',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -43,7 +43,7 @@ HomeStack.navigationOptions = {
   ),
 };
 
-HomeStack.path = '';
+Progress.path = '';
 
 const MealsStack = createStackNavigator(
   {
@@ -108,9 +108,9 @@ DailyLogStack.navigationOptions = {
 DailyLogStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
-  HomeStack,
-  MealsStack,
+  Progress,
   DailyLogStack,
+  MealsStack,
   Profile,
 });
 
