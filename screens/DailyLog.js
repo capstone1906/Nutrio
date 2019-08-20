@@ -60,7 +60,6 @@ const FoodTimeContainer = props => {
             right={swipeoutBtns}
             key={food.food_name}
             backgroundColor="white"
-            key={idx}
           >
             <TouchableOpacity
               onPress={() => {

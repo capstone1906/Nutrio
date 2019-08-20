@@ -116,11 +116,11 @@ class FoodSearchItem extends React.Component {
 
 
     var findFood = await axios.get(
-      `https://9e584b3c.ngrok.io/api/food/${food.food_name}`
+      `https://e1a2521c.ngrok.io/api/food/${food.food_name}`
     );
     if (findFood.data) {
       var mealFoodItem = await axios.get(
-        `https://9e584b3c.ngrok.io/api/mealFoodItems/${
+        `https://e1a2521c.ngrok.io/api/mealFoodItems/${
           findFood.data.id
         }/${mealId}`
       );
