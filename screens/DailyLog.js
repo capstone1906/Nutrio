@@ -31,6 +31,25 @@ const FoodTimeHeader = props => {
   );
 };
 
+const ExerciseContainer = props => {
+  return (
+    <View style={styles.FoodTimeContainer}>
+      <FoodTimeHeader time={props.time} />
+
+
+      <Button
+        buttonStyle={styles.addFoodButton}
+        title="Add Exercise"
+        onPress={() => {
+          // props.navigation.navigate("FoodSearch", {
+          //   mealId: props.meal.id
+          // });
+        }}
+      />
+    </View>
+  );
+};
+
 const FoodTimeContainer = props => {
   var foodItems = [];
 
@@ -222,23 +241,21 @@ class DailyLog extends React.Component {
     if (isNaN(percent)) {
       percent = 0;
     }
-    if(percent < 0.5) {
-      barColor = 'blue'
+    if (percent < 0.25) {
+      barColor = "blue";
     }
-    if(percent > 0.5) {
-      barColor='orange'
+    if (percent < 0.5) {
+      barColor = "green";
     }
-
-    if(percent >= 0.8) {
-      barColor = 'red'
+    if (percent > 0.5) {
+      barColor = "orange";
     }
-    if(percent >= 0.9) {
-      barColor = 'crimson'
+    if (percent >= 0.8) {
+      barColor = "red";
     }
-
-    console.log('meals are', breakfast, lunch, dinner, snacks)
-
-
+    if (percent >= 0.9) {
+      barColor = "crimson";
+    }
 
     return (
       <ScrollView style={styles.container}>
@@ -268,7 +285,6 @@ class DailyLog extends React.Component {
         </View>
 
         <View style={styles.progress}>
-
           <View style={{ justifyContent: "center", flexDirection: "column" }}>
             <Text>Calories: </Text>
             <Text> {totalCals.toFixed(0)}</Text>
@@ -311,12 +327,7 @@ class DailyLog extends React.Component {
           meal={snacks}
           deleteItem={this.deleteItem}
         />
-        {/* <FoodTimeContainer
-          time="Exercise"
-          navigation={this.props.navigation}
-          meal={{}}
-          deleteItem={this.deleteItem}
-        /> */}
+        <ExerciseContainer time="exercise" />
       </ScrollView>
     );
   }
@@ -339,8 +350,8 @@ const styles = StyleSheet.create({
   progress: {
     flexDirection: "row",
     justifyContent: "center",
-    alignContent: 'center',
-    alignItems: 'center',
+    alignContent: "center",
+    alignItems: "center",
     // paddingLeft: 40,
     paddingTop: 20,
     paddingBottom: 25
@@ -364,6 +375,7 @@ const styles = StyleSheet.create({
   },
   addFoodButton: {
     width: 100,
+    height: 50,
     backgroundColor: "limegreen"
   },
   foodAmount: {
