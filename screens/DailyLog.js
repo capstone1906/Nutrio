@@ -16,6 +16,8 @@ import { Button, Divider } from "react-native-elements";
 
 import Swipeout from "react-native-swipeout";
 import * as Progress from "react-native-progress";
+import { getUserThunk } from "../components/store/user";
+import { getCheckInsThunk } from "../components/store/checkIns";
 
 const FoodTimeHeader = props => {
   return (
@@ -31,9 +33,42 @@ const FoodTimeHeader = props => {
 };
 
 const ExerciseContainer = props => {
+  var calories = 0;
+  if (props.todaysCheckIn) {
+    calories = props.todaysCheckIn.caloriesBurned;
+  }
+
+  var swipeoutBtns = [
+    {
+      text: "Reset",
+      backgroundColor: "red",
+      onPress() {
+        props.resetCaloriesBurned(props.checkIns.todaysCheckIn.id);
+      }
+    }
+  ];
+
+
+
   return (
     <View style={styles.FoodTimeContainer}>
       <FoodTimeHeader time={props.time} />
+      <Swipeout
+        right={swipeoutBtns}
+        backgroundColor="white"
+      >
+        <View style={styles.foodItem}>
+          <View style={{ flex: 2, paddingRight: 80 }}>
+            <Text style={styles.foodName}>Calories Burned</Text>
+          </View>
+
+          <View style={{ flex: 1 }}>
+            <Text style={styles.foodName}>{Number(calories).toFixed(0)}</Text>
+          </View>
+        </View>
+
+        <Divider style={{ backgroundColor: "blue" }} />
+      </Swipeout>
 
       <Button
         buttonStyle={styles.addFoodButton}
@@ -152,6 +187,12 @@ class DailyLog extends React.Component {
     };
 
     this.deleteItem = this.deleteItem.bind(this);
+    this.resetCaloriesBurned = this.resetCaloriesBurned.bind(this);
+
+  }
+
+  resetCaloriesBurned() {
+
   }
 
   async deleteItem(foodId, mealId) {
@@ -160,7 +201,7 @@ class DailyLog extends React.Component {
   }
 
   async componentDidMount() {
-    console.log('date ispioajpoija', this.state.date)
+    await this.props.getCheckIns();
     await this.props.getMeals(this.state.date);
     await this.props.getUser();
   }
@@ -283,7 +324,12 @@ class DailyLog extends React.Component {
           meal={snacks}
           deleteItem={this.deleteItem}
         />
-        <ExerciseContainer time="exercise" navigation={this.props.navigation} />
+        <ExerciseContainer
+          todaysCheckIn={this.props.checkIns.todaysCheckIn}
+          time="exercise"
+          navigation={this.props.navigation}
+          resetCaloriesBurned={this.resetCaloriesBurned}
+        />
       </ScrollView>
     );
   }
@@ -351,7 +397,8 @@ DailyLog.navigationOptions = {
 const mapState = state => {
   return {
     meals: state.meals,
-    user: state.user
+    user: state.user,
+    checkIns: state.checkIns
   };
 };
 
@@ -359,6 +406,7 @@ const mapDispatch = dispatch => {
   return {
     getMeals: date => dispatch(getMealsThunk(date)),
     getUser: () => dispatch(getUserThunk()),
+    getCheckIns: () => dispatch(getCheckInsThunk()),
 
     deleteMealItem: (foodId, mealId) => dispatch(deleteMealItem(foodId, mealId))
   };
