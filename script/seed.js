@@ -121,9 +121,9 @@ async function seed() {
   await DailyGoals.create({
     calorieLimit: 2000,
     caloriesToBurn: 200,
-    carbLimit: 50,
-    proteinLimit: 30,
-    fatLimit: 10,
+    carbLimit: 200,
+    proteinLimit: 90,
+    fatLimit: 110,
     userId: 1,
   });
 

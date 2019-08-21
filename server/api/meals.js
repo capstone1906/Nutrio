@@ -99,5 +99,5 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/recommendedMeals', async (req, res, next) => {
-
+  console.log('req.params', req.query)
 });

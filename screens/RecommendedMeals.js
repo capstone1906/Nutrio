@@ -8,6 +8,9 @@ import {
   ScrollView,
 } from 'react-native';
 import { Button } from 'react-native-elements';
+import axios from 'axios';
+import { ngrok } from '../secret';
+import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -31,17 +34,34 @@ const MealButton = props => {
 };
 
 const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
-export default class RecommendedMeals extends React.Component {
+class RecommendedMeals extends React.Component {
   constructor() {
     super();
     this.state = {
       activeButton: 'Breakfast',
+      meals: [],
     };
     this.handlePress = this.handlePress.bind(this);
   }
-  handlePress(evt) {
+  async handlePress(evt) {
+    const dailyGoals = this.props.user.dailyGoal;
+    const meal = {
+      calories: dailyGoals.calorieLimit / 4,
+      carbs: dailyGoals.carbLimit / 4,
+      protein: dailyGoals.proteinLimit / 4,
+      fat: dailyGoals.fatLimit / 4,
+      type: evt,
+    };
+    console.log('meal', meal)
+    const recMeals = await axios.get(`${ngrok}/api/meals/recommendedMeals`, {
+      params: {
+        meal: meal,
+      },
+    });
+
     this.setState({
       activeButton: evt,
+      meals: recMeals,
     });
   }
   render() {
@@ -57,9 +77,7 @@ export default class RecommendedMeals extends React.Component {
             />
           ))}
         </View>
-        <ScrollView>
-
-        </ScrollView>
+        <ScrollView />
       </View>
     );
   }
@@ -72,3 +90,11 @@ RecommendedMeals.navigationOptions = {
   },
   headerTintColor: 'white',
 };
+
+const mapState = state => {
+  return {
+    user: state.user,
+  };
+};
+
+export default connect(mapState)(RecommendedMeals);

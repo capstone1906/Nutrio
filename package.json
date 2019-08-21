@@ -18,6 +18,7 @@
     "@react-native-community/async-storage": "github:react-native-community/async-storage",
     "@react-navigation/web": "^1.0.0-alpha.9",
     "axios": "^0.19.0",
+    "buffer": "^5.4.0",
     "chalk": "^2.4.2",
     "expo": "^34.0.1",
     "expo-asset": "^6.0.0",
@@ -54,6 +55,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "sequelize": "^5.15.0",
+    "tls": "0.0.1",
     "victory-native": "^32.0.2"
   },
   "devDependencies": {

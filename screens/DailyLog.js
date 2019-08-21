@@ -16,7 +16,6 @@ import { Button, Divider } from "react-native-elements";
 
 import Swipeout from "react-native-swipeout";
 import * as Progress from "react-native-progress";
-import { getUserThunk } from "../components/store/user";
 import { getCheckInsThunk } from "../components/store/checkIns";
 
 const FoodTimeHeader = props => {
