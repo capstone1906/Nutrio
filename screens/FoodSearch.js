@@ -58,8 +58,6 @@ export default class FoodSearch extends React.Component {
       }
     );
 
-    // console.log('results are1!!!!:::::', res.data);
-
     if (res.data.common) {
       this.setState({
         currentSearch: res.data.common.concat(res.data.branded),

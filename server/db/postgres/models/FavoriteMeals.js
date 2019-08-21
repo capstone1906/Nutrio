@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
+const createFavoriteMeal = require('../../neo4j/models/favoriteMeals');
 
 const FavoriteMeals = db.define('favoriteMeals', {
   id: {
@@ -7,14 +8,11 @@ const FavoriteMeals = db.define('favoriteMeals', {
     primaryKey: true,
     autoIncrement: true,
   },
-  rating: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    validate: {
-      min: 1,
-      max: 5,
-    },
-  },
 });
 
 module.exports = FavoriteMeals;
+
+
+FavoriteMeals.afterSave(async favoriteMeal => {
+  await createFavoriteMeal(favoriteMeal);
+});

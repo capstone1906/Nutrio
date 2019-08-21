@@ -13,7 +13,7 @@ const server = app.listen(3000, () =>
 
 async function start() {
   await db.sync();
-  // await server();
+  //await server();
 }
 
 start();

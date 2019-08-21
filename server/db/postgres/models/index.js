@@ -8,6 +8,8 @@ const MealFoodItems = require('./mealFoodItems');
 const Meals = require('./meals');
 const Users = require('./users');
 const UserMeals = require('./userMeals');
+const UserFoods = require('./userFoods');
+const FavoriteFoods = require('./favoriteFoods');
 
 LongTermGoals.belongsTo(Users);
 Users.hasOne(LongTermGoals);
@@ -20,6 +22,12 @@ Users.hasMany(CheckIns);
 
 FoodItems.belongsToMany(Meals, { through: MealFoodItems });
 Meals.belongsToMany(FoodItems, { through: MealFoodItems });
+
+FoodItems.belongsToMany(Users, { through: UserFoods });
+Users.belongsToMany(FoodItems, { through: UserFoods });
+
+FoodItems.belongsToMany(Users, { through: FavoriteFoods });
+Users.belongsToMany(FoodItems, { through: FavoriteFoods });
 
 /////////
 Meals.belongsToMany(Users, {
@@ -36,11 +44,11 @@ Meals.belongsToMany(Users, {
   as: 'AddedByUser',
   through: 'userMeals',
 });
+
 Users.belongsToMany(Meals, {
   as: 'previousMeals',
   through: 'userMeals',
 });
-
 
 module.exports = {
   CheckIns,
@@ -53,4 +61,5 @@ module.exports = {
   Meals,
   Users,
   UserMeals,
+  FavoriteFoods,
 };

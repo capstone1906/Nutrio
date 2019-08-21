@@ -6,7 +6,6 @@ const createMeal = meal => {
       `MERGE (m:Meal {id: toInteger($id)})
       ON CREATE SET m += {
         name: $name,
-        averageRating: $averageRating,
         totalCalories: $totalCalories,
         totalCarbs: $totalCarbs,
         totalFat: $totalFat,
@@ -16,7 +15,6 @@ const createMeal = meal => {
       }
       ON MATCH SET m += {
         name: $name,
-        averageRating: $averageRating,
         totalCalories: $totalCalories,
         totalCarbs: $totalCarbs,
         totalFat: $totalFat,
@@ -28,7 +26,6 @@ const createMeal = meal => {
       {
         id: meal.id,
         name: meal.name,
-        averageRating: meal.averageRating,
         totalCalories: meal.totalCalories,
         totalCarbs: meal.totalCarbs,
         totalFat: meal.totalFat,

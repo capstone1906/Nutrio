@@ -4,10 +4,18 @@ const db = require('../db');
 const createUser = require('../../neo4j/models/users');
 
 const Users = db.define('users', {
+
   email: {
     type: Sequelize.STRING,
     unique: true,
     allowNull: false,
+  },
+  firstName: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  gender: {
+    type: Sequelize.STRING
   },
   password: {
     type: Sequelize.STRING,
