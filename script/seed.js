@@ -107,11 +107,12 @@ async function seed() {
   ]);
 
   // Create checkIns
-  for (let i = 1; i < 31; i++) {
+  for (let i = 50; i < 140; i++) {
     await CheckIns.create({
-      weight: 200 - i / 4,
+      weight: 205 - ((Math.floor(Math.random() * 5) + 10) / 100) * i,
       caloriesBurned: Math.floor(500 - Math.random() * 100),
       caloriesConsumed: Math.floor(1500 - Math.random() * 100),
+      createdAt: new Date(2019, 7, -118 + i),
       userId: 1,
     });
   }

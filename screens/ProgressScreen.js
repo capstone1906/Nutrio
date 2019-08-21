@@ -1,27 +1,33 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  AsyncStorage,
-} from 'react-native';
-
+import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { getUserThunk } from '../components/store/user';
+import {
+  VictoryChart,
+  VictoryLine,
+  VictoryTheme,
+  VictoryAxis,
+} from 'victory-native';
+import { Button } from 'react-native-elements';
+import { getMealsThunk } from '../components/store/meals';
 
 class ProgressScreen extends React.Component {
   constructor() {
     super();
 
+    this.state = {
+      showData: 'ytd',
+      allData: [],
+      sevenDay: [],
+      thirtyDay: [],
+      ytd: [],
+    };
     this.storeData = this.storeData.bind(this);
   }
 
   componentDidMount() {
+    this.props.getMeals();
     this.storeData();
   }
 
@@ -36,7 +42,107 @@ class ProgressScreen extends React.Component {
   };
 
   render() {
-    return <View />;
+    if (this.props.user.checkins) {
+      const dataWeight = this.props.user.checkins.map(check => check.weight);
+      const dataDate = this.props.user.checkins.map(check =>
+        check.createdAt.slice(5, 10)
+      );
+      for (let i = 0; i < dataWeight.length; i++) {
+        let marker = {};
+        marker.x = dataDate[i];
+        marker.y = dataWeight[i];
+        this.state.allData.push(marker);
+      }
+      let sevenDayTemp = this.state.allData.slice(-7);
+      for (let j = 0; j < sevenDayTemp.length; j++) {
+        this.state.sevenDay.push(sevenDayTemp[j]);
+      }
+      let thirtyDayTemp = this.state.allData.slice(-30);
+      for (let k = 0; k < thirtyDayTemp.length; k += 3) {
+        this.state.thirtyDay.push(thirtyDayTemp[k]);
+      }
+      for (
+        let m = 0;
+        m < this.state.allData.length;
+        m += this.state.allData.length / 10
+      ) {
+        this.state.ytd.push(this.state.allData[m]);
+      }
+    }
+    return (
+      <View>
+        <View style={styles.graphButtonCoices}>
+          <Button
+            title="7 Day"
+            type="solid"
+            style={styles.graphButtons}
+            onPress={() => {
+              this.setState({
+                showData: 'sevenDay',
+              });
+            }}
+          />
+          <Button
+            title="30 Day"
+            type="solid"
+            style={styles.graphButtons}
+            onPress={() => {
+              this.setState({
+                showData: 'thirtyDay',
+              });
+            }}
+          />
+          <Button
+            title="YTD"
+            type="solid"
+            style={styles.graphButtons}
+            onPress={() => {
+              this.setState({
+                showData: 'ytd',
+              });
+            }}
+          />
+        </View>
+        <VictoryChart theme={VictoryTheme.material}>
+          <VictoryAxis
+            style={{
+              tickLabels: {
+                fontSize: '14px',
+                fontFamily: 'gothicApple',
+                fillOpacity: 1,
+                marginTop: '4px',
+                padding: 10,
+                angle: 30,
+              },
+            }}
+          />
+          <VictoryAxis
+            dependentAxis
+            domain={[180, 200]}
+            style={{
+              tickLabels: {
+                fontSize: '15px',
+                fontFamily: 'gothicApple',
+                fillOpacity: 1,
+                margin: 1,
+                padding: 2,
+                angle: 0,
+              },
+              axisLabel: {
+                fontsize: 13,
+              },
+            }}
+          />
+          <VictoryLine
+            style={{
+              data: { stroke: '#c43a31' },
+              parent: { border: '1px solid #ccc' },
+            }}
+            data={this.state[this.state.showData]}
+          />
+        </VictoryChart>
+      </View>
+    );
   }
 }
 
@@ -76,7 +182,13 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
-  //
+  graphButtonCoices: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  graphButtons: {
+    width: 100,
+  },
 });
 
 ProgressScreen.navigationOptions = {
@@ -90,12 +202,14 @@ ProgressScreen.navigationOptions = {
 const mapState = state => {
   return {
     user: state.user,
+    meals: state.meals,
   };
 };
 
 const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(getUserThunk()),
+    getMeals: () => dispatch(getMealsThunk(new Date())),
   };
 };
 

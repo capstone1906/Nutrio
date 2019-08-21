@@ -8,15 +8,14 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 
-import DatePicker from "react-native-datepicker";
-import { getMealsThunk } from "../components/store/meals";
+import DatePicker from 'react-native-datepicker';
+import { getMealsThunk, deleteMealItem } from '../components/store/meals';
+import { getUserThunk } from "../components/store/user";
 
 import { Button, Divider } from "react-native-elements";
 
 import Swipeout from "react-native-swipeout";
-import { deleteMealItem } from "../components/store/meals";
 import * as Progress from "react-native-progress";
-import { getUserThunk } from "../components/store/user";
 
 const FoodTimeHeader = props => {
   return (
