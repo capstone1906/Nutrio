@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { Input, Button, Divider } from "react-native-elements";
+import {ngrok} from '../secret'
 
 import {
   ScrollView,
@@ -87,7 +88,7 @@ class FoodSearchItem extends React.Component {
   }
 
   async componentDidMount() {
-    var food = this.props.navigation.getParam("food", "hi");
+    var food = this.props.navigation.getParam("food");
     var mealId = this.props.navigation.getParam("mealId");
 
     const res = await axios.post(
@@ -116,11 +117,11 @@ class FoodSearchItem extends React.Component {
 
 
     var findFood = await axios.get(
-      `https://e1a2521c.ngrok.io/api/food/${food.food_name}`
+      `${ngrok}/api/food/${food.food_name}`
     );
     if (findFood.data) {
       var mealFoodItem = await axios.get(
-        `https://e1a2521c.ngrok.io/api/mealFoodItems/${
+        `${ngrok}/api/mealFoodItems/${
           findFood.data.id
         }/${mealId}`
       );

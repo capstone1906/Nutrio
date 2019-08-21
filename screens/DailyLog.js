@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
-} from 'react-native';
-import { connect } from 'react-redux';
+  TouchableOpacity
+} from "react-native";
+import { connect } from "react-redux";
 
-import DatePicker from 'react-native-datepicker';
-import { getMealsThunk } from '../components/store/meals';
+import DatePicker from "react-native-datepicker";
+import { getMealsThunk } from "../components/store/meals";
 
-import { Button, Divider } from 'react-native-elements';
+import { Button, Divider } from "react-native-elements";
 
 import Swipeout from "react-native-swipeout";
 import { deleteMealItem } from "../components/store/meals";
@@ -36,14 +36,11 @@ const ExerciseContainer = props => {
     <View style={styles.FoodTimeContainer}>
       <FoodTimeHeader time={props.time} />
 
-
       <Button
         buttonStyle={styles.addFoodButton}
         title="Add Exercise"
         onPress={() => {
-          // props.navigation.navigate("FoodSearch", {
-          //   mealId: props.meal.id
-          // });
+          props.navigation.navigate("Exercise");
         }}
       />
     </View>
@@ -66,12 +63,12 @@ const FoodTimeContainer = props => {
 
         var swipeoutBtns = [
           {
-            text: 'Delete',
-            backgroundColor: 'red',
+            text: "Delete",
+            backgroundColor: "red",
             onPress() {
               props.deleteItem(food.id, props.meal.id);
-            },
-          },
+            }
+          }
         ];
 
         return (
@@ -82,9 +79,9 @@ const FoodTimeContainer = props => {
           >
             <TouchableOpacity
               onPress={() => {
-                props.navigation.navigate('FoodSearchItem', {
+                props.navigation.navigate("FoodSearchItem", {
                   food: food,
-                  mealId: props.meal.id,
+                  mealId: props.meal.id
                 });
               }}
             >
@@ -110,7 +107,7 @@ const FoodTimeContainer = props => {
                 </View>
               </View>
             </TouchableOpacity>
-            <Divider style={{ backgroundColor: 'blue' }} />
+            <Divider style={{ backgroundColor: "blue" }} />
           </Swipeout>
         );
       })}
@@ -119,8 +116,8 @@ const FoodTimeContainer = props => {
         buttonStyle={styles.addFoodButton}
         title="Add food"
         onPress={() => {
-          props.navigation.navigate('FoodSearch', {
-            mealId: props.meal.id,
+          props.navigation.navigate("FoodSearch", {
+            mealId: props.meal.id
           });
         }}
       />
@@ -140,36 +137,32 @@ class DailyLog extends React.Component {
     var day = dateNow.getDate().toString();
 
     if (month < 10) {
-      month = '0' + month;
+      month = "0" + month;
     }
     if (day < 10) {
-      day = '0' + day;
+      day = "0" + day;
     }
 
-    todaysDate = year + '-' + month + '-' + day;
+    todaysDate = year + "-" + month + "-" + day;
 
     this.state = {
       date: todaysDate,
       meals: [],
 
-      showDatePicker: false,
+      showDatePicker: false
     };
 
-    this.setDate = this.setDate.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
   }
 
   async deleteItem(foodId, mealId) {
     this.props.deleteMealItem(foodId, mealId);
-    await this.props.getMeals();
-  }
-
-  setDate(newDate) {
-    this.setState({ chosenDate: newDate });
+    await this.props.getMeals(this.state.date);
   }
 
   async componentDidMount() {
-    await this.props.getMeals();
+    console.log('date ispioajpoija', this.state.date)
+    await this.props.getMeals(this.state.date);
     await this.props.getUser();
   }
 
@@ -180,54 +173,17 @@ class DailyLog extends React.Component {
     var dinner = {};
     var snacks = {};
 
-    if (foods !== undefined) {
-      for (let i = 0; i < foods.length; i++) {
-        var today = new Date(this.state.date);
-        var setDay = today.getDate() + 1;
-        var setMonth = today.getMonth();
-        var setYear = today.getYear();
-
-        var mealTime = new Date(foods[i].createdAt);
-        var mealDay = mealTime.getDate();
-        var mealMonth = mealTime.getMonth();
-        var mealYear = mealTime.getYear();
-
-        if (
-          foods[i].entreeType === 'Breakfast' &&
-          mealDay === setDay &&
-          setMonth === mealMonth &&
-          setYear === mealYear
-        ) {
-          breakfast = foods[i];
-        } else if (
-          foods[i].entreeType === 'Lunch' &&
-          mealDay === setDay &&
-          setMonth === mealMonth &&
-          setYear === mealYear
-        ) {
-          lunch = foods[i];
-        } else if (
-          foods[i].entreeType === 'Dinner' &&
-          mealDay === setDay &&
-          setMonth === mealMonth &&
-          setYear === mealYear
-        ) {
-          dinner = foods[i];
-        } else if (
-          foods[i].entreeType === 'Snacks' &&
-          mealDay === setDay &&
-          setMonth === mealMonth &&
-          setYear === mealYear
-        ) {
-          snacks = foods[i];
-        }
-      }
+    if (foods.todaysMeals.length > 0) {
+      breakfast = foods.todaysMeals[0];
+      lunch = foods.todaysMeals[1];
+      dinner = foods.todaysMeals[2];
+      snacks = foods.todaysMeals[3];
     }
 
     var calorieLimit = 0;
     var totalCals = 0;
 
-    if (this.props.user.dailyGoal) {
+    if (this.props.user.dailyGoal && foods.todaysMeals.length > 0) {
       calorieLimit = this.props.user.dailyGoal.calorieLimit;
       totalCals =
         breakfast.totalCalories +
@@ -269,17 +225,18 @@ class DailyLog extends React.Component {
             cancelBtnText="Cancel"
             customStyles={{
               dateIcon: {
-                position: 'absolute',
+                position: "absolute",
                 left: 0,
                 top: 4,
-                marginLeft: 0,
+                marginLeft: 0
               },
               dateInput: {
-                marginLeft: 36,
-              },
+                marginLeft: 36
+              }
             }}
             onDateChange={date => {
               this.setState({ date: date });
+              this.props.getMeals(date);
             }}
           />
         </View>
@@ -327,7 +284,7 @@ class DailyLog extends React.Component {
           meal={snacks}
           deleteItem={this.deleteItem}
         />
-        <ExerciseContainer time="exercise" />
+        <ExerciseContainer time="exercise" navigation={this.props.navigation} />
       </ScrollView>
     );
   }
@@ -335,17 +292,17 @@ class DailyLog extends React.Component {
 
 const styles = StyleSheet.create({
   foodName: {
-    fontSize: 18,
+    fontSize: 18
   },
   foodItem: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingLeft: 10,
     paddingTop: 5,
-    paddingBottom: 5,
+    paddingBottom: 5
   },
   date: {
-    justifyContent: 'center',
-    paddingLeft: 75,
+    justifyContent: "center",
+    paddingLeft: 75
   },
   progress: {
     flexDirection: "row",
@@ -358,20 +315,20 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 20,
+    padding: 20
   },
 
   FoodTimeHeader: {
-    flexDirection: 'row',
-    backgroundColor: 'lightgrey',
+    flexDirection: "row",
+    backgroundColor: "lightgrey",
     height: 40,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
 
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 10
   },
   FoodTimeContainer: {
-    marginBottom: 30,
+    marginBottom: 30
   },
   addFoodButton: {
     width: 100,
@@ -380,16 +337,16 @@ const styles = StyleSheet.create({
   },
   foodAmount: {
     fontSize: 12,
-    color: 'grey',
-  },
+    color: "grey"
+  }
 });
 
 DailyLog.navigationOptions = {
-  headerTitle: 'Daily log',
+  headerTitle: "Daily log",
   headerStyle: {
-    backgroundColor: 'crimson',
+    backgroundColor: "crimson"
   },
-  headerTintColor: 'white',
+  headerTintColor: "white"
 };
 
 const mapState = state => {
@@ -401,7 +358,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getMeals: () => dispatch(getMealsThunk()),
+    getMeals: date => dispatch(getMealsThunk(date)),
     getUser: () => dispatch(getUserThunk()),
 
     deleteMealItem: (foodId, mealId) => dispatch(deleteMealItem(foodId, mealId))

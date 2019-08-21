@@ -15,6 +15,9 @@ import FoodSearchItem from '../screens/FoodSearchItem';
 import Meals from '../screens/Meals';
 import RecommendedMeals from '../screens/RecommendedMeals';
 import RecommendedFoods from '../screens/RecommendedFoods';
+import Exercise from '../screens/exercise'
+import SingleExercise from '../screens/singleExercise'
+
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -89,7 +92,8 @@ const DailyLogStack = createStackNavigator(
   {
     DailyLog: DailyLog,
     FoodSearch: FoodSearch,
-
+    Exercise: Exercise,
+    SingleExercise: SingleExercise,
     FoodSearchItem: FoodSearchItem,
   },
   config
