@@ -5,9 +5,11 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import meals from './meals'
 import user from './user'
 import exercises from './exercises'
+import checkIns from './checkIns'
 
 
-const reducer = combineReducers({meals, user, exercises})
+
+const reducer = combineReducers({meals, user, exercises, checkIns})
 
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))

@@ -57,6 +57,7 @@ export const getMealsThunk = (dateVar) => async dispatch => {
   
       todaysDate = year + "-" + month + "-" + day;
     }
+    
     console.log('date is now', todaysDate)
 
 
