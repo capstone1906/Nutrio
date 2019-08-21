@@ -6,6 +6,7 @@ export default class Meals extends React.Component {
     return (
       <View style={styles.container}>
         <TouchableOpacity
+          style={styles.touchAble}
           onPress={() => {
             this.props.navigation.navigate('RecommendedMeals');
           }}
@@ -18,9 +19,12 @@ export default class Meals extends React.Component {
             <Text style={styles.text}>Find meals based on your goals</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity
+          style={styles.touchAble}
+          onPress={() => {
             this.props.navigation.navigate('RecommendedFoods');
-          }}>
+          }}
+        >
           <Image
             style={styles.img}
             source={require('../assets/images/beans.jpg')}
@@ -38,19 +42,24 @@ const styles = StyleSheet.create({
   img: {
     maxWidth: '85%',
     maxHeight: '55%',
+    marginTop: 10,
   },
   absoluteView: {
-    flex: 1,
+    flex: 5,
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'transparent',
   },
+  touchAble: {
+    flex: 9,
+  },
   text: {
     textAlign: 'center',
+    marginTop: 10,
   },
   container: {
-    flex: 1,
+    flex: 40,
     alignItems: 'center',
   },
 });
