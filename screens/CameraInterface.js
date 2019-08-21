@@ -16,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
+import axios from 'axios';
 const { width: winWidth } = Dimensions.get('window');
 
 const Clarifai = require('clarifai');
@@ -62,15 +63,49 @@ export default class CameraInterface extends React.Component {
     return predictions;
   };
 
+  checkIfExist = async result => {
+    console.log('checking for ', result.name);
+    try {
+      const res = await axios.post(
+        `https://trackapi.nutritionix.com/v2/natural/nutrients`,
+        {
+          query: `${result.name}`,
+        },
+        {
+          headers: {
+            'x-app-id': '5e27fd08',
+            'x-app-key': '6a7941d7106f3b99835d141af6eaa211',
+            'x-remote-user-id': '0',
+          },
+        }
+      );
+      if (res.data.foods[0]) return true;
+    } catch (error) {
+      console.log('ERROR for ', result.name);
+      return false;
+    }
+  };
+
   objectDetection = async () => {
     let photo = await this.capturePhoto();
     let resized = await this.resize(photo);
     let predictions = await this.predict(resized);
 
-    console.log(photo);
-    console.log(predictions);
+    const results = predictions.outputs[0].data.concepts;
+
+    var filteredResults = [];
+
+    for (let i = 0; i < results.length; i++) {
+      const ifExist = await this.checkIfExist(results[i]);
+      if (ifExist === true) {
+        filteredResults.push(results[i]);
+      }
+    }
+
+    console.log('filtered:', filteredResults);
+
     this.setState({ chosenImage: photo });
-    this.setState({ predictions: predictions.outputs[0].data.concepts });
+    this.setState({ predictions: filteredResults });
   };
 
   getPermissionAsync = async () => {
@@ -100,22 +135,6 @@ export default class CameraInterface extends React.Component {
       this.setState({ predictions: predictions.outputs[0].data.concepts });
     }
   };
-
-  // lookUpFood = async () => {
-  //       const res = await axios.post(
-  //     `https://trackapi.nutritionix.com/v2/natural/nutrients`,
-  //     {
-  //       query: `${food.food_name}`
-  //     },
-  //     {
-  //       headers: {
-  //         "x-app-id": "fa4f9042",
-  //         "x-app-key": "997023a117b76d83e33a7ae290a6b5ba",
-  //         "x-remote-user-id": "0"
-  //       }
-  //     }
-  //   );
-  // }
 
   render() {
     // renders the camera and translation results
