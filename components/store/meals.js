@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ngrok } from "../../secret";
 
 /**
  * ACTION TYPES
@@ -8,7 +9,10 @@ const GET_MEALS = "GET_MEALS";
 /**
  * INITIAL STATE
  */
-const meals = [];
+const meals = {
+  todaysMeals: [],
+  allMeals: []
+};
 
 /**
  * ACTION CREATORS
@@ -20,19 +24,100 @@ const getMeals = meals => ({ type: GET_MEALS, meals });
  */
 
 export const deleteMealItem = (foodId, mealId) => async dispatch => {
-  try{
-    var res2 = await axios.delete(`https://e1a2521c.ngrok.io/api/mealFoodItems/${foodId}/${mealId}`)
-    var res = await axios.get("https://e1a2521c.ngrok.io/api/meals");
-    dispatch(getMeals(res.data));
-  }
-  catch(err) {
-    console.error(err)
-  }
-}
-export const getMealsThunk = () => async dispatch => {
   try {
-    var res = await axios.get("https://e1a2521c.ngrok.io/api/meals");
-    dispatch(getMeals(res.data));
+    var res2 = await axios.delete(
+      `${ngrok}/api/mealFoodItems/${foodId}/${mealId}`
+    );
+    // var res = await axios.get(`${ngrok}/api/meals`);
+    dispatch(getMealsThunk());
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getMealsThunk = (dateVar) => async dispatch => {
+  try {
+    var res = await axios.get(`${ngrok}/api/meals`);
+    console.log('date is ', dateVar)
+    var todaysDate = dateVar;
+    if(!dateVar) {
+      todaysDate = new Date()
+      const dateNow = new Date();
+  
+      var year = dateNow.getFullYear().toString();
+      var month = (dateNow.getMonth() + 1).toString();
+      var day = dateNow.getDate().toString();
+  
+      if (month < 10) {
+        month = "0" + month;
+      }
+      if (day < 10) {
+        day = "0" + day;
+      }
+  
+      todaysDate = year + "-" + month + "-" + day;
+    }
+    console.log('date is now', todaysDate)
+
+
+    var foods = res.data;
+    var breakfast = {};
+    var lunch = {};
+    var dinner = {};
+    var snacks = {};
+
+    if (foods !== undefined) {
+      for (let i = 0; i < foods.length; i++) {
+        var today = new Date(todaysDate);
+      
+        var setDay = today.getDate() + 1;
+        var setMonth = today.getMonth();
+        var setYear = today.getYear();
+
+        var mealTime = new Date(foods[i].createdAt);
+        var mealDay = mealTime.getDate();
+        var mealMonth = mealTime.getMonth();
+        var mealYear = mealTime.getYear();
+
+        if (
+          foods[i].entreeType === "Breakfast" &&
+          mealDay === setDay &&
+          setMonth === mealMonth &&
+          setYear === mealYear
+        ) {
+          breakfast = foods[i];
+        } else if (
+          foods[i].entreeType === "Lunch" &&
+          mealDay === setDay &&
+          setMonth === mealMonth &&
+          setYear === mealYear
+        ) {
+          lunch = foods[i];
+        } else if (
+          foods[i].entreeType === "Dinner" &&
+          mealDay === setDay &&
+          setMonth === mealMonth &&
+          setYear === mealYear
+        ) {
+          dinner = foods[i];
+        } else if (
+          foods[i].entreeType === "Snacks" &&
+          mealDay === setDay &&
+          setMonth === mealMonth &&
+          setYear === mealYear
+        ) {
+          snacks = foods[i];
+        }
+      }
+    }
+
+    var allMeals = {};
+    allMeals.allMeals = res.data;
+    allMeals.todaysMeals = [breakfast, lunch, dinner, snacks];
+
+    dispatch(getMeals(allMeals));
+
+
   } catch (err) {
     console.error(err);
   }
@@ -40,13 +125,12 @@ export const getMealsThunk = () => async dispatch => {
 
 export const postFood = (food, mealId, quantity, grams) => async dispatch => {
   try {
-    console.log('mealId', mealId)
     var res2 = await axios.post(
-      `https://e1a2521c.ngrok.io/api/mealFoodItems/${mealId}/${quantity}/${grams}`,
+      `${ngrok}/api/mealFoodItems/${mealId}/${quantity}/${grams}`,
       food
     );
-    var res = await axios.get("https://e1a2521c.ngrok.io/api/meals");
-    dispatch(getMeals(res.data));
+    // var res = await axios.get(`${ngrok}/api/meals`);
+    dispatch(getMealsThunk());
   } catch (err) {
     console.error(err);
   }

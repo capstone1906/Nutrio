@@ -6,7 +6,7 @@ import {
 } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
+import ProgressScreen from '../screens/ProgressScreen';
 // import LinksScreen from '../screens/LinksScreen';
 import ProfileScreen from '../screens/profile';
 import DailyLog from '../screens/DailyLog';
@@ -15,22 +15,25 @@ import FoodSearchItem from '../screens/FoodSearchItem';
 import Meals from '../screens/Meals';
 import RecommendedMeals from '../screens/RecommendedMeals';
 import RecommendedFoods from '../screens/RecommendedFoods';
+import Exercise from '../screens/exercise'
+import SingleExercise from '../screens/singleExercise'
+
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
   default: {},
 });
 
-const HomeStack = createStackNavigator(
+const Progress = createStackNavigator(
   {
-    Home: HomeScreen,
+    Home: ProgressScreen,
   },
 
   config
 );
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+Progress.navigationOptions = {
+  tabBarLabel: 'Progress',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -43,7 +46,7 @@ HomeStack.navigationOptions = {
   ),
 };
 
-HomeStack.path = '';
+Progress.path = '';
 
 const MealsStack = createStackNavigator(
   {
@@ -89,7 +92,8 @@ const DailyLogStack = createStackNavigator(
   {
     DailyLog: DailyLog,
     FoodSearch: FoodSearch,
-
+    Exercise: Exercise,
+    SingleExercise: SingleExercise,
     FoodSearchItem: FoodSearchItem,
   },
   config
@@ -108,9 +112,9 @@ DailyLogStack.navigationOptions = {
 DailyLogStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
-  HomeStack,
-  MealsStack,
+  Progress,
   DailyLogStack,
+  MealsStack,
   Profile,
 });
 

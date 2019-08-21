@@ -45,6 +45,7 @@ async function seed() {
     age: 18,
     activityLevel: 1.375,
     bodyType: 'Endomorph',
+    gender: 'male'
   };
 
   const user3 = {
@@ -56,6 +57,7 @@ async function seed() {
     age: 27,
     activityLevel: 1.5,
     bodyType: 'Ectomorph',
+    gender: 'male'
   };
 
   const user4 = {
@@ -67,6 +69,7 @@ async function seed() {
     age: 22,
     activityLevel: 1.2,
     bodyType: 'Endomorph',
+    gender: 'male'
   };
 
   const user5 = {
@@ -78,6 +81,7 @@ async function seed() {
     age: 32,
     activityLevel: 1.2,
     bodyType: 'Mesomorph',
+    gender: 'male'
   };
 
   var user6 = {
@@ -89,6 +93,7 @@ async function seed() {
     age: 18,
     activityLevel: 1.375,
     bodyType: 'Endomorph',
+    gender: 'male'
   };
 
   // Create users
@@ -929,8 +934,8 @@ async function seed() {
   await Promise.all(mealsLunch);
   await Promise.all(mealsSnack);
 
-  var yesterday = `07-31-2019`;
-  // var ranDay = new Date(yesterday);
+  var yesterday = '8-3-2019'
+
 
   // Create longTermGoals
   for (let i = 1; i <= 2; i++) {

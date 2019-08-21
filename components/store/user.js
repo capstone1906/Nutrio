@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ngrok } from '../../secret';
 
 /**
  * ACTION TYPES
@@ -23,7 +24,7 @@ const addUser = user => ({ type: ADD_USER, user });
 
 export const getUserThunk = () => async dispatch => {
   try {
-    var res = await axios.get('https://e1a2521c.ngrok.io/api/user');
+    var res = await axios.get(`${ngrok}/api/user`);
     dispatch(getUser(res.data));
   } catch (err) {
     console.error(err);
@@ -32,7 +33,7 @@ export const getUserThunk = () => async dispatch => {
 
 export const addUserThunk = newUser => async dispatch => {
   try {
-    await axios.post('https://e1a2521c.ngrok.io/api/user', newUser);
+    await axios.post(`${ngrok}/api/user`, newUser);
     dispatch(addUser(newUser));
   } catch (err) {
     console.error(err);
