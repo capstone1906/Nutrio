@@ -9,12 +9,11 @@ import {
 import { connect } from 'react-redux';
 
 import DatePicker from 'react-native-datepicker';
-import { getMealsThunk } from '../components/store/meals';
+import { getMealsThunk, deleteMealItem } from '../components/store/meals';
 
 import { Button, Divider } from 'react-native-elements';
 
 import Swipeout from 'react-native-swipeout';
-import { deleteMealItem } from '../components/store/meals';
 import axios from 'axios';
 
 const FoodTimeHeader = props => {
