@@ -17,8 +17,9 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import axios from 'axios';
-const { width: winWidth } = Dimensions.get('window');
+import SelectMultiple from 'react-native-select-multiple';
 
+const { width: winWidth } = Dimensions.get('window');
 const Clarifai = require('clarifai');
 
 const clarifai = new Clarifai.App({
@@ -32,6 +33,7 @@ export default class CameraInterface extends React.Component {
     type: Camera.Constants.Type.back,
     predictions: [],
     chosenImage: null,
+    selectedFoods: [],
   };
 
   async componentDidMount() {
@@ -74,7 +76,7 @@ export default class CameraInterface extends React.Component {
         {
           headers: {
             'x-app-id': '5e27fd08',
-            'x-app-key': '6a7941d7106f3b99835d141af6eaa211',
+            'x-app-key': '1e1ee4d0779fb25127320c91ced7c367',
             'x-remote-user-id': '0',
           },
         }
@@ -98,7 +100,10 @@ export default class CameraInterface extends React.Component {
     for (let i = 0; i < results.length; i++) {
       const ifExist = await this.checkIfExist(results[i]);
       if (ifExist === true) {
-        filteredResults.push(results[i]);
+        filteredResults.push(
+          `${results[i].name.charAt(0).toUpperCase() +
+            results[i].name.slice(1)}`
+        );
       }
     }
 
@@ -134,6 +139,10 @@ export default class CameraInterface extends React.Component {
 
       this.setState({ predictions: predictions.outputs[0].data.concepts });
     }
+  };
+
+  onSelectionsChange = selectedFoods => {
+    this.setState({ selectedFoods });
   };
 
   render() {
@@ -205,30 +214,21 @@ export default class CameraInterface extends React.Component {
 
           {this.state.chosenImage && (
             <View style={styles.resultContainer}>
-              <FlatList
-                style={{ width: '100%' }}
-                data={predictions.map(prediction => ({
-                  key: `${prediction.name.charAt(0).toUpperCase() +
-                    prediction.name.slice(1)}`,
-                }))}
-                renderItem={({ item }) => (
-                  <View style={styles.row}>
-                    <Text
-                      style={styles.foodResult}
-                      // onPress={}
-                    >
-                      {item.key}
-                    </Text>
-                  </View>
-                )}
+              <SelectMultiple
+                labelStyle={{ fontSize: 25 }}
+                checkboxStyle={{ width: 27, height: 27, marginRight: 15 }}
+                items={predictions}
+                selectedItems={this.state.selectedFoods}
+                onSelectionsChange={this.onSelectionsChange}
               />
-              <TouchableOpacity>
+              <TouchableOpacity style={{ backgroundColor: 'crimson' }}>
                 <Ionicons
+                  style={styles.closeButton}
                   onPress={() => {
                     this.props.navigation.navigate('FoodSearch');
                   }}
                   name="md-close"
-                  color="white"
+                  color="#cccccc"
                   size={35}
                 />
               </TouchableOpacity>
@@ -260,24 +260,9 @@ const styles = StyleSheet.create({
   },
   resultContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#232323',
   },
-  row: {
-    flex: 1,
-    paddingVertical: 25,
-    paddingHorizontal: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  foodResult: {
-    fontSize: 25,
-    lineHeight: 40,
-    marginRight: 15,
-    fontWeight: 'bold',
-    fontFamily: 'Avenir',
-    color: 'white',
+  closeButton: {
+    textAlign: 'center',
   },
   noCamera: {
     backgroundColor: 'white',
