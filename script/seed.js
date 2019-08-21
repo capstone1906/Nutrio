@@ -10,6 +10,7 @@ const {
   Exercises,
   FoodItems,
   FavoriteMeals,
+  FavoriteFoods,
   LongTermGoals,
   Meals,
   MealFoodItems,
@@ -17,9 +18,12 @@ const {
   Users,
 } = require('../server/db/postgres/models');
 
+const { resetDB } = require('../server/db/neo4j/db');
+
 async function seed() {
   await db.sync({ force: true });
   console.log('db synced!');
+  await resetDB();
 
   const user1 = {
     email: 'cody@email.com',
@@ -1018,11 +1022,34 @@ async function seed() {
     }
   }
 
+  await UserMeals.create({
+    timesEaten: 6,
+    mealId: 2,
+    userId: 3,
+  });
+  await UserMeals.create({
+    timesEaten: 6,
+    mealId: 2,
+    userId: 3,
+  });
+  await UserMeals.create({
+    timesEaten: 6,
+    mealId: 2,
+    userId: 3,
+  });
+
   // Create Favorite meal
   for (let i = 1; i <= 5; i++) {
     await FavoriteMeals.create({
       mealId: i,
       userId: 1,
+    });
+  }
+  //create Favorite Food
+  for (let i = 1; i <= 40; i++) {
+    await FavoriteFoods.create({
+      foodItemId: i,
+      userId: Math.floor(Math.random() * 6) + 1,
     });
   }
   console.log(green(`seeded successfully`));

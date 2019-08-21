@@ -16,6 +16,16 @@ const UserFoods = db.define('userFoods', {
 
 module.exports = UserFoods;
 
+UserFoods.beforeValidate(async userFood => {
+  const prevFood = await UserFoods.findOne({
+    where: { userId: userFood.userId, foodItemId: userFood.foodItemId },
+  });
+  if (prevFood) {
+    userFood.timesEaten += prevFood.timesEaten;
+    await prevFood.destroy();
+  }
+});
+
 UserFoods.afterSave(async userFood => {
   const newUserFood = await createUserFood(userFood);
   return newUserFood;
