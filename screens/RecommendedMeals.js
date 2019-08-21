@@ -6,15 +6,31 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Button,
 } from 'react-native';
+import { Button } from 'react-native-elements';
 
 const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  button: {
+    margin: 5,
+  },
 });
+
+const MealButton = props => {
+  return (
+    <Button
+      style={styles.button}
+      title={props.title}
+      type={props.state === props.title ? 'outline' : 'solid'}
+      onPress={() => props.handlePress(props.title)}
+    />
+  );
+};
+
+const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
 export default class RecommendedMeals extends React.Component {
   constructor() {
     super();
@@ -23,22 +39,26 @@ export default class RecommendedMeals extends React.Component {
     };
     this.handlePress = this.handlePress.bind(this);
   }
-  handlePress(evt) {}
+  handlePress(evt) {
+    this.setState({
+      activeButton: evt,
+    });
+  }
   render() {
     return (
       <View>
         <View style={styles.buttonContainer}>
-          <Button
-            title="Breakfast"
-            onPress={evt => this.handlePress(evt)}
-            isActive={this.state.activeButton === 'Breakfast'}
-          />
-          <Button title="Lunch" onPress={evt => this.handlePress(evt)} />
-          <Button title="Dinner" onPress={evt => this.handlePress(evt)} />
-          <Button title="Snacks" onPress={evt => this.handlePress(evt)} />
+          {meals.map((meal, idx) => (
+            <MealButton
+              key={idx}
+              title={meal}
+              handlePress={this.handlePress}
+              state={this.state.activeButton}
+            />
+          ))}
         </View>
         <ScrollView>
-          <View />
+
         </ScrollView>
       </View>
     );
