@@ -10,6 +10,8 @@ import {
   ImageBackground,
   AsyncStorage,
 } from 'react-native';
+import { connect } from 'react-redux';
+import { getUserThunk } from '../components/store/user';
 
 class AuthHomeScreen extends React.Component {
   constructor(props) {
@@ -17,14 +19,14 @@ class AuthHomeScreen extends React.Component {
 
     this.retrieveData = this.retrieveData.bind(this);
   }
-  componentDidMount() {
+  async componentDidMount() {
+    await this.props.getUser();
     this.retrieveData();
   }
 
   retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem('user');
-      console.log(value);
       if (value !== null) {
         this.props.navigation.navigate('Main');
       }
@@ -145,4 +147,19 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthHomeScreen;
+const mapState = state => {
+  return {
+    user: state.user,
+  };
+};
+
+const mapDispatch = dispatch => {
+  return {
+    getUser: () => dispatch(getUserThunk()),
+  };
+};
+
+export default connect(
+  mapState,
+  mapDispatch
+)(AuthHomeScreen);
