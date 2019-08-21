@@ -47,7 +47,6 @@ router.post('/:id/:quantity/:grams', async (req, res, next) => {
 
     var quantity = Number(req.params.quantity)
     var grams = parseInt(req.params.grams);
-    console.log('typeof quantity', typeof quantity);
 
     var calsGram = foodItem[0].calories / foodItem[0].weight;
 
