@@ -213,25 +213,45 @@ export default class CameraInterface extends React.Component {
           )}
 
           {this.state.chosenImage && (
-            <View style={styles.resultContainer}>
+            <View>
               <SelectMultiple
                 labelStyle={{ fontSize: 25 }}
                 checkboxStyle={{ width: 27, height: 27, marginRight: 15 }}
                 items={predictions}
                 selectedItems={this.state.selectedFoods}
                 onSelectionsChange={this.onSelectionsChange}
+                style={{ marginBottom: 37 }}
               />
-              <TouchableOpacity style={{ backgroundColor: 'crimson' }}>
-                <Ionicons
-                  style={styles.closeButton}
-                  onPress={() => {
-                    this.props.navigation.navigate('FoodSearch');
-                  }}
-                  name="md-close"
-                  color="#cccccc"
-                  size={35}
-                />
-              </TouchableOpacity>
+              <Grid style={styles.resultToolbar}>
+                <Row>
+                  <Col>
+                    <TouchableOpacity style={{ backgroundColor: '#d9534e' }}>
+                      <Ionicons
+                        style={styles.closeButton}
+                        onPress={() => {
+                          this.props.navigation.navigate('FoodSearch');
+                        }}
+                        name="md-close"
+                        color="white"
+                        size={35}
+                      />
+                    </TouchableOpacity>
+                  </Col>
+                  <Col>
+                    <TouchableOpacity style={{ backgroundColor: '#337ab7' }}>
+                      <Ionicons
+                        style={styles.closeButton}
+                        onPress={() => {
+                          this.props.navigation.navigate('FoodSearch');
+                        }}
+                        name="md-checkmark"
+                        color="white"
+                        size={35}
+                      />
+                    </TouchableOpacity>
+                  </Col>
+                </Row>
+              </Grid>
             </View>
           )}
         </View>
@@ -258,9 +278,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
   },
-  resultContainer: {
-    flex: 1,
-  },
   closeButton: {
     textAlign: 'center',
   },
@@ -271,6 +288,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 70,
     color: 'black',
+  },
+  resultToolbar: {
+    width: winWidth,
+    position: 'absolute',
+    height: 37,
+    bottom: 0,
   },
 });
 
