@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { Card, ListItem, Button, Icon } from 'react-native-elements';
 import MealCardChart from './MealCardChart';
+import { connect } from 'react-redux';
+
 
 const styles = StyleSheet.create({
   card: {
@@ -9,6 +11,9 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
+  },
+  chartContainer: {
+    alignItems: 'center',
   },
 });
 
@@ -31,11 +36,10 @@ const foodNameHelper = name => {
   return temp.join('');
 };
 
-export default function MealCard(props) {
+function MealCard(props) {
   return (
     <Card title={props.name} style={styles.card}>
       <View>
-        <MealCardChart meal={props.meal} />
         <Text style={styles.text}>{props.meal.name}</Text>
         <Text style={styles.text}>
           Total Calories: {props.meal.totalCalories}
@@ -52,9 +56,32 @@ export default function MealCard(props) {
           </Text>
         ))}
       </View>
+      <View style={styles.chartContainer}>
+        <MealCardChart meal={props.meal} />
+      </View>
       <View>
-        <Button title="Add Meal" type="solid" />
+        <Button
+          title="Add Meal"
+          type="solid"
+          onPress={() => {
+            console.log('props', props.meals.todaysMeals)
+            const mealId = props.meals.todaysMeals.filter(meal => {
+              if (meal.entreeType === props.mealType) {
+                return meal.id;
+              }
+            })[0].id;
+            props.postFood(props.meal.foodItems, mealId);
+          }}
+        />
       </View>
     </Card>
   );
 }
+
+const mapState = state => {
+  return {
+    meals: state.meals,
+  };
+};
+
+export default connect(mapState)(MealCard);

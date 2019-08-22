@@ -40,4 +40,29 @@ const createFood = food => {
     });
 };
 
-module.exports = createFood;
+const getRecommendedFoods = food => {
+  return session
+    .run(
+      `MATCH ()-[r:HAD_FOOD]->(f:Food)
+      WHERE f.calories < $calories AND  f.carbohydrates < $carbs AND f.fat < $fat AND f.protein < $protein
+      RETURN sum(r.timesEaten) as total, f.id
+      ORDER BY total DESC LIMIT 40`,
+      {
+        calories: food.calories,
+        carbs: food.carbs,
+        fat: food.fat,
+        protein: food.protein,
+      }
+    )
+    .then(result => {
+      session.close();
+      return (res = result.records.map(rec => {
+        return rec.get('f.id').low;
+      }));
+    })
+    .catch(error => {
+      session.close();
+      throw error;
+    });
+};
+module.exports = {createFood, getRecommendedFoods};
