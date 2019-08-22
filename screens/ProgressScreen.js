@@ -1,9 +1,10 @@
 /* eslint-disable complexity */
 /* eslint-disable max-statements */
 import React from 'react';
-import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import { StyleSheet, View, AsyncStorage, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { getUserThunk } from '../components/store/user';
+import { getCheckInsThunk } from '../components/store/checkIns';
 import {
   VictoryChart,
   VictoryLine,
@@ -13,7 +14,6 @@ import {
   VictoryBar,
 } from 'victory-native';
 import { ButtonGroup } from 'react-native-elements';
-import { getMealsThunk } from '../components/store/meals';
 
 class ProgressScreen extends React.Component {
   constructor() {
@@ -47,7 +47,6 @@ class ProgressScreen extends React.Component {
   }
 
   componentDidMount() {
-    // this.props.getMeals();
     this.storeData();
   }
 
@@ -89,9 +88,13 @@ class ProgressScreen extends React.Component {
 
   render() {
     //all line graphs showing weight lost at various increments, using today's date as last point on graph
-    if (this.props.user.checkins) {
-      const dataWeight = this.props.user.checkins.map(check => check.weight);
-      const dataDate = this.props.user.checkins.map(check => check.createdAt);
+    if (this.props.checkIns.checkIns) {
+      const dataWeight = this.props.checkIns.checkIns.map(
+        check => check.weight
+      );
+      const dataDate = this.props.checkIns.checkIns.map(
+        check => check.createdAt
+      );
       if (this.state.lineGraphAllData.length === 0) {
         for (let i = 0; i < dataWeight.length; i++) {
           let marker = {};
@@ -102,87 +105,104 @@ class ProgressScreen extends React.Component {
         }
       }
       if (this.state.sevenDay.length === 0) {
-        let sevenDayTemp = this.state.lineGraphAllData.slice(-7);
+        let sevenDayTemp = this.state.lineGraphAllData.slice(-8);
         for (let j = 0; j < sevenDayTemp.length; j++) {
-          this.state.sevenDay.push(sevenDayTemp[j]);
+          if (sevenDayTemp[j].y !== 0) {
+            this.state.sevenDay.push(sevenDayTemp[j]);
+          }
         }
       }
       if (this.state.thirtyDay.length === 0) {
-        let thirtyDayTemp = this.state.lineGraphAllData.slice(-30).reverse();
+        let thirtyDayTemp = this.state.lineGraphAllData.slice(-31).reverse();
+        thirtyDayTemp.shift();
         let correctingOrder = [];
         for (let k = 0; k < thirtyDayTemp.length; k += 3) {
           correctingOrder.push(thirtyDayTemp[k]);
         }
+
         for (let ka = 0; ka < 10; ka++) {
           this.state.thirtyDay.push(correctingOrder.pop());
         }
       }
       if (this.state.ytd.length === 0) {
-        let ytdTemp = this.state.lineGraphAllData.reverse();
+        let ytdTemp = this.state.lineGraphAllData
+          .reverse()
+          .filter(elem => elem.y > 0);
         let correctingOrder = [];
         for (let m = 0; m < ytdTemp.length; m += ytdTemp.length / 10) {
-          correctingOrder.push(ytdTemp[m]);
+          if (ytdTemp[m] !== undefined && ytdTemp[m].y !== 0) {
+            if (ytdTemp[m] !== undefined) {
+              correctingOrder.push(ytdTemp[m]);
+            }
+          }
         }
-        for (let ma = 0; ma < 10; ma++) {
-          this.state.ytd.push(correctingOrder.pop());
+        if (correctingOrder.length > 0) {
+          for (let ma = 0; ma < 10; ma++) {
+            this.state.ytd.push(correctingOrder.pop());
+          }
         }
       }
     }
     // line graph dataset for comparision of goal to actual, using today's date as last point on graph
-    const startDate = new Date(
-      this.props.user.longTermGoal.startDate
-    ).getTime();
-    const endDate = new Date(this.props.user.longTermGoal.endDate).getTime();
-    const oneDay = 86400000;
-    const goalLength = (endDate - startDate) / oneDay;
-    const dailyWeightDecrement =
-      (this.props.user.longTermGoal.startWeight -
-        this.props.user.longTermGoal.endingWeight) /
-      goalLength;
-    if (this.state.goalAllData.length === 0) {
-      for (let n = 1; n <= goalLength; n++) {
-        let marker = {};
-        let date = new Date(startDate + oneDay * n);
-        marker.x = `${date.getMonth() + 1}-${date.getDate()}`;
-        marker.y =
-          this.props.user.longTermGoal.startWeight -
-          dailyWeightDecrement * (n - 1);
-        this.state.goalAllData.push(marker);
+    if (this.props.user.longTermGoal) {
+      const startDate = new Date(
+        this.props.user.longTermGoal.startDate
+      ).getTime();
+      const endDate = new Date(this.props.user.longTermGoal.endDate).getTime();
+      const oneDay = 86400000;
+      const goalLength = (endDate - startDate) / oneDay;
+      const dailyWeightDecrement =
+        (this.props.user.longTermGoal.startWeight -
+          this.props.user.longTermGoal.endingWeight) /
+        goalLength;
+      if (this.state.goalAllData.length === 0) {
+        for (let n = 1; n <= goalLength; n++) {
+          let marker = {};
+          let date = new Date(startDate + oneDay * n);
+          marker.x = `${date.getMonth() + 1}-${date.getDate()}`;
+          marker.y =
+            this.props.user.longTermGoal.startWeight -
+            dailyWeightDecrement * (n - 1);
+          this.state.goalAllData.push(marker);
+        }
       }
-    }
-    if (this.state.goalSevenDay.length === 0) {
-      let datesToMatch = this.state.sevenDay.map(date => date.x);
-      let goalDatesMatched = this.state.goalAllData.filter(
-        checkin => datesToMatch.includes(checkin.x) === true
-      );
-      for (let i = 0; i < goalDatesMatched.length; i++) {
-        this.state.goalSevenDay.push(goalDatesMatched[i]);
+      if (this.state.goalSevenDay.length === 0) {
+        let datesToMatch = this.state.sevenDay.map(date => date.x);
+        let goalDatesMatched = this.state.goalAllData.filter(
+          checkin => datesToMatch.includes(checkin.x) === true
+        );
+        for (let i = 0; i < goalDatesMatched.length; i++) {
+          this.state.goalSevenDay.push(goalDatesMatched[i]);
+        }
       }
-    }
-    if (this.state.goalThirtyDay.length === 0) {
-      let datesToMatch = this.state.thirtyDay.map(date => date.x);
-      let goalDatesMatched = this.state.goalAllData.filter(
-        checkin => datesToMatch.includes(checkin.x) === true
-      );
-      for (let i = 0; i < goalDatesMatched.length; i++) {
-        this.state.goalThirtyDay.push(goalDatesMatched[i]);
+      if (this.state.goalThirtyDay.length === 0) {
+        let datesToMatch = this.state.thirtyDay.map(date => date.x);
+        let goalDatesMatched = this.state.goalAllData.filter(
+          checkin => datesToMatch.includes(checkin.x) === true
+        );
+        for (let i = 0; i < goalDatesMatched.length; i++) {
+          this.state.goalThirtyDay.push(goalDatesMatched[i]);
+        }
       }
-    }
-    if (this.state.goalYtd.length === 0) {
-      let datesToMatch = this.state.ytd.map(date => date.x);
-      let goalDatesMatched = this.state.goalAllData.filter(
-        checkin => datesToMatch.includes(checkin.x) === true
-      );
-      for (let i = 0; i < goalDatesMatched.length; i++) {
-        this.state.goalYtd.push(goalDatesMatched[i]);
+      if (this.state.goalYtd.length === 0 && this.state.ytd.length > 0) {
+        let undefinedFilter = this.state.ytd.filter(elem => elem !== undefined);
+        let datesToMatch = undefinedFilter.map(date => date.x);
+        let goalDatesMatched = this.state.goalAllData.filter(
+          checkin => datesToMatch.includes(checkin.x) === true
+        );
+        for (let i = 0; i < goalDatesMatched.length; i++) {
+          this.state.goalYtd.push(goalDatesMatched[i]);
+        }
       }
     }
     // bar graph dataset showing calories consumed on a given day
-    if (this.props.user.checkins) {
-      const caloriesConsumed = this.props.user.checkins.map(
+    if (this.props.checkIns.checkIns) {
+      const caloriesConsumed = this.props.checkIns.checkIns.map(
         check => check.caloriesConsumed
       );
-      const dataDate = this.props.user.checkins.map(check => check.createdAt);
+      const dataDate = this.props.checkIns.checkIns.map(
+        check => check.createdAt
+      );
       if (this.state.consumedAllData.length === 0) {
         for (let i = 0; i < caloriesConsumed.length; i++) {
           let marker = {};
@@ -193,13 +213,16 @@ class ProgressScreen extends React.Component {
         }
       }
       if (this.state.consumedSevenDay.length === 0) {
-        let sevenDayTemp = this.state.consumedAllData.slice(-7);
+        let sevenDayTemp = this.state.consumedAllData.slice(-8);
         for (let j = 0; j < sevenDayTemp.length; j++) {
-          this.state.consumedSevenDay.push(sevenDayTemp[j]);
+          if (sevenDayTemp[j].y !== 0) {
+            this.state.consumedSevenDay.push(sevenDayTemp[j]);
+          }
         }
       }
       if (this.state.consumedThirtyDay.length === 0) {
-        let thirtyDayTemp = this.state.consumedAllData.slice(-30).reverse();
+        let thirtyDayTemp = this.state.consumedAllData.slice(-31).reverse();
+        thirtyDayTemp.shift();
         let correctingOrder = [];
         for (let k = 0; k < thirtyDayTemp.length; k += 3) {
           correctingOrder.push(thirtyDayTemp[k]);
@@ -209,22 +232,26 @@ class ProgressScreen extends React.Component {
         }
       }
       if (this.state.consumedYtd.length === 0) {
-        let ytdTemp = this.state.consumedAllData.reverse();
+        let ytdTemp = this.state.consumedAllData.slice(1).reverse();
         let correctingOrder = [];
         for (let m = 0; m < ytdTemp.length; m += ytdTemp.length / 10) {
-          correctingOrder.push(ytdTemp[m]);
-        }
-        for (let ma = 0; ma < 10; ma++) {
-          this.state.consumedYtd.push(correctingOrder.pop());
+          if (ytdTemp[m] !== undefined && ytdTemp[m].y !== 0) {
+            correctingOrder.push(ytdTemp[m]);
+          }
+          for (let ma = 0; ma < correctingOrder.length; ma++) {
+            this.state.consumedYtd.push(correctingOrder.pop());
+          }
         }
       }
     }
     // bar graph dataset showing calories burned on a given day
-    if (this.props.user.checkins) {
-      const caloriesBurned = this.props.user.checkins.map(
+    if (this.props.checkIns.checkIns) {
+      const caloriesBurned = this.props.checkIns.checkIns.map(
         check => check.caloriesBurned
       );
-      const dataDate = this.props.user.checkins.map(check => check.createdAt);
+      const dataDate = this.props.checkIns.checkIns.map(
+        check => check.createdAt
+      );
       if (this.state.burnedAllData.length === 0) {
         for (let i = 0; i < caloriesBurned.length; i++) {
           let marker = {};
@@ -235,13 +262,16 @@ class ProgressScreen extends React.Component {
         }
       }
       if (this.state.burnedSevenDay.length === 0) {
-        let sevenDayTemp = this.state.burnedAllData.slice(-7);
+        let sevenDayTemp = this.state.burnedAllData.slice(-8);
         for (let j = 0; j < sevenDayTemp.length; j++) {
-          this.state.burnedSevenDay.push(sevenDayTemp[j]);
+          if (sevenDayTemp[j].y !== 0) {
+            this.state.burnedSevenDay.push(sevenDayTemp[j]);
+          }
         }
       }
       if (this.state.burnedThirtyDay.length === 0) {
-        let thirtyDayTemp = this.state.burnedAllData.slice(-30).reverse();
+        let thirtyDayTemp = this.state.burnedAllData.slice(-31).reverse();
+        thirtyDayTemp.shift();
         let correctingOrder = [];
         for (let k = 0; k < thirtyDayTemp.length; k += 3) {
           correctingOrder.push(thirtyDayTemp[k]);
@@ -251,19 +281,26 @@ class ProgressScreen extends React.Component {
         }
       }
       if (this.state.burnedYtd.length === 0) {
-        let ytdTemp = this.state.burnedAllData.reverse();
+        let ytdTemp = this.state.burnedAllData.slice(1).reverse();
         let correctingOrder = [];
         for (let m = 0; m < ytdTemp.length; m += ytdTemp.length / 10) {
-          correctingOrder.push(ytdTemp[m]);
-        }
-        for (let ma = 0; ma < 10; ma++) {
-          this.state.burnedYtd.push(correctingOrder.pop());
+          if (ytdTemp[m] !== undefined && ytdTemp[m].y !== 0) {
+            correctingOrder.push(ytdTemp[m]);
+          }
+          for (let ma = 0; ma < 10; ma++) {
+            let check = correctingOrder.pop();
+            if (check) {
+              this.state.burnedYtd.push(check);
+            }
+          }
         }
       }
     }
 
     const buttons = ['7 Day', '30 Day', 'YTD'];
     const { selectedIndex } = this.state;
+    const { height, width } = Dimensions.get('window');
+    // console.log('height', height, 'width', width);
     return (
       <View style={styles.mainContainer}>
         <ButtonGroup
@@ -273,7 +310,11 @@ class ProgressScreen extends React.Component {
           containerStyle={{ height: 50, marginRight: 20 }}
           selectedTextStyle={{ color: 'white' }}
         />
-        <VictoryChart theme={VictoryTheme.material} height={320} width={400}>
+        <VictoryChart
+          theme={VictoryTheme.material}
+          height={height * 0.357}
+          width={width * 0.966}
+        >
           <VictoryAxis
             style={{
               tickLabels: {
@@ -404,14 +445,14 @@ ProgressScreen.navigationOptions = {
 const mapState = state => {
   return {
     user: state.user,
-    meals: state.meals,
+    checkIns: state.checkIns,
   };
 };
 
 const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(getUserThunk()),
-    getMeals: () => dispatch(getMealsThunk(new Date())),
+    getCheckIns: () => dispatch(getCheckInsThunk()),
   };
 };
 
