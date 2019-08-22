@@ -25,27 +25,33 @@ const MealFoodItems = db.define('mealFoodItems', {
 
 module.exports = MealFoodItems;
 
-MealFoodItems.afterSave(async mealFoodItem => {
+MealFoodItems.afterSave(async (mealFoodItem, options) => {
   let totalCalories = 0;
   let carbs = 0;
   let fat = 0;
   let protein = 0;
   await MealFoodItems.findAll({
     where: { mealId: mealFoodItem.mealId },
-  }).map(async mealItem => {
-    let foodItem = await FoodItems.findByPk(mealItem.foodItemId);
+    transaction: options.transaction,
+  }).map(async (mealItem, idx) => {
+    let foodItem = await FoodItems.findByPk(mealItem.foodItemId, {
+      transaction: options.transaction,
+    });
     let unit = 0;
     if (mealItem.quantity > 0) {
       unit = mealItem.quantity;
     } else {
       unit = mealItem.grams / foodItem.weight;
     }
+
     totalCalories += foodItem.calories * unit;
     carbs += foodItem.carbohydrates * unit;
     fat += foodItem.fat * unit;
     protein += foodItem.protein * unit;
   });
-  const meal = await Meals.findByPk(mealFoodItem.mealId);
+  const meal = await Meals.findByPk(mealFoodItem.mealId, {
+    transaction: options.transaction,
+  });
 
   //query all data each time and replace meal cals
 
@@ -56,7 +62,7 @@ MealFoodItems.afterSave(async mealFoodItem => {
       totalFat: fat,
       totalProtein: protein,
     },
-    { where: { id: mealFoodItem.mealId } }
+    { where: { id: mealFoodItem.mealId }, transaction: options.transaction }
   );
 
   const newMealItem = await createMealFoodItems(mealFoodItem);

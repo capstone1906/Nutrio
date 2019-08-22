@@ -552,7 +552,7 @@ async function seed() {
     fat: 1,
     carbohydrates: 45,
     protein: 5,
-    servingSize: '1 cup',
+    servingSize: 'cup',
     weight: 158,
   };
   const food12 = {
@@ -575,11 +575,11 @@ async function seed() {
   };
   const food14 = {
     food_name: 'brussel sprouts',
-    calories: 61,
+    calories: 8,
     fat: 1,
     carbohydrates: 12,
     protein: 5,
-    servingSize: '8 sprouts',
+    servingSize: 'sprout',
     weight: 168,
   };
   const food15 = {
