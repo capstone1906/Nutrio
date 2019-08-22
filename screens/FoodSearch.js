@@ -18,14 +18,6 @@ import {
 } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 
-
-const Clarifai = require('clarifai');
-
-const clarifai = new Clarifai.App({
-  apiKey: 'ec193b71319e40fa9568a580e4358a6b',
-});
-process.nextTick = setImmediate;
-
 export default class FoodSearch extends React.Component {
   constructor() {
     super();
@@ -80,7 +72,9 @@ export default class FoodSearch extends React.Component {
           <TouchableOpacity>
             <Ionicons
               onPress={() => {
-                this.props.navigation.navigate('CameraInterface');
+                this.props.navigation.navigate('CameraInterface', {
+                  mealId: this.props.navigation.getParam('mealId'),
+                });
               }}
               name="ios-camera"
               color="red"

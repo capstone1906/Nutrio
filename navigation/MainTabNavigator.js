@@ -13,12 +13,12 @@ import DailyLog from '../screens/DailyLog';
 import FoodSearch from '../screens/FoodSearch';
 import FoodSearchItem from '../screens/FoodSearchItem';
 import Meals from '../screens/Meals';
-import CameraInterface from '../screens/CameraInterface'
+import CameraInterface from '../screens/CameraInterface';
 import RecommendedMeals from '../screens/RecommendedMeals';
 import RecommendedFoods from '../screens/RecommendedFoods';
-import Exercise from '../screens/exercise'
-import SingleExercise from '../screens/singleExercise'
-
+import Exercise from '../screens/exercise';
+import SingleExercise from '../screens/singleExercise';
+import QuickAddFood from '../screens/QuickAddFood';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -94,6 +94,7 @@ const DailyLogStack = createStackNavigator(
     DailyLog: DailyLog,
     FoodSearch: FoodSearch,
     CameraInterface: CameraInterface,
+    QuickAddFood: QuickAddFood,
     Exercise: Exercise,
     SingleExercise: SingleExercise,
     FoodSearchItem: FoodSearchItem,

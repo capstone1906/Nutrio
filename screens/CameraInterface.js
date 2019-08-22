@@ -75,8 +75,8 @@ export default class CameraInterface extends React.Component {
         },
         {
           headers: {
-            'x-app-id': '5e27fd08',
-            'x-app-key': '1e1ee4d0779fb25127320c91ced7c367',
+            'x-app-id': 'fa4f9042',
+            'x-app-key': '997023a117b76d83e33a7ae290a6b5ba',
             'x-remote-user-id': '0',
           },
         }
@@ -221,6 +221,7 @@ export default class CameraInterface extends React.Component {
                 selectedItems={this.state.selectedFoods}
                 onSelectionsChange={this.onSelectionsChange}
                 style={{ marginBottom: 37 }}
+                keyExtractor={(item, index) => index.toString()}
               />
               <Grid style={styles.resultToolbar}>
                 <Row>
@@ -242,7 +243,10 @@ export default class CameraInterface extends React.Component {
                       <Ionicons
                         style={styles.closeButton}
                         onPress={() => {
-                          this.props.navigation.navigate('FoodSearch');
+                          this.props.navigation.navigate('QuickAddFood', {
+                            foodsSelected: this.state.selectedFoods,
+                            mealId: this.props.navigation.getParam('mealId'),
+                          });
                         }}
                         name="md-checkmark"
                         color="white"
