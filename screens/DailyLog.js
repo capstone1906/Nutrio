@@ -10,7 +10,6 @@ import { connect } from "react-redux";
 
 import DatePicker from 'react-native-datepicker';
 import { getMealsThunk, deleteMealItem } from '../components/store/meals';
-import { getUserThunk } from "../components/store/user";
 
 import { Button, Divider } from "react-native-elements";
 

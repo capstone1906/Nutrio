@@ -5,6 +5,7 @@ module.exports = router;
 router.get("/", async (req, res, next) => {
   try {
     const meals = await Meals.findAll({
+
       include: [{ all: true }]
     });
     const dateNow = new Date();

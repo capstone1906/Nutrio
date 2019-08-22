@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Users } = require('../db/postgres/models/index');
+const { Users, DailyGoals, LongTermGoals } = require('../db/postgres/models/index');
 module.exports = router;
 
 router.get('/', async (req, res, next) => {
@@ -8,7 +8,7 @@ router.get('/', async (req, res, next) => {
       where: {
         id: 1, //fix later
       },
-      include: [{ all: true }],
+      include: [DailyGoals, LongTermGoals],
     });
 
     res.json(me);

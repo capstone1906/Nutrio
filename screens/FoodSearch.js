@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -6,17 +6,17 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-} from 'react-native';
-const { width: winWidth } = Dimensions.get('window');
-import axios from 'axios';
+  TextInput
+} from "react-native";
+const { width: winWidth } = Dimensions.get("window");
+import axios from "axios";
 import {
   Button,
   ListItem,
   ThemeProvider,
   Divider,
-  Input,
-} from 'react-native-elements';
-import { Ionicons } from '@expo/vector-icons';
+} from "react-native-elements";
+import { Ionicons } from "@expo/vector-icons";
 
 // import FoodSearchItem from "../components/FoodSearchItem";
 
@@ -26,7 +26,7 @@ export default class FoodSearch extends React.Component {
     this.state = {
       currentSearch: [],
       showError: false,
-      searchName: '',
+      searchName: ""
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -35,7 +35,7 @@ export default class FoodSearch extends React.Component {
     event.preventDefault();
 
     this.setState({
-      searchName: event.nativeEvent.text,
+      searchName: event.nativeEvent.text
     });
 
     const res = await axios.get(
@@ -44,20 +44,20 @@ export default class FoodSearch extends React.Component {
       }`,
       {
         headers: {
-          'x-app-id': 'fa4f9042',
-          'x-app-key': '997023a117b76d83e33a7ae290a6b5ba',
-        },
+          "x-app-id": "fa4f9042",
+          "x-app-key": "997023a117b76d83e33a7ae290a6b5ba"
+        }
       }
     );
 
     if (res.data.common) {
       this.setState({
         currentSearch: res.data.common.concat(res.data.branded),
-        showError: false,
+        showError: false
       });
     } else {
       this.setState({
-        showError: true,
+        showError: true
       });
     }
   }
@@ -88,9 +88,9 @@ export default class FoodSearch extends React.Component {
         </View>
 
         <Text>Search for Food Items</Text>
-        <Input onChange={this.handleChange} />
+        <TextInput keyboardAppearance="dark" onChange={this.handleChange} />
 
-        {this.state.searchName !== '' && (
+        {this.state.searchName !== "" && (
           <ScrollView style={styles.results}>
             {foods.map(food => {
               return (
@@ -98,15 +98,15 @@ export default class FoodSearch extends React.Component {
                   <Text
                     style={styles.foodName}
                     onPress={() => {
-                      this.props.navigation.navigate('FoodSearchItem', {
+                      this.props.navigation.navigate("FoodSearchItem", {
                         food: food,
-                        mealId: this.props.navigation.getParam('mealId'),
+                        mealId: this.props.navigation.getParam("mealId")
                       });
                     }}
                   >
                     {food.food_name}
                   </Text>
-                  <Divider style={{ backgroundColor: 'blue' }} />
+                  <Divider style={{ backgroundColor: "blue" }} />
                 </TouchableOpacity>
               );
             })}
@@ -120,31 +120,31 @@ export default class FoodSearch extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginTop: 10,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    marginTop: 10
   },
   cameraToolbar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
     height: 100,
-    width: winWidth,
+    width: winWidth
   },
   results: {
-    width: '90%',
-    alignContent: 'center',
+    width: "90%",
+    alignContent: "center"
   },
   foodName: {
-    fontSize: 20,
-  },
+    fontSize: 20
+  }
 });
 
 FoodSearch.navigationOptions = {
   headerTitle: "Today's log",
   headerStyle: {
-    backgroundColor: 'crimson',
+    backgroundColor: "crimson"
   },
-  headerTintColor: 'white',
+  headerTintColor: "white"
 };

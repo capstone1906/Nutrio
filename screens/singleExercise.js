@@ -4,12 +4,13 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  TextInput
 } from "react-native";
 import { connect } from "react-redux";
 
 import { getExercisesThunk } from "../components/store/exercises";
-import { Input, ListItem, Divider, Icon, Button } from "react-native-elements";
+import {  ListItem, Divider, Icon, Button } from "react-native-elements";
 import { getCheckInsThunk, updateCheckIn } from "../components/store/checkIns";
 
 class SingleExercise extends React.Component {
@@ -25,10 +26,10 @@ class SingleExercise extends React.Component {
   }
 
   addTolog() {
-      var cals = this.state.caloriesBurned
-      if(isNaN(this.state.caloriesBurned)) {
-        cals = 0;
-      }
+    var cals = this.state.caloriesBurned;
+    if (isNaN(this.state.caloriesBurned)) {
+      cals = 0;
+    }
     this.props.updateCheckIn(this.props.checkIns.todaysCheckIn.id, {
       caloriesBurned: cals
     });
@@ -46,7 +47,6 @@ class SingleExercise extends React.Component {
       ).toFixed(0)
     });
   }
-  
 
   async componentDidMount() {
     await this.props.getCheckIns();
@@ -70,7 +70,11 @@ class SingleExercise extends React.Component {
         </Text>
         <Text>Minutes performed: {this.state.minutesPerformed} </Text>
 
-        <Input onChange={this.handleChange} />
+        <TextInput
+          keyboardType="number-pad"
+          keyboardAppearance="dark"
+          onChange={this.handleChange}
+        />
 
         <Text>Calories Burned: {this.state.caloriesBurned}</Text>
 
