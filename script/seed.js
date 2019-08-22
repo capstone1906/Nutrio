@@ -122,8 +122,8 @@ async function seed() {
     calorieLimit: 2000,
     caloriesToBurn: 200,
     carbLimit: 200,
-    proteinLimit: 90,
-    fatLimit: 110,
+    proteinLimit: 150,
+    fatLimit: 180,
     userId: 1,
   });
 

@@ -1,5 +1,10 @@
 const router = require('express').Router();
-const { Meals } = require('../db/postgres/models/index');
+const {
+  Meals,
+  FoodItems,
+  MealFoodItems,
+} = require('../db/postgres/models/index');
+const { getRecommendedMeals } = require('../db/neo4j/models/meals');
 module.exports = router;
 
 router.get('/', async (req, res, next) => {
@@ -99,5 +104,26 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/recommendedMeals', async (req, res, next) => {
-  console.log('req.params', req.query)
+  const meal = {
+    calories: Number(req.query.calories),
+    carbs: Number(req.query.carbs),
+    protein: Number(req.query.protein),
+    fat: Number(req.query.fat),
+    type: req.query.type,
+  };
+  try {
+    const meals = await getRecommendedMeals(meal);
+    const mealsRes = meals.map(m => {
+      return Meals.findOne({
+        where: {
+          id: m,
+        },
+        include: [FoodItems],
+      });
+    });
+    const response = await Promise.all(mealsRes);
+    res.json(response);
+  } catch (err) {
+    next(err);
+  }
 });

@@ -8,9 +8,9 @@ import {
   ScrollView,
 } from 'react-native';
 import { Button } from 'react-native-elements';
-import axios from 'axios';
-import { ngrok } from '../secret';
 import { connect } from 'react-redux';
+import { getRecommendedMealsThunk } from '../components/store/recommendedMeals';
+import MealCard from '../components/MealCard';
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -52,19 +52,13 @@ class RecommendedMeals extends React.Component {
       fat: dailyGoals.fatLimit / 4,
       type: evt,
     };
-    console.log('meal', meal)
-    const recMeals = await axios.get(`${ngrok}/api/meals/recommendedMeals`, {
-      params: {
-        meal: meal,
-      },
-    });
-
+    await this.props.getRecs(meal);
     this.setState({
       activeButton: evt,
-      meals: recMeals,
     });
   }
   render() {
+    console.log(this.props.recommendedMeals);
     return (
       <View>
         <View style={styles.buttonContainer}>
@@ -77,7 +71,13 @@ class RecommendedMeals extends React.Component {
             />
           ))}
         </View>
-        <ScrollView />
+        <ScrollView>
+          {this.props.recommendedMeals.length
+            ? this.props.recommendedMeals.map(meal => (
+                <MealCard key={meal.id} meal={meal} />
+              ))
+            : null}
+        </ScrollView>
       </View>
     );
   }
@@ -94,7 +94,16 @@ RecommendedMeals.navigationOptions = {
 const mapState = state => {
   return {
     user: state.user,
+    recommendedMeals: state.recommendedMeals,
+  };
+};
+const mapDispatch = dispatch => {
+  return {
+    getRecs: meal => dispatch(getRecommendedMealsThunk(meal)),
   };
 };
 
-export default connect(mapState)(RecommendedMeals);
+export default connect(
+  mapState,
+  mapDispatch
+)(RecommendedMeals);
