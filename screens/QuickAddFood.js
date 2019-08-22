@@ -11,10 +11,12 @@ import {
   Button,
 } from 'react-native';
 const { width: winWidth } = Dimensions.get('window');
+import { connect } from 'react-redux';
 import axios from 'axios';
 import { ListItem } from 'react-native-elements';
+import { postFood } from '../components/store/meals';
 
-export default class QuickAddFood extends React.Component {
+class QuickAddFood extends React.Component {
   state = {
     selectedFoodsInfo: [],
   };
@@ -22,6 +24,9 @@ export default class QuickAddFood extends React.Component {
   async componentDidMount() {
     const foodsSelected = this.props.navigation.getParam('foodsSelected');
     await this.getInfoArray(foodsSelected);
+    this.props.navigation.setParams({
+      selectedFoodsInfo: this.state.selectedFoodsInfo,
+    });
   }
 
   retrieveData = async item => {
@@ -34,8 +39,8 @@ export default class QuickAddFood extends React.Component {
         },
         {
           headers: {
-            'x-app-id': 'fa4f9042',
-            'x-app-key': '997023a117b76d83e33a7ae290a6b5ba',
+            'x-app-id': '571e77e8',
+            'x-app-key': '2580a4dbee98751ccda81d461f7f7728',
             'x-remote-user-id': '0',
           },
         }
@@ -46,6 +51,11 @@ export default class QuickAddFood extends React.Component {
           name: food.food_name,
           photo: food.photo.thumb,
           calories: food.nf_calories,
+          fat: food.nf_total_fat,
+          protein: food.nf_protein,
+          carbohydrates: food.nf_total_carbohydrate,
+          weight: food.serving_weight_grams,
+          servingSize: food.serving_unit,
         };
       }
     } catch (error) {
@@ -66,7 +76,12 @@ export default class QuickAddFood extends React.Component {
             itemInfo.name.slice(1)}`,
           image: itemInfo.photo,
           calories: itemInfo.calories,
-          servingSize: '',
+          fat: itemInfo.fat,
+          protein: itemInfo.protein,
+          carbohydrates: itemInfo.carbohydrates,
+          weight: itemInfo.weight,
+          servingSize: itemInfo.servingSize,
+          quantity: '',
         });
       }
     }
@@ -77,8 +92,9 @@ export default class QuickAddFood extends React.Component {
   };
 
   handleChange = (text, index) => {
+    // eslint-disable-next-line react/no-access-state-in-setstate
     const newSelectedFoodsInfo = [...this.state.selectedFoodsInfo];
-    newSelectedFoodsInfo[index].servingSize = text;
+    newSelectedFoodsInfo[index].quantity = text;
 
     this.setState({ selectedFoodsInfo: newSelectedFoodsInfo });
   };
@@ -110,12 +126,12 @@ export default class QuickAddFood extends React.Component {
           <TextInput
             style={{ fontSize: 17 }}
             onChangeText={text => this.handleChange(text, index)}
-            value={item.servingSize}
+            value={item.quantity}
             keyboardType="number-pad"
-            placeholder="Enter Serving Size"
+            placeholder="Enter Quantity"
           />
           <Text style={{ fontSize: 20, fontStyle: 'italic' }}>
-            {Math.round(Number(item.calories) * Number(item.servingSize))} Cal
+            {Math.round(Number(item.calories) * Number(item.quantity))} Cal
           </Text>
         </View>
       }
@@ -124,9 +140,33 @@ export default class QuickAddFood extends React.Component {
     />
   );
 
+  postFood = array => {
+    const mealId = this.props.navigation.getParam('mealId');
+
+    for (let i = 0; i < array.length; i++) {
+      const newFood = {
+        food_name: array[i].name,
+        calories: array[i].calories,
+        fat: array[i].fat,
+        protein: array[i].protein,
+        carbohydrates: array[i].carbohydrates,
+        weight: array[i].weight,
+        servingSize: array[i].servingSize,
+      };
+
+      this.props.postFood(
+        newFood,
+        mealId,
+        Math.round(Number(array[i].quantity)),
+        0
+      );
+    }
+
+    alert('Added to Meal');
+  };
+
   render() {
     const { selectedFoodsInfo } = this.state;
-    const mealId = this.props.navigation.getParam('mealId');
 
     console.log('selectedFoodsInfo is now ', selectedFoodsInfo);
 
@@ -146,7 +186,9 @@ QuickAddFood.navigationOptions = {
   headerRight: (
     <Button
       style={{ fontWeight: 'bold' }}
-      onPress={() => alert('Added to Meal')}
+      onPress={() =>
+        this.postFood(this.props.navigation.getParam('selectedFoodsInfo'))
+      }
       title="Add  "
       color="#fff"
     />
@@ -156,3 +198,15 @@ QuickAddFood.navigationOptions = {
   },
   headerTintColor: 'white',
 };
+
+const mapDispatch = dispatch => {
+  return {
+    postFood: (food, mealId, quantity, grams) =>
+      dispatch(postFood(food, mealId, quantity, grams)),
+  };
+};
+
+export default connect(
+  null,
+  mapDispatch
+)(QuickAddFood);
