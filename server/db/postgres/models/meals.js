@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
-const createMeal = require('../../neo4j/models/meals');
+const {createMeal} = require('../../neo4j/models/meals');
 
 const Meals = db.define('meals', {
   name: {

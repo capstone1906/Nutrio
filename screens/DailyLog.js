@@ -1,22 +1,22 @@
-import React from "react";
+import React from 'react';
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
-} from "react-native";
-import { connect } from "react-redux";
+  TouchableOpacity,
+} from 'react-native';
+import { connect } from 'react-redux';
 
-import DatePicker from "react-native-datepicker";
-import { getMealsThunk } from "../components/store/meals";
+import DatePicker from 'react-native-datepicker';
+import { getMealsThunk, deleteMealItem } from '../components/store/meals';
+import { getUserThunk } from '../components/store/user';
 
-import { Button, Divider } from "react-native-elements";
+import { Button, Divider } from 'react-native-elements';
 
-import Swipeout from "react-native-swipeout";
-import { deleteMealItem } from "../components/store/meals";
-import * as Progress from "react-native-progress";
-import { getUserThunk } from "../components/store/user";
+import Swipeout from 'react-native-swipeout';
+import * as Progress from 'react-native-progress';
+import { getCheckInsThunk } from '../components/store/checkIns';
 
 const FoodTimeHeader = props => {
   return (
@@ -32,15 +32,43 @@ const FoodTimeHeader = props => {
 };
 
 const ExerciseContainer = props => {
+  var calories = 0;
+  if (props.todaysCheckIn) {
+    calories = props.todaysCheckIn.caloriesBurned;
+  }
+
+  var swipeoutBtns = [
+    {
+      text: 'Reset',
+      backgroundColor: 'red',
+      onPress() {
+        props.resetCaloriesBurned(props.checkIns.todaysCheckIn.id);
+      },
+    },
+  ];
+
   return (
     <View style={styles.FoodTimeContainer}>
       <FoodTimeHeader time={props.time} />
+      <Swipeout right={swipeoutBtns} backgroundColor="white">
+        <View style={styles.foodItem}>
+          <View style={{ flex: 2, paddingRight: 80 }}>
+            <Text style={styles.foodName}>Calories Burned</Text>
+          </View>
+
+          <View style={{ flex: 1 }}>
+            <Text style={styles.foodName}>{Number(calories).toFixed(0)}</Text>
+          </View>
+        </View>
+
+        <Divider style={{ backgroundColor: 'blue' }} />
+      </Swipeout>
 
       <Button
         buttonStyle={styles.addFoodButton}
         title="Add Exercise"
         onPress={() => {
-          props.navigation.navigate("Exercise");
+          props.navigation.navigate('Exercise');
         }}
       />
     </View>
@@ -63,12 +91,12 @@ const FoodTimeContainer = props => {
 
         var swipeoutBtns = [
           {
-            text: "Delete",
-            backgroundColor: "red",
+            text: 'Delete',
+            backgroundColor: 'red',
             onPress() {
               props.deleteItem(food.id, props.meal.id);
-            }
-          }
+            },
+          },
         ];
 
         return (
@@ -79,9 +107,9 @@ const FoodTimeContainer = props => {
           >
             <TouchableOpacity
               onPress={() => {
-                props.navigation.navigate("FoodSearchItem", {
+                props.navigation.navigate('FoodSearchItem', {
                   food: food,
-                  mealId: props.meal.id
+                  mealId: props.meal.id,
                 });
               }}
             >
@@ -107,7 +135,7 @@ const FoodTimeContainer = props => {
                 </View>
               </View>
             </TouchableOpacity>
-            <Divider style={{ backgroundColor: "blue" }} />
+            <Divider style={{ backgroundColor: 'blue' }} />
           </Swipeout>
         );
       })}
@@ -116,8 +144,8 @@ const FoodTimeContainer = props => {
         buttonStyle={styles.addFoodButton}
         title="Add food"
         onPress={() => {
-          props.navigation.navigate("FoodSearch", {
-            mealId: props.meal.id
+          props.navigation.navigate('FoodSearch', {
+            mealId: props.meal.id,
           });
         }}
       />
@@ -137,23 +165,26 @@ class DailyLog extends React.Component {
     var day = dateNow.getDate().toString();
 
     if (month < 10) {
-      month = "0" + month;
+      month = '0' + month;
     }
     if (day < 10) {
-      day = "0" + day;
+      day = '0' + day;
     }
 
-    todaysDate = year + "-" + month + "-" + day;
+    todaysDate = year + '-' + month + '-' + day;
 
     this.state = {
       date: todaysDate,
       meals: [],
 
-      showDatePicker: false
+      showDatePicker: false,
     };
 
     this.deleteItem = this.deleteItem.bind(this);
+    this.resetCaloriesBurned = this.resetCaloriesBurned.bind(this);
   }
+
+  resetCaloriesBurned() {}
 
   async deleteItem(foodId, mealId) {
     this.props.deleteMealItem(foodId, mealId);
@@ -161,7 +192,7 @@ class DailyLog extends React.Component {
   }
 
   async componentDidMount() {
-    console.log('date ispioajpoija', this.state.date)
+    await this.props.getCheckIns();
     await this.props.getMeals(this.state.date);
     await this.props.getUser();
   }
@@ -198,19 +229,19 @@ class DailyLog extends React.Component {
       percent = 0;
     }
     if (percent < 0.25) {
-      barColor = "blue";
+      barColor = 'blue';
     }
     if (percent < 0.5) {
-      barColor = "green";
+      barColor = 'green';
     }
     if (percent > 0.5) {
-      barColor = "orange";
+      barColor = 'orange';
     }
     if (percent >= 0.8) {
-      barColor = "red";
+      barColor = 'red';
     }
     if (percent >= 0.9) {
-      barColor = "crimson";
+      barColor = 'crimson';
     }
 
     return (
@@ -225,14 +256,14 @@ class DailyLog extends React.Component {
             cancelBtnText="Cancel"
             customStyles={{
               dateIcon: {
-                position: "absolute",
+                position: 'absolute',
                 left: 0,
                 top: 4,
-                marginLeft: 0
+                marginLeft: 0,
               },
               dateInput: {
-                marginLeft: 36
-              }
+                marginLeft: 36,
+              },
             }}
             onDateChange={date => {
               this.setState({ date: date });
@@ -242,7 +273,7 @@ class DailyLog extends React.Component {
         </View>
 
         <View style={styles.progress}>
-          <View style={{ justifyContent: "center", flexDirection: "column" }}>
+          <View style={{ justifyContent: 'center', flexDirection: 'column' }}>
             <Text>Calories: </Text>
             <Text> {totalCals.toFixed(0)}</Text>
           </View>
@@ -254,7 +285,7 @@ class DailyLog extends React.Component {
             color={barColor}
           />
 
-          <View style={{ justifyContent: "center", flexDirection: "column" }}>
+          <View style={{ justifyContent: 'center', flexDirection: 'column' }}>
             <Text>Limit: </Text>
             <Text> {calorieLimit.toFixed(0)}</Text>
           </View>
@@ -284,7 +315,12 @@ class DailyLog extends React.Component {
           meal={snacks}
           deleteItem={this.deleteItem}
         />
-        <ExerciseContainer time="exercise" navigation={this.props.navigation} />
+        <ExerciseContainer
+          todaysCheckIn={this.props.checkIns.todaysCheckIn}
+          time="exercise"
+          navigation={this.props.navigation}
+          resetCaloriesBurned={this.resetCaloriesBurned}
+        />
       </ScrollView>
     );
   }
@@ -292,67 +328,68 @@ class DailyLog extends React.Component {
 
 const styles = StyleSheet.create({
   foodName: {
-    fontSize: 18
+    fontSize: 18,
   },
   foodItem: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingLeft: 10,
     paddingTop: 5,
-    paddingBottom: 5
+    paddingBottom: 5,
   },
   date: {
-    justifyContent: "center",
-    paddingLeft: 75
+    justifyContent: 'center',
+    paddingLeft: 75,
   },
   progress: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
     // paddingLeft: 40,
     paddingTop: 20,
-    paddingBottom: 25
+    paddingBottom: 25,
   },
   container: {
     flex: 1,
-    padding: 20
+    padding: 20,
   },
 
   FoodTimeHeader: {
-    flexDirection: "row",
-    backgroundColor: "lightgrey",
+    flexDirection: 'row',
+    backgroundColor: 'lightgrey',
     height: 40,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
 
     padding: 10,
-    borderRadius: 10
+    borderRadius: 10,
   },
   FoodTimeContainer: {
-    marginBottom: 30
+    marginBottom: 30,
   },
   addFoodButton: {
     width: 100,
     height: 50,
-    backgroundColor: "limegreen"
+    backgroundColor: 'limegreen',
   },
   foodAmount: {
     fontSize: 12,
-    color: "grey"
-  }
+    color: 'grey',
+  },
 });
 
 DailyLog.navigationOptions = {
-  headerTitle: "Daily log",
+  headerTitle: 'Daily log',
   headerStyle: {
-    backgroundColor: "crimson"
+    backgroundColor: 'crimson',
   },
-  headerTintColor: "white"
+  headerTintColor: 'white',
 };
 
 const mapState = state => {
   return {
     meals: state.meals,
-    user: state.user
+    user: state.user,
+    checkIns: state.checkIns,
   };
 };
 
@@ -360,8 +397,10 @@ const mapDispatch = dispatch => {
   return {
     getMeals: date => dispatch(getMealsThunk(date)),
     getUser: () => dispatch(getUserThunk()),
+    getCheckIns: () => dispatch(getCheckInsThunk()),
 
-    deleteMealItem: (foodId, mealId) => dispatch(deleteMealItem(foodId, mealId))
+    deleteMealItem: (foodId, mealId) =>
+      dispatch(deleteMealItem(foodId, mealId)),
   };
 };
 

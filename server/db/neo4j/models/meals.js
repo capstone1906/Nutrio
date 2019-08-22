@@ -47,4 +47,31 @@ const createMeal = meal => {
     });
 };
 
-module.exports = createMeal;
+const getRecommendedMeals = meal => {
+  return session
+    .run(
+      `MATCH ()-[r:HAD_MEAL]->(m:Meal {entreeType: $type})
+    WHERE m.totalCalories < $calories AND  m.totalCarbs < $carbs AND m.totalFat < $fat AND m.totalProtein < $protein
+    RETURN sum(r.timesEaten) as total, m.id
+    ORDER BY total DESC`,
+      {
+        calories: meal.calories,
+        carbs: meal.carbs,
+        fat: meal.fat,
+        protein: meal.protein,
+        type: meal.type,
+      }
+    )
+    .then(result => {
+      session.close();
+      return (res = result.records.map(rec => {
+        return rec.get('m.id').low;
+      }));
+    })
+    .catch(error => {
+      session.close();
+      throw error;
+    });
+};
+
+module.exports = { createMeal, getRecommendedMeals };
