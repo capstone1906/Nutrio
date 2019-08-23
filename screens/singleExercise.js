@@ -5,12 +5,13 @@ import {
   Text,
   View,
   TouchableOpacity,
-} from 'react-native';
-import { connect } from 'react-redux';
+  TextInput
+} from "react-native";
+import { connect } from "react-redux";
 
-import { getExercisesThunk } from '../components/store/exercises';
-import { Input, ListItem, Divider, Icon, Button } from 'react-native-elements';
-import { getCheckInsThunk, updateCheckIn } from '../components/store/checkIns';
+import { getExercisesThunk } from "../components/store/exercises";
+import {  ListItem, Divider, Icon, Button } from "react-native-elements";
+import { getCheckInsThunk, updateCheckIn } from "../components/store/checkIns";
 
 class SingleExercise extends React.Component {
   constructor() {
@@ -68,7 +69,11 @@ class SingleExercise extends React.Component {
         </Text>
         <Text>Minutes performed: {this.state.minutesPerformed} </Text>
 
-        <Input onChange={this.handleChange} />
+        <TextInput
+          keyboardType="number-pad"
+          keyboardAppearance="dark"
+          onChange={this.handleChange}
+        />
 
         <Text>Calories Burned: {this.state.caloriesBurned}</Text>
 

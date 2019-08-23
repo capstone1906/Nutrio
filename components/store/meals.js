@@ -53,9 +53,16 @@ export const getMealsThunk = dateVar => async dispatch => {
       if (day < 10) {
         day = '0' + day;
       }
+<<<<<<< HEAD
+  
+      todaysDate = year + "-" + month + "-" + day;
+    }
+    
+=======
 
       todaysDate = year + '-' + month + '-' + day;
     }
+>>>>>>> 1645ef75a9d3720e8f17933301c345fb43810890
 
     var foods = res.data;
     var breakfast = {};
@@ -124,7 +131,6 @@ export const postFood = (food, mealId, quantity, grams) => async dispatch => {
       `${ngrok}/api/mealFoodItems/${mealId}/${quantity}/${grams}`,
       food
     );
-    // var res = await axios.get(`${ngrok}/api/meals`);
     dispatch(getMealsThunk());
   } catch (err) {
     console.error(err);
