@@ -10,6 +10,7 @@ import {
 import { Input } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { addUserThunk } from '../components/store/user';
+import SelectInput from 'react-native-select-input-ios';
 
 class UserJoinScreen extends React.Component {
   constructor(props) {
@@ -20,10 +21,32 @@ class UserJoinScreen extends React.Component {
       age: '',
       height: '',
       weight: '',
-      activityLevel: 'Sedentary',
+      activityLevel: 1.2,
       bodyType: 'Ectomorph',
       goal: 'maintain',
     };
+    this.bodyTypeOptions = [
+      { value: 'Ectomorph', label: 'Ectomorph' },
+      { value: 'Mesomorph', label: 'Mesomorph' },
+      { value: 'Endomorph', label: 'Endomorph' },
+    ];
+
+    this.goalOptions = [
+      { value: 'maintain', label: 'Maintain Weight' },
+      { value: 'downHalf', label: 'Lose half a pound per week' },
+      { value: 'downOne', label: 'Lose 1 pound per week' },
+      { value: 'upOneHalf', label: 'Lose 1 and a half pounds per week' },
+      { value: 'downTwo', label: 'Lose 2 pounds per week' },
+      { value: 'upHalf', label: 'Gain half a pound per week' },
+      { value: 'upOne', label: 'Gain 1 pound per week' },
+    ];
+
+    this.activityLevelOptions = [
+      { value: 1.2, label: 'Sedentary (little or no exercise)' },
+      { value: 1.375, label: 'Lightly active (light exercise 1-3 days/week)' },
+      { value: 1.55, label: 'Active (moderate exercise 3-5 days/week)' },
+      { value: 1.725, label: 'Very active (hard exercise 6-7 days/week)' },
+    ];
   }
 
   async handleSubmit() {
@@ -61,79 +84,39 @@ class UserJoinScreen extends React.Component {
             </View>
             <View style={styles.dropDownFields}>
               <Text style={styles.formLabelText}>Activity Level</Text>
-              <Picker
-                style={{ height: 60, width: 200 }}
-                selectedValue={this.state.activityLevel}
-                onValueChange={itemValue =>
+              <SelectInput
+                value={this.state.activityLevel}
+                options={this.activityLevelOptions}
+                onValueChange={(itemValue, itemIndex) => {
                   this.setState({
                     activityLevel: itemValue,
-                  })
-                }
-              >
-                <Picker.Item
-                  label="Sedentary (little or no exercise)"
-                  value={1.2}
-                />
-                <Picker.Item
-                  label="Lightly active (light exercise 1-3 days/week)"
-                  value={1.375}
-                />
-                <Picker.Item
-                  label=" Active(moderate exercise 3-5 days/week)"
-                  value={1.55}
-                />
-                <Picker.Item
-                  label="Very active (hard exercise 6-7 days/week)"
-                  value={1.725}
-                />
-                {/* <Picker.Item
-              label="Extremely active (very hard exercise and a physical
-                 job)"
-              value={1.9}
-            /> */}
-              </Picker>
+                  });
+                }}
+              />
             </View>
             <View style={styles.dropDownFields}>
               <Text style={styles.formLabelText}>Body Type</Text>
-              <Picker
-                style={{ height: 60, width: 200 }}
-                selectedValue={this.state.bodyType}
-                onValueChange={itemValue =>
+              <SelectInput
+                value={this.state.bodyType}
+                options={this.bodyTypeOptions}
+                onValueChange={(itemValue, itemIndex) => {
                   this.setState({
                     bodyType: itemValue,
-                  })
-                }
-              >
-                <Picker.Item label="Ectomorph" value="ectomorph" />
-                <Picker.Item label="Endomorph" value="endomorph" />
-                <Picker.Item label="Mesomorph" value="mesomorph" />
-              </Picker>
+                  });
+                }}
+              />
             </View>
             <View style={styles.dropDownFields}>
               <Text style={styles.formLabelText}>Goal</Text>
-              <Picker
-                style={{ height: 60, width: 200 }}
-                selectedValue={this.state.goal}
-                onValueChange={itemValue =>
+              <SelectInput
+                value={this.state.goal}
+                options={this.goalOptions}
+                onValueChange={(itemValue, itemIndex) => {
                   this.setState({
                     goal: itemValue,
-                  })
-                }
-              >
-                <Picker.Item label="Maintain Weight" value="maintain" />
-                <Picker.Item
-                  label="Lose half pound per week"
-                  value="downHalf"
-                />
-                <Picker.Item label="Lose 1 pound per week" value="downOne" />
-                <Picker.Item
-                  label="Lose 1 and a half pounds per week"
-                  value="downOneHalf"
-                />
-                <Picker.Item label="Lose 2 pounds per week" value="downTwo" />
-                <Picker.Item label="Gain half a pound per week" value="upHalf" />
-                <Picker.Item label="Gain 1 pound per week" value="upOne" />
-              </Picker>
+                  });
+                }}
+              />
             </View>
           </View>
           <TouchableOpacity onPress={() => navigate('Main')}>
@@ -141,11 +124,11 @@ class UserJoinScreen extends React.Component {
               <Text style={styles.buttonText}>Submit</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigate('Main')}>
+          {/* <TouchableOpacity onPress={() => navigate('Main')}>
             <View style={styles.joinSignIn}>
               <Text style={styles.buttonText}>Google Auth Button</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ImageBackground>
     );
@@ -158,7 +141,7 @@ UserJoinScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   formLabelText: {
-    // color: 'white',
+    fontSize: 16,
   },
   formBackground: {
     backgroundColor: 'rgba(200,200,200,.6)',
@@ -177,7 +160,7 @@ const styles = StyleSheet.create({
   },
   joinSignIn: {
     alignItems: 'center',
-    backgroundColor: 'rgb(200,200,200)',
+    backgroundColor: 'lightblue',
     borderRadius: 205,
     marginLeft: 30,
     marginRight: 30,
@@ -200,8 +183,9 @@ const styles = StyleSheet.create({
   },
   dropDownFields: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    padding: 10,
+    paddingTop: 20,
   },
 });
 
