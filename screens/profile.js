@@ -6,36 +6,17 @@ import {
   View,
   TouchableOpacity,
   AsyncStorage,
-  TextInput
+  TextInput,
+  KeyboardAvoidingView,
+  AlertIOS
 } from "react-native";
 import { connect } from "react-redux";
 
 import { Button, Divider } from "react-native-elements";
 import { getUserThunk } from "../components/store/user";
 import ProgressCircle from "react-native-progress-circle";
-
-const Card = props => {
-  return (
-    <TouchableOpacity onPress={() => props.focusNextTextInput(props.number)}>
-      <View style={props.toggle ? styles.selectedCard : styles.card}>
-        <Text style={styles.attrib}>{props.attribute} </Text>
-
-        <TextInput
-          editable={props.editable}
-          keyboardType="number-pad"
-          keyboardAppearance="dark"
-          placeholder={`${props.placeholder}`}
-          value={props.value}
-          onChangeText={props.changeText}
-          ref={input => {
-            props.textInput[props.number] = input;
-          }}
-        />
-        <Text style={styles.attrib}>{props.measure}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-};
+import SelectInput from "react-native-select-input-ios";
+import { updateUserThunk } from "../components/store/user";
 
 class Profile extends React.Component {
   constructor() {
@@ -43,16 +24,21 @@ class Profile extends React.Component {
     this.state = {
       user: {},
       height: "",
+      age: 0,
+      bodyType: "",
+      activityLevel: 1.2,
+      endingWeight: 0,
+      startWeight: 0,
+      statedGoal: "Maintain weight",
       toggles: {
         one: false,
         two: false,
         three: false,
         four: false,
         five: false,
-        six: false,
-        seven: false,
-        eight: false
-      }
+        six: false
+      },
+      buttonToggle: true
     };
 
     this.textInput = {};
@@ -62,42 +48,130 @@ class Profile extends React.Component {
       three: false,
       four: false,
       five: false,
-      six: false,
-      seven: false,
-      eight: false
+      six: false
     };
+
+    this.options = [
+      { value: "Ectomorph", label: "Ectomorph" },
+      { value: "Mesomorph", label: "Mesomorph" },
+      { value: "Endomorph", label: "Endomorph" }
+    ];
+    this.levels = [
+      { value: 1.2, label: "Sedentary (little or no exercise)" },
+      { value: 1.375, label: "Lightly active (light exercise 1-3 days/week)" },
+      { value: 1.55, label: "Active(moderate exercise 3-5 days/week)" },
+      { value: 1.725, label: "Very active (hard exercise 6-7 days/week)" }
+    ];
+    this.goals = [
+      { value: "Lose 2 lbs a week", label: "Lose 2 lbs a week" },
+      { value: "Lose 1.5 lbs a week", label: "Lose 1.5 lbs a week" },
+      { value: "Lose 1 lb a week", label: "Lose 1 lb a week" },
+      { value: "Lose 0.5 lb a week", label: "Lose 0.5 lb a week" },
+      { value: "Maintain weight", label: "Maintain weight" },
+      { value: "Gain 0.5 lb a week", label: "Gain 0.5 lb a week" },
+      { value: "Gain 1 lb a week", label: "Gain 1 lb a week" }
+    ];
 
     this.removeItem = this.removeItem.bind(this);
     this.retrieveData = this.retrieveData.bind(this);
     this.focusNextTextInput = this.focusNextTextInput.bind(this);
+    this.updateProfile = this.updateProfile.bind(this);
+    this.toggleButtons = this.toggleButtons.bind(this);
+  }
+
+  toggleButtons() {
+    AlertIOS.alert(
+      "Modify goals?",
+      "Modifying goals will reset your goal(start date and end date)",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {
+            this.setState({
+              buttonToggle: true
+            });
+          }
+        },
+        {
+          text: "Proceed",
+          onPress: () => {
+            this.setState({
+              buttonToggle: false
+            });
+          }
+        }
+      ]
+    );
+  }
+
+  updateProfile() {
+    var obj = {
+      height: this.state.height,
+      bodyType: this.state.bodyType,
+      activityLevel: this.state.activityLevel,
+      height: this.state.height,
+      endingWeight: this.state.endingWeight,
+      startWeight: this.state.startWeight,
+      statedGoal: this.state.statedGoal
+    };
+
+    var toggles = {};
+
+    for (var key in this.state.toggles) {
+      toggles[key] = false;
+      this.edits[key] = false;
+      if (key === "one" || key === "two" || key === "three") {
+        this.textInput[key].editable = false;
+        this.textInput[key].clear();
+      } else {
+        this.textInput[key].enabled = false;
+      }
+    }
+
+    this.setState({ buttonToggle: true, toggles });
+    this.props.updateUser(obj);
   }
 
   focusNextTextInput(id) {
     var newState = { ...this.state.toggles };
 
-    if (this.textInput[id].isFocused()) {
+    if (this.edits[id]) {
       this.edits[id] = false;
-      this.textInput[id].blur();
-      this.textInput[id].editable = false;
+      if (id === "four" || id === "five" || id === "six") {
+        this.textInput[id].enabled = false;
+      } else {
+        this.textInput[id].editable = false;
+      }
       newState[id] = false;
     } else {
-      this.textInput[id].editable = true;
-
       for (var key in newState) {
         if (
-          this.textInput[key].isFocused() ||
-          this.textInput[key].editable === true ||
-          newState[key] === true ||
+          (key === "four" || key === "five" || key === "six") &&
+          this.textInput[key].enabled === true &&
+          newState[key] === true &&
           this.edits[key] === true
         ) {
           newState[key] = false;
-          this.textInput[key].editable = false;
+          this.textInput[key].enabled = false;
           this.edits[key] = false;
-          this.textInput[key].blur();
+        } else if (key !== "four" && key !== "five" && key !== "six") {
+          if (
+            this.textInput[key].isFocused() ||
+            this.textInput[key].editable === true ||
+            newState[key] === true ||
+            this.edits[key] === true
+          ) {
+            newState[key] = false;
+            this.textInput[key].editable = false;
+            this.edits[key] = false;
+          }
         }
       }
-      this.textInput[id].editable = true;
-
+      if (id === "four" || id === "five" || id === "six") {
+        this.textInput[id].enabled = true;
+      } else {
+        this.textInput[id].editable = true;
+      }
       newState[id] = true;
       this.edits[id] = true;
     }
@@ -107,6 +181,15 @@ class Profile extends React.Component {
 
   async componentDidMount() {
     await this.props.getUser();
+    this.setState({
+      height: this.props.user.height,
+      age: this.props.user.age,
+      bodyType: this.props.user.bodyType,
+      activityLevel: this.props.user.activityLevel,
+      endingWeight: this.props.user.longTermGoal.endingWeight,
+      startWeight: this.props.user.longTermGoal.startWeight,
+      statedGoal: this.props.user.longTermGoal.statedGoal
+    });
     this.retrieveData();
   }
 
@@ -140,10 +223,7 @@ class Profile extends React.Component {
   render() {
     var user = this.props.user;
 
-    var bmr = Math.floor(
-      (10 * user.weight + 6.25 * user.height * 0.39370079 - 5 * user.age + 5) *
-        parseInt(user.activityLevel)
-    );
+    var bmr = user.dailyGoal.calorieLimit;
 
     var per = 0;
     if (user.longTermGoal) {
@@ -154,33 +234,112 @@ class Profile extends React.Component {
       );
     }
 
+    per = Math.abs(per);
+
     return (
       <View style={styles.container}>
-        <View style={styles.weight}>
-          <ProgressCircle
-            percent={per}
-            radius={70}
-            borderWidth={15}
-            color="#4CEF90"
-            shadowColor="#999"
-            bgColor="#E76B74"
-          >
-            <Text style={{ fontSize: 18, color: "white" }}>{`${per}%`}</Text>
-          </ProgressCircle>
+        <View style={styles.weightContainer}>
+          <View style={styles.weight}>
+            <ProgressCircle
+              percent={per}
+              radius={60}
+              borderWidth={15}
+              color="#4CEF90"
+              shadowColor="#999"
+              bgColor="#E76B74"
+            >
+              <Text style={{ fontSize: 18, color: "white" }}>{`${
+                user.weight} lbs / `}</Text>
 
-          <Text style={styles.currWeight}>
-            Current weight: {user.weight} lbs
-          </Text>
+            </ProgressCircle>
+            <Text style={{ color: "white", paddingTop: 10 }}>weeks left: 10</Text>
+            <Text style={{ color: "white" }}>Start date: {user.longTermGoal.startDate.split('T0')[0]}</Text>
+            <Text style={{ color: "white" }}>End date: {user.longTermGoal.endDate.split('T0')[0]}</Text>
+          </View>
+
+          <View style={{width: '50%'}}>
+            <Text style={{ color: "white" }}>Macros </Text>
+            <Text style={{ color: "white" }}>
+              🥓: {user.dailyGoal.fatLimit}{` g                   ${Math.ceil(user.dailyGoal.fatLimit*9/bmr*100)}%`}
+            </Text>
+            <Text style={{ color: "white" }}>
+              🥩: {user.dailyGoal.proteinLimit}{` g              ${Math.ceil(user.dailyGoal.proteinLimit*4/bmr*100)}%`}
+            </Text>
+            <Text style={{ color: "white" }}>
+              🍞: {user.dailyGoal.carbLimit}{` g                 ${Math.ceil(user.dailyGoal.carbLimit*4/bmr*100)}%`}
+            </Text>
+            <Text style={{ color: "white" }}>Calorie Goal: {bmr}</Text>
+
+          </View>
+        </View>
+
+        <View
+          style={{
+            paddingBottom: 10,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            alignContent: "center"
+          }}
+        >
+          {this.state.buttonToggle ? (
+            <Button
+              title="edit profile"
+              buttonStyle={{
+                width: 100,
+                height: 50,
+                color: "white",
+                backgroundColor: "blue",
+                fontSize: 12
+              }}
+              onPress={() => this.toggleButtons()}
+            />
+          ) : (
+            <Button
+              title="cancel"
+              buttonStyle={{
+                width: 100,
+                height: 50,
+                color: "white",
+                backgroundColor: "red",
+                fontSize: 12
+              }}
+              onPress={() => this.toggleButtons()}
+            />
+          )}
+
+          <Button
+            title="save changes"
+            disabled={this.state.buttonToggle}
+            buttonStyle={{
+              width: 100,
+              height: 50,
+              color: "white",
+              backgroundColor: "limegreen",
+              fontSize: 12
+            }}
+            onPress={() => this.updateProfile()}
+          />
         </View>
 
         <View style={styles.cardsContainer}>
-          {/* <TouchableOpacity onPress={() => this.focusNextTextInput("one")}>
+          <TouchableOpacity
+            onPress={() => this.focusNextTextInput("one")}
+            disabled={this.state.buttonToggle}
+          >
             <View
-              style={this.state.toggles.one ? styles.selectedCard : styles.card}
+              style={
+                this.state.buttonToggle
+                  ? styles.disableAll
+                  : this.state.toggles.one
+                  ? styles.selectedCard
+                  : styles.card
+              }
             >
               <Text style={styles.attrib}>Height: </Text>
 
               <TextInput
+                clearTextOnFocus="true"
                 editable={this.edits["one"]}
                 keyboardType="number-pad"
                 keyboardAppearance="dark"
@@ -193,196 +352,166 @@ class Profile extends React.Component {
                   this.textInput["one"] = input;
                 }}
               />
-              <Text style={styles.attrib}>inches.</Text>
+              <Text style={styles.attrib}>Inches</Text>
             </View>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
 
-          <Card
-            changeText={text => {
-              this.setState({ height: text });
-            }}
-            editable={this.edits["one"]}
-            placeholder={`${user.height}`}
-            value={this.state.height}
-            number={"one"}
-            attribute="Height: "
-            measure="Inches"
-            toggle={this.state.toggles.one}
-            textInput={this.textInput}
-            focusNextTextInput={this.focusNextTextInput}
-          />
-
-          <TouchableOpacity onPress={() => this.focusNextTextInput("two")}>
+          <TouchableOpacity
+            onPress={() => this.focusNextTextInput("two")}
+            disabled={this.state.buttonToggle}
+          >
             <View
-              style={this.state.toggles.two ? styles.selectedCard : styles.card}
+              style={
+                this.state.buttonToggle
+                  ? styles.disableAll
+                  : this.state.toggles.two
+                  ? styles.selectedCard
+                  : styles.card
+              }
             >
-              <Text style={styles.attrib}>Age: </Text>
+              <Text style={styles.attrib}>Start weight: </Text>
+
               <TextInput
+                clearTextOnFocus="true"
                 editable={this.edits["two"]}
                 keyboardType="number-pad"
                 keyboardAppearance="dark"
-                placeholder={`${user.age}`}
-                value={this.state.age}
+                placeholder={`${user.longTermGoal.startWeight}`}
+                value={this.state.startWeight}
                 onChangeText={text => {
-                  console.log("text is", text);
-                  this.setState({ age: text });
+                  this.setState({ startWeight: text });
                 }}
                 ref={input => {
                   this.textInput["two"] = input;
                 }}
               />
+              <Text style={styles.attrib}>lbs</Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => this.focusNextTextInput("three")}>
+          <TouchableOpacity
+            onPress={() => this.focusNextTextInput("three")}
+            disabled={this.state.buttonToggle}
+          >
             <View
               style={
-                this.state.toggles.three ? styles.selectedCard : styles.card
+                this.state.buttonToggle
+                  ? styles.disableAll
+                  : this.state.toggles.three
+                  ? styles.selectedCard
+                  : styles.card
               }
             >
-              <Text style={styles.attrib}>Body Type: {user.bodyType}</Text>
+              <Text style={styles.attrib}>Goal weight: </Text>
+
               <TextInput
+                clearTextOnFocus="true"
                 editable={this.edits["three"]}
                 keyboardType="number-pad"
                 keyboardAppearance="dark"
-                placeholder={`${user.age}`}
-                value={this.state.age}
+                placeholder={`${user.longTermGoal.endingWeight}`}
+                value={this.state.endingWeight}
                 onChangeText={text => {
-                  console.log("text is", text);
-                  this.setState({ age: text });
+                  this.setState({ endingWeight: text });
                 }}
                 ref={input => {
                   this.textInput["three"] = input;
                 }}
               />
+              <Text style={styles.attrib}>lbs</Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => this.focusNextTextInput("four")}>
+          <TouchableOpacity
+            onPress={() => this.focusNextTextInput("four")}
+            disabled={this.state.buttonToggle}
+          >
             <View
               style={
-                this.state.toggles.four ? styles.selectedCard : styles.card
+                this.state.buttonToggle
+                  ? styles.disableAll
+                  : this.state.toggles.four
+                  ? styles.selectedCard
+                  : styles.card
               }
             >
-              <TextInput
-                editable={this.edits["four"]}
-                keyboardType="number-pad"
-                keyboardAppearance="dark"
-                placeholder={`${user.age}`}
-                value={this.state.age}
-                onChangeText={text => {
-                  console.log("text is", text);
-                  this.setState({ age: text });
+              <Text style={styles.attrib}>Body Type:</Text>
+              <SelectInput
+                value={this.state.bodyType}
+                options={this.options}
+                onValueChange={(itemValue, itemIndex) => {
+                  this.setState({
+                    bodyType: itemValue
+                  });
                 }}
+                enabled={this.edits["four"]}
                 ref={input => {
                   this.textInput["four"] = input;
                 }}
+                onEndEditing={() => this.focusNextTextInput("four")}
               />
-              <Text style={styles.attrib}>
-                Activity Level: {user.activityLevel}
-              </Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => this.focusNextTextInput("five")}>
+          <TouchableOpacity
+            onPress={() => this.focusNextTextInput("five")}
+            disabled={this.state.buttonToggle}
+          >
             <View
               style={
-                this.state.toggles.five ? styles.selectedCard : styles.card
+                this.state.buttonToggle
+                  ? styles.disableAll
+                  : this.state.toggles.five
+                  ? styles.selectedCard
+                  : styles.card
               }
             >
-              <TextInput
-                editable={this.edits["five"]}
-                keyboardType="number-pad"
-                keyboardAppearance="dark"
-                placeholder={`${user.age}`}
-                value={this.state.age}
-                onChangeText={text => {
-                  console.log("text is", text);
-                  this.setState({ age: text });
+              <Text style={styles.attrib}>Activity Level:</Text>
+              <SelectInput
+                value={this.state.activityLevel}
+                options={this.levels}
+                onValueChange={(itemValue, itemIndex) => {
+                  this.setState({
+                    activityLevel: itemValue
+                  });
                 }}
+                enabled={this.edits["five"]}
                 ref={input => {
                   this.textInput["five"] = input;
                 }}
+                onEndEditing={() => this.focusNextTextInput("five")}
               />
-              <Text style={styles.attrib}>
-                Starting weight:{" "}
-                {user.longTermGoal ? user.longTermGoal.startWeight : 0}
-              </Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => this.focusNextTextInput("six")}>
+          <TouchableOpacity
+            onPress={() => this.focusNextTextInput("six")}
+            disabled={this.state.buttonToggle}
+          >
             <View
-              style={this.state.toggles.six ? styles.selectedCard : styles.card}
+              style={
+                this.state.buttonToggle
+                  ? styles.disableAll
+                  : this.state.toggles.six
+                  ? styles.selectedCard
+                  : styles.card
+              }
             >
-              <TextInput
-                editable={this.edits["six"]}
-                keyboardType="number-pad"
-                keyboardAppearance="dark"
-                placeholder={`${user.age}`}
-                value={this.state.age}
-                onChangeText={text => {
-                  console.log("text is", text);
-                  this.setState({ age: text });
+              <Text style={styles.attrib}>Goal:</Text>
+              <SelectInput
+                value={this.state.statedGoal}
+                options={this.goals}
+                onValueChange={(itemValue, itemIndex) => {
+                  this.setState({
+                    statedGoal: itemValue
+                  });
                 }}
+                enabled={this.edits["six"]}
                 ref={input => {
                   this.textInput["six"] = input;
                 }}
+                onEndEditing={() => this.focusNextTextInput("six")}
               />
-              <Text style={styles.attrib}>
-                Goal weight:{" "}
-                {user.longTermGoal ? user.longTermGoal.endingWeight : 0}
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => this.focusNextTextInput("seven")}>
-            <View
-              style={
-                this.state.toggles.seven ? styles.selectedCard : styles.card
-              }
-            >
-              <TextInput
-                editable={this.edits["seven"]}
-                keyboardType="number-pad"
-                keyboardAppearance="dark"
-                placeholder={`${user.age}`}
-                value={this.state.age}
-                onChangeText={text => {
-                  console.log("text is", text);
-                  this.setState({ age: text });
-                }}
-                ref={input => {
-                  this.textInput["seven"] = input;
-                }}
-              />
-              <Text style={styles.attrib}>
-                Goal: {user.longTermGoal ? user.longTermGoal.statedGoal : 0}
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => this.focusNextTextInput("eight")}>
-            <View
-              style={
-                this.state.toggles.eight ? styles.selectedCard : styles.card
-              }
-            >
-              <TextInput
-                editable={this.edits["eight"]}
-                keyboardType="number-pad"
-                keyboardAppearance="dark"
-                placeholder={`${user.age}`}
-                value={this.state.age}
-                onChangeText={text => {
-                  console.log("text is", text);
-                  this.setState({ age: text });
-                }}
-                ref={input => {
-                  this.textInput["eight"] = input;
-                }}
-              />
-              <Text style={styles.attrib}>Bmr: {bmr}</Text>
             </View>
           </TouchableOpacity>
 
@@ -392,36 +521,46 @@ class Profile extends React.Component {
             </View>
           </TouchableOpacity>
         </View>
-        <Button />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  weight: {
-    flex: 1,
+  weightContainer: {
     backgroundColor: "#E76B74",
-    height: "30%",
+    height: "33%",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    alignContent: "center",
+    padding: 10,
+    flexDirection: "row"
+  },
+  weight: {
+    backgroundColor: "#E76B74",
+    height: "40%",
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
+    padding: 10,
 
-    marginBottom: 20
+    marginBottom: 10
   },
   container: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: '#F0F7F4'
   },
   cardsContainer: {
-    flex: 2,
+    flex: 1,
+    height: "60%",
     flexWrap: "wrap",
     justifyContent: "center",
     flexDirection: "row"
   },
   card: {
     padding: 10,
-    paddingTop: 30,
+    paddingTop: 25,
     margin: 5,
     width: 110,
     height: 110,
@@ -472,6 +611,21 @@ const styles = StyleSheet.create({
     color: "white",
     paddingTop: 15,
     fontSize: 18
+  },
+  disableAll: {
+    padding: 10,
+    paddingTop: 30,
+    margin: 5,
+    width: 110,
+    height: 110,
+    backgroundColor: "grey",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+    shadowOffset: { width: 5, height: 5 },
+    shadowColor: "black",
+    shadowOpacity: 0.7,
+    borderRadius: 10
   }
 });
 
@@ -491,7 +645,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getUser: () => dispatch(getUserThunk())
+    getUser: () => dispatch(getUserThunk()),
+    updateUser: newUser => dispatch(updateUserThunk(newUser))
   };
 };
 

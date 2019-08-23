@@ -8,8 +8,8 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 
-import DatePicker from 'react-native-datepicker';
-import { getMealsThunk, deleteMealItem } from '../components/store/meals';
+import DatePicker from "react-native-datepicker";
+import { getMealsThunk, deleteMealItem } from "../components/store/meals";
 
 import { Button, Divider } from "react-native-elements";
 
@@ -47,15 +47,10 @@ const ExerciseContainer = props => {
     }
   ];
 
-
-
   return (
     <View style={styles.FoodTimeContainer}>
       <FoodTimeHeader time={props.time} />
-      <Swipeout
-        right={swipeoutBtns}
-        backgroundColor="white"
-      >
+      <Swipeout right={swipeoutBtns} backgroundColor="white">
         <View style={styles.foodItem}>
           <View style={{ flex: 2, paddingRight: 80 }}>
             <Text style={styles.foodName}>Calories Burned</Text>
@@ -187,12 +182,9 @@ class DailyLog extends React.Component {
 
     this.deleteItem = this.deleteItem.bind(this);
     this.resetCaloriesBurned = this.resetCaloriesBurned.bind(this);
-
   }
 
-  resetCaloriesBurned() {
-
-  }
+  resetCaloriesBurned() {}
 
   async deleteItem(foodId, mealId) {
     this.props.deleteMealItem(foodId, mealId);
@@ -360,6 +352,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20
+    // backgroundColor: '#F0F7F4'
   },
 
   FoodTimeHeader: {

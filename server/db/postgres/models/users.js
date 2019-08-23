@@ -2,6 +2,8 @@ const crypto = require('crypto');
 const Sequelize = require('sequelize');
 const db = require('../db');
 const createUser = require('../../neo4j/models/users');
+const LongTermGoals = require('./longTermGoals')
+const DailyGoals = require('./dailyGoals')
 
 const Users = db.define('users', {
 
@@ -101,7 +103,79 @@ Users.beforeBulkCreate(users => {
   users.forEach(setSaltAndPassword);
 });
 
+
+
 Users.afterSave(async user => {
   const newUser = await createUser(user);
+
+  const longTermGoal = await LongTermGoals.findOne({
+    where: {
+      userId: user.id
+    }
+  })
+
+  const dailyGoal = await DailyGoals.findOne({
+    where: {
+      userId: user.id
+    }
+  })
+
+  if(dailyGoal && longTermGoal) {
+    var bmr = Math.floor(
+      ((10 * user.weight) + (6.25 * (user.height * 0.39370079)) - (5 * user.age) + 5) * user.activityLevel
+    )
+  
+    if(longTermGoal.statedGoal === 'Lose 2 lbs a week') {
+      bmr = bmr - 1000
+    }
+    else if(longTermGoal.statedGoal === 'Lose 1.5 lbs a week') {
+      bmr = bmr - 750
+    }
+    else if(longTermGoal.statedGoal === 'Lose 1 lb a week') {
+      bmr = bmr - 500
+    }
+    else if(longTermGoal.statedGoal === 'Lose 0.5 lb a week') {
+      bmr = bmr - 250
+    }
+    else if(longTermGoal.statedGoal === 'Maintain weight') {
+      bmr = bmr
+    }
+    else if(longTermGoal.statedGoal === 'Gain 0.5 lb a week') {
+      bmr = bmr + 250
+    }
+    else if(longTermGoal.statedGoal === 'Gain 1 lb a week') {
+      bmr = bmr + 500
+    }
+    var proteinLimit  
+    var carbLimit 
+    var fatLimit 
+  
+    if(user.bodyType === 'Ectomorph') {
+     proteinLimit = Math.floor((bmr*0.25)/4)
+     carbLimit = Math.floor((bmr*0.55)/4)
+     fatLimit = Math.floor((bmr*0.20)/9)
+  
+    }
+    else if(user.bodyType === 'Mesomorph') {
+     proteinLimit = Math.floor((bmr*0.30)/4)
+     carbLimit = Math.floor((bmr*0.40)/4)
+     fatLimit = Math.floor((bmr*0.30)/9)
+    }
+    else if(user.bodyType === 'Endomorph') {
+     proteinLimit = Math.floor((bmr*0.35)/4)
+     carbLimit = Math.floor((bmr*0.25)/4)
+     fatLimit = Math.floor((bmr*0.40)/9)
+    }
+  
+    await dailyGoal.update({
+      calorieLimit: bmr,
+      proteinLimit,
+      carbLimit, 
+      fatLimit
+    })
+  }
+
+
+
   return newUser;
 });
