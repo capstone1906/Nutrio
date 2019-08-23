@@ -228,7 +228,11 @@ const styles = StyleSheet.create({
 });
 
 QuickAddFood.navigationOptions = {
-  header: null,
+  headerTitle: "Add to Meal",
+  headerStyle: {
+    backgroundColor: "crimson"
+  },
+  headerTintColor: "white"
 };
 
 const mapDispatch = dispatch => {
