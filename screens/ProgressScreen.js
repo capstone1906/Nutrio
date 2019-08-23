@@ -308,6 +308,7 @@ class ProgressScreen extends React.Component {
           buttons={buttons}
           containerStyle={{ height: 50, marginRight: 20 }}
           selectedTextStyle={{ color: 'white' }}
+          buttonStyle={{backgroundColor: '#058ED9'}}
         />
         <VictoryChart
           theme={VictoryTheme.material}
