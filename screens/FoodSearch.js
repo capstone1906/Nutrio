@@ -6,7 +6,6 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  TextInput
 } from "react-native";
 const { width: winWidth } = Dimensions.get("window");
 import axios from "axios";
@@ -15,10 +14,9 @@ import {
   ListItem,
   ThemeProvider,
   Divider,
+  Input
 } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
-
-// import FoodSearchItem from "../components/FoodSearchItem";
 
 export default class FoodSearch extends React.Component {
   constructor() {
@@ -26,7 +24,9 @@ export default class FoodSearch extends React.Component {
     this.state = {
       currentSearch: [],
       showError: false,
-      searchName: ""
+      searchName: '',
+      predictions: [],
+      chosenImage: null,
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -71,25 +71,20 @@ export default class FoodSearch extends React.Component {
         <View style={styles.cameraToolbar}>
           <TouchableOpacity>
             <Ionicons
-              // onPress={}
+              onPress={() => {
+                this.props.navigation.navigate('CameraInterface', {
+                  mealId: this.props.navigation.getParam('mealId'),
+                });
+              }}
               name="ios-camera"
               color="red"
               size={90}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons
-              onPress={this._pickImage}
-              name="ios-photos"
-              color="red"
-              size={65}
-            />
-          </TouchableOpacity>
         </View>
 
         <Text>Search for Food Items</Text>
-
-        <TextInput onChange={this.handleChange} />
+        <Input keyboardAppearance="dark" onChange={this.handleChange} />
 
         {this.state.searchName !== "" && (
           <ScrollView style={styles.results}>
@@ -143,7 +138,7 @@ const styles = StyleSheet.create({
 });
 
 FoodSearch.navigationOptions = {
-  headerTitle: "Today's log",
+  headerTitle: "Today's Log",
   headerStyle: {
     backgroundColor: "crimson"
   },
