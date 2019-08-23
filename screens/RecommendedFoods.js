@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { getRecommendedFoodsThunk } from '../components/store/recommendedFoods';
 import { connect } from 'react-redux';
 import FoodCard from '../components/FoodCard';
-import { Button } from 'react-native-elements';
+import { Button, Text } from 'react-native-elements';
 import { postFood } from '../components/store/meals';
 
 const styles = StyleSheet.create({
@@ -13,6 +13,13 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 5,
+  },
+  warningText: {
+    textAlign: 'center',
+    marginTop: 10,
+  },
+  warningButton: {
+    color: 'red',
   },
 });
 
@@ -53,24 +60,28 @@ class RecommendedFoods extends React.Component {
     };
     let quantity = 1;
     let grams = 0;
-    this.props.postFood(newFood, mealId, quantity, grams)
+    this.props.postFood(newFood, mealId, quantity, grams);
 
     this.props.navigation.pop();
     this.props.navigation.pop();
   }
-  async handlePress(evt) {
+  async handlePress(evt, type) {
+    let food = {};
     const dailyGoals = this.props.user.dailyGoal;
-
     const todayMeal = this.props.meals.todaysMeals.filter(meal => {
       return meal.entreeType === evt ? meal : null;
     })[0];
-
-    const food = {
-      calories: dailyGoals.calorieLimit / 4 - todayMeal.totalCalories,
-      carbs: dailyGoals.carbLimit / 4 - todayMeal.totalCarbs,
-      protein: dailyGoals.proteinLimit / 4 - todayMeal.totalProtein,
-      fat: dailyGoals.fatLimit / 4 - todayMeal.totalFat,
-    };
+    if (type !== 'unlimited') {
+      food.calories = dailyGoals.calorieLimit / 4 - todayMeal.totalCalories;
+      food.carbs = dailyGoals.carbLimit / 4 - todayMeal.totalCarbs;
+      food.protein = dailyGoals.proteinLimit / 4 - todayMeal.totalProtein;
+      food.fat = dailyGoals.fatLimit / 4 - todayMeal.totalFat;
+    } else {
+      food.calories = 2000;
+      food.carbs = 300;
+      food.protein = 300;
+      food.fat = 300;
+    }
 
     await this.props.getRecs(food);
     this.setState({
@@ -91,16 +102,32 @@ class RecommendedFoods extends React.Component {
           ))}
         </View>
         <ScrollView>
-          {this.props.recommendedFoods.length
-            ? this.props.recommendedFoods.map(food => (
-                <FoodCard
-                  key={food.id}
-                  food={food}
-                  mealType={this.state.activeButton}
-                  postFood={this.postFood}
-                />
-              ))
-            : null}
+          {this.props.recommendedFoods.length ? (
+            this.props.recommendedFoods.map(food => (
+              <FoodCard
+                key={food.id}
+                food={food}
+                mealType={this.state.activeButton}
+                postFood={this.postFood}
+              />
+            ))
+          ) : (
+            <View>
+              <Text
+                h1
+                style={styles.warningText}
+              >{`You've hit your calorie limit for ${
+                this.state.activeButton
+              }`}</Text>
+              <Button
+                title="Click to remove calorie and macro limit"
+                onPress={() => {
+                  this.handlePress(this.state.activeButton, 'unlimited');
+                }}
+                style={styles.warningButton}
+              />
+            </View>
+          )}
         </ScrollView>
       </View>
     );

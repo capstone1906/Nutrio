@@ -102,14 +102,22 @@ const DailyLogStack = createStackNavigator(
   config
 );
 
-DailyLogStack.navigationOptions = {
-  tabBarLabel: 'Daily Log',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
-    />
-  ),
+DailyLogStack.navigationOptions = ({ navigation }) => {
+  let { routeName } = navigation.state.routes[navigation.state.index];
+  let navigationOptions = {
+    tabBarLabel: 'Daily Log',
+    tabBarIcon: ({ focused }) => (
+      <TabBarIcon
+        focused={focused}
+        name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+      />
+    ),
+  };
+
+  if (routeName === 'CameraInterface' || routeName === 'QuickAddFood') {
+    navigationOptions.tabBarVisible = false;
+  }
+  return navigationOptions;
 };
 
 DailyLogStack.path = '';
