@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize');
-const db = require('../db');
+const Sequelize = require("sequelize");
+const db = require("../db");
 
-const Checkins = db.define('checkins', {
+const Checkins = db.define("checkins", {
   caloriesBurned: {
     type: Sequelize.INTEGER,
     defaultValue: 0,
