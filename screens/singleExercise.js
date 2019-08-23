@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -19,7 +19,7 @@ class SingleExercise extends React.Component {
     this.state = {
       exercise: {},
       minutesPerformed: 0,
-      caloriesBurned: 0
+      caloriesBurned: 0,
     };
     this.handleChange = this.handleChange.bind(this);
     this.addTolog = this.addTolog.bind(this);
@@ -31,7 +31,7 @@ class SingleExercise extends React.Component {
       cals = 0;
     }
     this.props.updateCheckIn(this.props.checkIns.todaysCheckIn.id, {
-      caloriesBurned: cals
+      caloriesBurned: cals,
     });
   }
 
@@ -44,18 +44,17 @@ class SingleExercise extends React.Component {
         this.state.exercise.met *
         (this.props.user.weight / 2.2) *
         (text / 60)
-      ).toFixed(0)
+      ).toFixed(0),
     });
   }
 
   async componentDidMount() {
     await this.props.getCheckIns();
-    var exercise = this.props.navigation.getParam("exercise");
+    var exercise = this.props.navigation.getParam('exercise');
     this.setState({ exercise });
   }
 
   render() {
-    console.log("state", this.props);
     var exercise = {};
     if (this.state.exercise.activity) {
       exercise = this.state.exercise;
@@ -63,9 +62,9 @@ class SingleExercise extends React.Component {
     return (
       <View>
         <Text>
-          {" "}
+          {' '}
           {exercise.activity
-            ? exercise.activity + " - " + exercise.description
+            ? exercise.activity + ' - ' + exercise.description
             : null}
         </Text>
         <Text>Minutes performed: {this.state.minutesPerformed} </Text>
@@ -85,18 +84,18 @@ class SingleExercise extends React.Component {
 }
 
 SingleExercise.navigationOptions = {
-  headerTitle: "Exercise",
+  headerTitle: 'Exercise',
   headerStyle: {
-    backgroundColor: "crimson"
+    backgroundColor: 'crimson',
   },
-  headerTintColor: "white"
+  headerTintColor: 'white',
 };
 
 const mapState = state => {
   return {
     exercises: state.exercises,
     user: state.user,
-    checkIns: state.checkIns
+    checkIns: state.checkIns,
   };
 };
 
@@ -104,7 +103,7 @@ const mapDispatch = dispatch => {
   return {
     getExercises: name => dispatch(getExercisesThunk(name)),
     getCheckIns: () => dispatch(getCheckInsThunk()),
-    updateCheckIn: (id, checkIn) => dispatch(updateCheckIn(id, checkIn))
+    updateCheckIn: (id, checkIn) => dispatch(updateCheckIn(id, checkIn)),
   };
 };
 

@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { getUserThunk } from '../components/store/user';
+import { getCheckInsThunk } from '../components/store/checkIns';
 
 class AuthHomeScreen extends React.Component {
   constructor(props) {
@@ -19,8 +20,7 @@ class AuthHomeScreen extends React.Component {
 
     this.retrieveData = this.retrieveData.bind(this);
   }
-  async componentDidMount() {
-    await this.props.getUser();
+  componentDidMount() {
     this.retrieveData();
   }
 
@@ -28,6 +28,8 @@ class AuthHomeScreen extends React.Component {
     try {
       const value = await AsyncStorage.getItem('user');
       if (value !== null) {
+        await this.props.getUser();
+        await this.props.getCheckIns();
         this.props.navigation.navigate('Main');
       }
     } catch (err) {
@@ -150,12 +152,14 @@ const styles = StyleSheet.create({
 const mapState = state => {
   return {
     user: state.user,
+    checkIns: state.checkIns,
   };
 };
 
 const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(getUserThunk()),
+    getCheckIns: () => dispatch(getCheckInsThunk()),
   };
 };
 

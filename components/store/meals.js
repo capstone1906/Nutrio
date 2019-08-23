@@ -1,17 +1,17 @@
-import axios from "axios";
-import { ngrok } from "../../secret";
+import axios from 'axios';
+import { ngrok } from '../../secret';
 
 /**
  * ACTION TYPES
  */
-const GET_MEALS = "GET_MEALS";
+const GET_MEALS = 'GET_MEALS';
 
 /**
  * INITIAL STATE
  */
 const meals = {
   todaysMeals: [],
-  allMeals: []
+  allMeals: [],
 };
 
 /**
@@ -35,28 +35,34 @@ export const deleteMealItem = (foodId, mealId) => async dispatch => {
   }
 };
 
-export const getMealsThunk = (dateVar) => async dispatch => {
+export const getMealsThunk = dateVar => async dispatch => {
   try {
     var res = await axios.get(`${ngrok}/api/meals`);
     var todaysDate = dateVar;
-    if(!dateVar) {
-      todaysDate = new Date()
+    if (!dateVar) {
+      todaysDate = new Date();
       const dateNow = new Date();
-  
+
       var year = dateNow.getFullYear().toString();
       var month = (dateNow.getMonth() + 1).toString();
       var day = dateNow.getDate().toString();
-  
+
       if (month < 10) {
-        month = "0" + month;
+        month = '0' + month;
       }
       if (day < 10) {
-        day = "0" + day;
+        day = '0' + day;
       }
+<<<<<<< HEAD
   
       todaysDate = year + "-" + month + "-" + day;
     }
     
+=======
+
+      todaysDate = year + '-' + month + '-' + day;
+    }
+>>>>>>> 1645ef75a9d3720e8f17933301c345fb43810890
 
     var foods = res.data;
     var breakfast = {};
@@ -67,7 +73,7 @@ export const getMealsThunk = (dateVar) => async dispatch => {
     if (foods !== undefined) {
       for (let i = 0; i < foods.length; i++) {
         var today = new Date(todaysDate);
-      
+
         var setDay = today.getDate() + 1;
         var setMonth = today.getMonth();
         var setYear = today.getYear();
@@ -78,28 +84,28 @@ export const getMealsThunk = (dateVar) => async dispatch => {
         var mealYear = mealTime.getYear();
 
         if (
-          foods[i].entreeType === "Breakfast" &&
+          foods[i].entreeType === 'Breakfast' &&
           mealDay === setDay &&
           setMonth === mealMonth &&
           setYear === mealYear
         ) {
           breakfast = foods[i];
         } else if (
-          foods[i].entreeType === "Lunch" &&
+          foods[i].entreeType === 'Lunch' &&
           mealDay === setDay &&
           setMonth === mealMonth &&
           setYear === mealYear
         ) {
           lunch = foods[i];
         } else if (
-          foods[i].entreeType === "Dinner" &&
+          foods[i].entreeType === 'Dinner' &&
           mealDay === setDay &&
           setMonth === mealMonth &&
           setYear === mealYear
         ) {
           dinner = foods[i];
         } else if (
-          foods[i].entreeType === "Snacks" &&
+          foods[i].entreeType === 'Snacks' &&
           mealDay === setDay &&
           setMonth === mealMonth &&
           setYear === mealYear
@@ -114,8 +120,6 @@ export const getMealsThunk = (dateVar) => async dispatch => {
     allMeals.todaysMeals = [breakfast, lunch, dinner, snacks];
 
     dispatch(getMeals(allMeals));
-
-
   } catch (err) {
     console.error(err);
   }

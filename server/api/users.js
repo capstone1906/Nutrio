@@ -2,6 +2,7 @@ const router = require('express').Router();
 const { Users, DailyGoals, LongTermGoals } = require('../db/postgres/models/index');
 module.exports = router;
 
+
 router.get('/', async (req, res, next) => {
   try {
     const me = await Users.findOne({
