@@ -6,14 +6,24 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    maxWidth:'90%'
+    maxWidth: '90%',
   },
 });
 
-const MealCardChart = props => {
-  let carbs = props.meal.totalCarbs;
-  let protein = props.meal.totalProtein;
-  let fat = props.meal.totalFat;
+const CardChart = props => {
+  let carbs;
+  let protein;
+  let fat;
+  if (props.meal) {
+    carbs = props.meal.totalCarbs;
+    protein = props.meal.totalProtein;
+    fat = props.meal.totalFat;
+  } else {
+    carbs = props.food.carbohydrates;
+    protein = props.food.protein;
+    fat = props.food.fat;
+  }
+
   return (
     <View style={styles.container}>
       <VictoryPie
@@ -53,7 +63,7 @@ const MealCardChart = props => {
         centerTitle
         orientation="vertical"
         gutter={10}
-        style={{title: { fontSize: 14 }, data:{ fontSize: 10}}}
+        style={{ title: { fontSize: 14 }, data: { fontSize: 10 } }}
         data={[
           { name: `Protein ${protein}g`, symbol: { fill: 'navy' } },
           { name: `Fat ${fat}g`, symbol: { fill: 'crimson' } },
@@ -64,4 +74,4 @@ const MealCardChart = props => {
   );
 };
 
-export default MealCardChart;
+export default CardChart;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { Card, ListItem, Button, Icon } from 'react-native-elements';
-import MealCardChart from './MealCardChart';
+import { View, StyleSheet } from 'react-native';
+import { Card, Text, Button } from 'react-native-elements';
+import MealCardChart from './CardChart';
 import { connect } from 'react-redux';
 
 
@@ -40,7 +40,7 @@ function MealCard(props) {
   return (
     <Card title={props.name} style={styles.card}>
       <View>
-        <Text style={styles.text}>{props.meal.name}</Text>
+        <Text h2 style={styles.text}>{props.meal.name}</Text>
         <Text style={styles.text}>
           Total Calories: {props.meal.totalCalories}
         </Text>
@@ -64,7 +64,6 @@ function MealCard(props) {
           title="Add Meal"
           type="solid"
           onPress={() => {
-            console.log('props', props.meals.todaysMeals)
             const mealId = props.meals.todaysMeals.filter(meal => {
               if (meal.entreeType === props.mealType) {
                 return meal.id;

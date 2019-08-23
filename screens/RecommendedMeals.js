@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-} from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { getRecommendedMealsThunk } from '../components/store/recommendedMeals';
@@ -33,7 +26,7 @@ const MealButton = props => {
     />
   );
 };
-
+const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
 
 class RecommendedMeals extends React.Component {
   constructor() {

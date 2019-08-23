@@ -33,7 +33,7 @@ MealFoodItems.afterSave(async (mealFoodItem, options) => {
   await MealFoodItems.findAll({
     where: { mealId: mealFoodItem.mealId },
     transaction: options.transaction,
-  }).map(async (mealItem, idx) => {
+  }).map(async mealItem => {
     let foodItem = await FoodItems.findByPk(mealItem.foodItemId, {
       transaction: options.transaction,
     });
@@ -49,6 +49,7 @@ MealFoodItems.afterSave(async (mealFoodItem, options) => {
     fat += foodItem.fat * unit;
     protein += foodItem.protein * unit;
   });
+  console.log(totalCalories)
   const meal = await Meals.findByPk(mealFoodItem.mealId, {
     transaction: options.transaction,
   });
