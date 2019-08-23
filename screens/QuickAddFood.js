@@ -41,8 +41,8 @@ class QuickAddFood extends React.Component {
         },
         {
           headers: {
-            'x-app-id': '571e77e8',
-            'x-app-key': '2580a4dbee98751ccda81d461f7f7728',
+            'x-app-id': '7a42448a',
+            'x-app-key': '92293c0963350c83ea7c179c74fb65d1',
             'x-remote-user-id': '0',
           },
         }
