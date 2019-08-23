@@ -32,7 +32,7 @@ class QuickAddFood extends React.Component {
   }
 
   retrieveData = async item => {
-    
+
     try {
       const res = await axios.post(
         `https://trackapi.nutritionix.com/v2/natural/nutrients`,
@@ -41,10 +41,10 @@ class QuickAddFood extends React.Component {
         },
         {
           headers: {
-            "x-app-id": "88718124",
-            "x-app-key": "e8e099aa8964c27ceef58fc2ac8d7375",
-            "x-remote-user-id": "0"
-          }
+            'x-app-id': '5e27fd08',
+            'x-app-key': '1e1ee4d0779fb25127320c91ced7c367',
+            'x-remote-user-id': '0',
+          },
         }
       );
       if (res.data.foods[0]) {
@@ -126,14 +126,17 @@ class QuickAddFood extends React.Component {
       subtitle={
         <View>
           <TextInput
-            style={{ fontSize: 17 }}
+            style={{ fontSize: 18 }}
             onChangeText={text => this.handleChange(text, index)}
             value={item.quantity}
             keyboardType="number-pad"
             placeholder="Enter Quantity"
           />
-          <Text style={{ fontSize: 20, fontStyle: "italic" }}>
-            {Math.round(Number(item.calories) * Number(item.quantity))} Cal
+          <Text style={{ fontSize: 20, fontStyle: 'italic' }}>
+            {Math.round(Number(item.calories) * Number(item.quantity)) === 0
+              ? ''
+              : Math.round(Number(item.calories) * Number(item.quantity))}{' '}
+            Cal
           </Text>
         </View>
       }
@@ -228,11 +231,11 @@ const styles = StyleSheet.create({
 });
 
 QuickAddFood.navigationOptions = {
-  headerTitle: "Add to Meal",
+  headerTitle: 'Add to Meal',
   headerStyle: {
-    backgroundColor: "crimson"
+    backgroundColor: 'crimson',
   },
-  headerTintColor: "white"
+  headerTintColor: 'white',
 };
 
 const mapDispatch = dispatch => {

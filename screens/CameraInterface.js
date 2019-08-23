@@ -75,8 +75,8 @@ export default class CameraInterface extends React.Component {
         },
         {
           headers: {
-            'x-app-id': '7a42448a',
-            'x-app-key': '92293c0963350c83ea7c179c74fb65d1',
+            'x-app-id': '5e27fd08',
+            'x-app-key': '1e1ee4d0779fb25127320c91ced7c367',
             'x-remote-user-id': '0',
           },
         }
