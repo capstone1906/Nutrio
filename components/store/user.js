@@ -6,7 +6,7 @@ import { ngrok } from '../../secret';
  */
 const GET_USER = 'GET_USER';
 const ADD_USER = 'ADD_USER';
-
+const UPDATE_USER = 'UPDATE_USER'
 /**
  * INITIAL STATE
  */
@@ -17,10 +17,22 @@ const user = {};
  */
 const getUser = user => ({ type: GET_USER, user });
 const addUser = user => ({ type: ADD_USER, user });
+// const updateUser = user => ({ type: UPDATE_USER, user });
+
 
 /**
  * THUNK CREATORS
  */
+
+export const updateUserThunk = (newUser) => async dispatch => {
+  try {
+    var res = await axios.put(`${ngrok}/api/user/:id`, newUser);
+
+    dispatch(getUserThunk());
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 export const getUserThunk = () => async dispatch => {
   try {

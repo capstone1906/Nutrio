@@ -225,6 +225,8 @@ class FoodSearchItem extends React.Component {
 
               <View>
                 <TextInput
+                  keyboardType='number-pad'
+                  keyboardAppearance='dark'
                   style={{
                     height: 40,
                     borderColor: "gray",
