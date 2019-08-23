@@ -88,7 +88,8 @@ export default class FoodSearch extends React.Component {
         </View>
 
         <Text>Search for Food Items</Text>
-        <TextInput keyboardAppearance="dark" onChange={this.handleChange} />
+
+        <TextInput onChange={this.handleChange} />
 
         {this.state.searchName !== "" && (
           <ScrollView style={styles.results}>
