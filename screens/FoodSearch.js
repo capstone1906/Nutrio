@@ -44,8 +44,8 @@ export default class FoodSearch extends React.Component {
       }`,
       {
         headers: {
-          "x-app-id": "f7a42448a",
-          "x-app-key": "92293c0963350c83ea7c179c74fb65d1"
+          'x-app-id': '88718124',
+          'x-app-key': 'e8e099aa8964c27ceef58fc2ac8d7375',
         }
       }
     );
