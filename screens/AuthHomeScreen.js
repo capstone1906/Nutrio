@@ -13,6 +13,7 @@ import {
 import { connect } from 'react-redux';
 import { getUserThunk } from '../components/store/user';
 import { getCheckInsThunk } from '../components/store/checkIns';
+import {getMealsThunk} from '../components/store/meals'
 
 class AuthHomeScreen extends React.Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class AuthHomeScreen extends React.Component {
       if (value !== null) {
         await this.props.getUser();
         await this.props.getCheckIns();
+        await this.props.getMeals();
         this.props.navigation.navigate('Main');
       }
     } catch (err) {
@@ -160,6 +162,7 @@ const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(getUserThunk()),
     getCheckIns: () => dispatch(getCheckInsThunk()),
+    getMeals: () => dispatch(getMealsThunk())
   };
 };
 
