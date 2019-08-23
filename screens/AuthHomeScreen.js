@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   joinSignIn: {
     alignItems: 'center',
-    backgroundColor: 'rgb(200,200,200)',
+    backgroundColor: 'lightblue',
     borderRadius: 205,
     margin: 30,
   },
