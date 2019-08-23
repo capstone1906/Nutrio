@@ -58,6 +58,7 @@ export const getMealsThunk = dateVar => async dispatch => {
     }
 
 
+
     var foods = res.data;
     var breakfast = {};
     var lunch = {};
