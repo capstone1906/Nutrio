@@ -11,7 +11,7 @@ import {
   AlertIOS
 } from "react-native";
 import { connect } from "react-redux";
-
+import { VictoryPie, VictoryChart, VictoryTheme } from "victory-native";
 import { Button, Divider } from "react-native-elements";
 import { getUserThunk } from "../components/store/user";
 import ProgressCircle from "react-native-progress-circle";
@@ -195,7 +195,7 @@ class Profile extends React.Component {
 
   retrieveData = async () => {
     try {
-      const value = await AsyncStorage.getItem('user');
+      const value = await AsyncStorage.getItem("user");
       if (value !== null) {
         this.props.navigation.navigate("Main");
       }
@@ -238,318 +238,371 @@ class Profile extends React.Component {
 
     return (
       <View style={styles.container}>
-        <View style={styles.weightContainer}>
-          <View style={styles.weight}>
-            <ProgressCircle
-              percent={per}
-              radius={60}
-              borderWidth={15}
-              color="#4CEF90"
-              shadowColor="#999"
-              bgColor="#E76B74"
-            >
-              <Text style={{ fontSize: 18, color: "white" }}>{`${
-                user.weight} lbs / `}</Text>
+        {/* <View style={styles.weightContainer}> */}
+        <View style={styles.weight}>
+          <ProgressCircle
+            percent={per}
+            radius={60}
+            borderWidth={15}
+            color="#4CEF90"
+            shadowColor="#999"
+            bgColor="#E76B74"
+          >
+            <Text style={{ fontSize: 18, color: "white" }}>{`${
+              user.weight
+            } lbs `}</Text>
+          </ProgressCircle>
+          <Text style={{ color: "white", paddingTop: 10 }}>weeks left: 10</Text>
+          <Text style={{ color: "white" }}>
+            Start date: {user.longTermGoal.startDate.split("T0")[0]}
+          </Text>
+          <Text style={{ color: "white" }}>
+            End date: {user.longTermGoal.endDate.split("T0")[0]}
+          </Text>
 
-            </ProgressCircle>
-            <Text style={{ color: "white", paddingTop: 10 }}>weeks left: 10</Text>
-            <Text style={{ color: "white" }}>Start date: {user.longTermGoal.startDate.split('T0')[0]}</Text>
-            <Text style={{ color: "white" }}>End date: {user.longTermGoal.endDate.split('T0')[0]}</Text>
+          <View
+            style={{
+              paddingBottom: 10,
+              paddingTop: 10,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              alignContent: "center"
+            }}
+          >
+            {this.state.buttonToggle ? (
+              <Button
+                title="edit profile"
+                buttonStyle={{
+                  width: 100,
+                  height: 50,
+                  color: "white",
+                  backgroundColor: "blue",
+                  fontSize: 12
+                }}
+                onPress={() => this.toggleButtons()}
+              />
+            ) : (
+              <Button
+                title="cancel"
+                buttonStyle={{
+                  width: 100,
+                  height: 50,
+                  color: "white",
+                  backgroundColor: "red",
+                  fontSize: 12
+                }}
+                onPress={() => this.toggleButtons()}
+              />
+            )}
+
+            <Button
+              title="save changes"
+              disabled={this.state.buttonToggle}
+              buttonStyle={{
+                width: 100,
+                height: 50,
+                color: "white",
+                backgroundColor: "limegreen",
+                fontSize: 12
+              }}
+              onPress={() => this.updateProfile()}
+            />
           </View>
+        </View>
 
-          <View style={{width: '50%'}}>
+        {this.state.buttonToggle ? (
+          <View style={styles.macroContainer}>
+            {/* <View style={{ backgroundColor: "grey" }}> */}
             <Text style={{ color: "white" }}>Macros </Text>
             <Text style={{ color: "white" }}>
-              🥓: {user.dailyGoal.fatLimit}{` g                   ${Math.ceil(user.dailyGoal.fatLimit*9/bmr*100)}%`}
+              🥓: {user.dailyGoal.fatLimit}
+              {` g                   ${Math.ceil(
+                ((user.dailyGoal.fatLimit * 9) / bmr) * 100
+              )}%`}
             </Text>
             <Text style={{ color: "white" }}>
-              🥩: {user.dailyGoal.proteinLimit}{` g              ${Math.ceil(user.dailyGoal.proteinLimit*4/bmr*100)}%`}
+              🥩: {user.dailyGoal.proteinLimit}
+              {` g              ${Math.ceil(
+                ((user.dailyGoal.proteinLimit * 4) / bmr) * 100
+              )}%`}
             </Text>
             <Text style={{ color: "white" }}>
-              🍞: {user.dailyGoal.carbLimit}{` g                 ${Math.ceil(user.dailyGoal.carbLimit*4/bmr*100)}%`}
+              🍞: {user.dailyGoal.carbLimit}
+              {` g                 ${Math.ceil(
+                ((user.dailyGoal.carbLimit * 4) / bmr) * 100
+              )}%`}
             </Text>
+
+            <VictoryPie 
+              height={300}
+              colorScale={["crimson", "limegreen", "navy"]}
+              data={[
+                {
+                  x: `Fat: ${user.dailyGoal.fatLimit}g`,
+                  y: user.dailyGoal.fatLimit
+                },
+                {
+                  x: `Carbs: ${user.dailyGoal.carbLimit}g`,
+                  y: user.dailyGoal.carbLimit
+                },
+                {
+                  x: `Protein: ${user.dailyGoal.proteinLimit}g`,
+                  y: user.dailyGoal.proteinLimit
+                }
+              ]}
+              labelRadius={87}
+              style={{
+                labels: {
+                  fill: "white",
+                  fontSize: 14,
+                  padding: "5px",
+                  margin: "5px"
+                }
+              }}
+            />
+
             <Text style={{ color: "white" }}>Calorie Goal: {bmr}</Text>
 
+
+
+            {/* </View> */}
           </View>
-        </View>
-
-        <View
-          style={{
-            paddingBottom: 10,
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            alignContent: "center"
-          }}
-        >
-          {this.state.buttonToggle ? (
-            <Button
-              title="edit profile"
-              buttonStyle={{
-                width: 100,
-                height: 50,
-                color: "white",
-                backgroundColor: "blue",
-                fontSize: 12
-              }}
-              onPress={() => this.toggleButtons()}
-            />
-          ) : (
-            <Button
-              title="cancel"
-              buttonStyle={{
-                width: 100,
-                height: 50,
-                color: "white",
-                backgroundColor: "red",
-                fontSize: 12
-              }}
-              onPress={() => this.toggleButtons()}
-            />
-          )}
-
-          <Button
-            title="save changes"
-            disabled={this.state.buttonToggle}
-            buttonStyle={{
-              width: 100,
-              height: 50,
-              color: "white",
-              backgroundColor: "limegreen",
-              fontSize: 12
-            }}
-            onPress={() => this.updateProfile()}
-          />
-        </View>
-
-        <View style={styles.cardsContainer}>
-          <TouchableOpacity
-            onPress={() => this.focusNextTextInput("one")}
-            disabled={this.state.buttonToggle}
-          >
-            <View
-              style={
-                this.state.buttonToggle
-                  ? styles.disableAll
-                  : this.state.toggles.one
-                  ? styles.selectedCard
-                  : styles.card
-              }
+        ) : (
+          <View style={styles.cardsContainer}>
+            <TouchableOpacity
+              onPress={() => this.focusNextTextInput("one")}
+              disabled={this.state.buttonToggle}
             >
-              <Text style={styles.attrib}>Height: </Text>
+              <View
+                style={
+                  this.state.buttonToggle
+                    ? styles.disableAll
+                    : this.state.toggles.one
+                    ? styles.selectedCard
+                    : styles.card
+                }
+              >
+                <Text style={styles.attrib}>Height: </Text>
 
-              <TextInput
-                clearTextOnFocus="true"
-                editable={this.edits["one"]}
-                keyboardType="number-pad"
-                keyboardAppearance="dark"
-                placeholder={`${user.height}`}
-                value={this.state.height}
-                onChangeText={text => {
-                  this.setState({ height: text });
-                }}
-                ref={input => {
-                  this.textInput["one"] = input;
-                }}
-              />
-              <Text style={styles.attrib}>Inches</Text>
-            </View>
-          </TouchableOpacity>
+                <TextInput
+                  clearTextOnFocus="true"
+                  editable={this.edits["one"]}
+                  keyboardType="number-pad"
+                  keyboardAppearance="dark"
+                  placeholder={`${user.height}`}
+                  value={this.state.height}
+                  onChangeText={text => {
+                    this.setState({ height: text });
+                  }}
+                  ref={input => {
+                    this.textInput["one"] = input;
+                  }}
+                />
+                <Text style={styles.attrib}>Inches</Text>
+              </View>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => this.focusNextTextInput("two")}
-            disabled={this.state.buttonToggle}
-          >
-            <View
-              style={
-                this.state.buttonToggle
-                  ? styles.disableAll
-                  : this.state.toggles.two
-                  ? styles.selectedCard
-                  : styles.card
-              }
+            <TouchableOpacity
+              onPress={() => this.focusNextTextInput("two")}
+              disabled={this.state.buttonToggle}
             >
-              <Text style={styles.attrib}>Start weight: </Text>
+              <View
+                style={
+                  this.state.buttonToggle
+                    ? styles.disableAll
+                    : this.state.toggles.two
+                    ? styles.selectedCard
+                    : styles.card
+                }
+              >
+                <Text style={styles.attrib}>Start weight: </Text>
 
-              <TextInput
-                clearTextOnFocus="true"
-                editable={this.edits["two"]}
-                keyboardType="number-pad"
-                keyboardAppearance="dark"
-                placeholder={`${user.longTermGoal.startWeight}`}
-                value={this.state.startWeight}
-                onChangeText={text => {
-                  this.setState({ startWeight: text });
-                }}
-                ref={input => {
-                  this.textInput["two"] = input;
-                }}
-              />
-              <Text style={styles.attrib}>lbs</Text>
-            </View>
-          </TouchableOpacity>
+                <TextInput
+                  clearTextOnFocus="true"
+                  editable={this.edits["two"]}
+                  keyboardType="number-pad"
+                  keyboardAppearance="dark"
+                  placeholder={`${user.longTermGoal.startWeight}`}
+                  value={this.state.startWeight}
+                  onChangeText={text => {
+                    this.setState({ startWeight: text });
+                  }}
+                  ref={input => {
+                    this.textInput["two"] = input;
+                  }}
+                />
+                <Text style={styles.attrib}>lbs</Text>
+              </View>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => this.focusNextTextInput("three")}
-            disabled={this.state.buttonToggle}
-          >
-            <View
-              style={
-                this.state.buttonToggle
-                  ? styles.disableAll
-                  : this.state.toggles.three
-                  ? styles.selectedCard
-                  : styles.card
-              }
+            <TouchableOpacity
+              onPress={() => this.focusNextTextInput("three")}
+              disabled={this.state.buttonToggle}
             >
-              <Text style={styles.attrib}>Goal weight: </Text>
+              <View
+                style={
+                  this.state.buttonToggle
+                    ? styles.disableAll
+                    : this.state.toggles.three
+                    ? styles.selectedCard
+                    : styles.card
+                }
+              >
+                <Text style={styles.attrib}>Goal weight: </Text>
 
-              <TextInput
-                clearTextOnFocus="true"
-                editable={this.edits["three"]}
-                keyboardType="number-pad"
-                keyboardAppearance="dark"
-                placeholder={`${user.longTermGoal.endingWeight}`}
-                value={this.state.endingWeight}
-                onChangeText={text => {
-                  this.setState({ endingWeight: text });
-                }}
-                ref={input => {
-                  this.textInput["three"] = input;
-                }}
-              />
-              <Text style={styles.attrib}>lbs</Text>
-            </View>
-          </TouchableOpacity>
+                <TextInput
+                  clearTextOnFocus="true"
+                  editable={this.edits["three"]}
+                  keyboardType="number-pad"
+                  keyboardAppearance="dark"
+                  placeholder={`${user.longTermGoal.endingWeight}`}
+                  value={this.state.endingWeight}
+                  onChangeText={text => {
+                    this.setState({ endingWeight: text });
+                  }}
+                  ref={input => {
+                    this.textInput["three"] = input;
+                  }}
+                />
+                <Text style={styles.attrib}>lbs</Text>
+              </View>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => this.focusNextTextInput("four")}
-            disabled={this.state.buttonToggle}
-          >
-            <View
-              style={
-                this.state.buttonToggle
-                  ? styles.disableAll
-                  : this.state.toggles.four
-                  ? styles.selectedCard
-                  : styles.card
-              }
+            <TouchableOpacity
+              onPress={() => this.focusNextTextInput("four")}
+              disabled={this.state.buttonToggle}
             >
-              <Text style={styles.attrib}>Body Type:</Text>
-              <SelectInput
-                value={this.state.bodyType}
-                options={this.options}
-                onValueChange={(itemValue, itemIndex) => {
-                  this.setState({
-                    bodyType: itemValue
-                  });
-                }}
-                enabled={this.edits["four"]}
-                ref={input => {
-                  this.textInput["four"] = input;
-                }}
-                onEndEditing={() => this.focusNextTextInput("four")}
-              />
-            </View>
-          </TouchableOpacity>
+              <View
+                style={
+                  this.state.buttonToggle
+                    ? styles.disableAll
+                    : this.state.toggles.four
+                    ? styles.selectedCard
+                    : styles.card
+                }
+              >
+                <Text style={styles.attrib}>Body Type:</Text>
+                <SelectInput
+                  value={this.state.bodyType}
+                  options={this.options}
+                  onValueChange={(itemValue, itemIndex) => {
+                    this.setState({
+                      bodyType: itemValue
+                    });
+                  }}
+                  enabled={this.edits["four"]}
+                  ref={input => {
+                    this.textInput["four"] = input;
+                  }}
+                  onEndEditing={() => this.focusNextTextInput("four")}
+                />
+              </View>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => this.focusNextTextInput("five")}
-            disabled={this.state.buttonToggle}
-          >
-            <View
-              style={
-                this.state.buttonToggle
-                  ? styles.disableAll
-                  : this.state.toggles.five
-                  ? styles.selectedCard
-                  : styles.card
-              }
+            <TouchableOpacity
+              onPress={() => this.focusNextTextInput("five")}
+              disabled={this.state.buttonToggle}
             >
-              <Text style={styles.attrib}>Activity Level:</Text>
-              <SelectInput
-                value={this.state.activityLevel}
-                options={this.levels}
-                onValueChange={(itemValue, itemIndex) => {
-                  this.setState({
-                    activityLevel: itemValue
-                  });
-                }}
-                enabled={this.edits["five"]}
-                ref={input => {
-                  this.textInput["five"] = input;
-                }}
-                onEndEditing={() => this.focusNextTextInput("five")}
-              />
-            </View>
-          </TouchableOpacity>
+              <View
+                style={
+                  this.state.buttonToggle
+                    ? styles.disableAll
+                    : this.state.toggles.five
+                    ? styles.selectedCard
+                    : styles.card
+                }
+              >
+                <Text style={styles.attrib}>Activity Level:</Text>
+                <SelectInput
+                  value={this.state.activityLevel}
+                  options={this.levels}
+                  onValueChange={(itemValue, itemIndex) => {
+                    this.setState({
+                      activityLevel: itemValue
+                    });
+                  }}
+                  enabled={this.edits["five"]}
+                  ref={input => {
+                    this.textInput["five"] = input;
+                  }}
+                  onEndEditing={() => this.focusNextTextInput("five")}
+                />
+              </View>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => this.focusNextTextInput("six")}
-            disabled={this.state.buttonToggle}
-          >
-            <View
-              style={
-                this.state.buttonToggle
-                  ? styles.disableAll
-                  : this.state.toggles.six
-                  ? styles.selectedCard
-                  : styles.card
-              }
+            <TouchableOpacity
+              onPress={() => this.focusNextTextInput("six")}
+              disabled={this.state.buttonToggle}
             >
-              <Text style={styles.attrib}>Goal:</Text>
-              <SelectInput
-                value={this.state.statedGoal}
-                options={this.goals}
-                onValueChange={(itemValue, itemIndex) => {
-                  this.setState({
-                    statedGoal: itemValue
-                  });
-                }}
-                enabled={this.edits["six"]}
-                ref={input => {
-                  this.textInput["six"] = input;
-                }}
-                onEndEditing={() => this.focusNextTextInput("six")}
-              />
-            </View>
-          </TouchableOpacity>
+              <View
+                style={
+                  this.state.buttonToggle
+                    ? styles.disableAll
+                    : this.state.toggles.six
+                    ? styles.selectedCard
+                    : styles.card
+                }
+              >
+                <Text style={styles.attrib}>Goal:</Text>
+                <SelectInput
+                  value={this.state.statedGoal}
+                  options={this.goals}
+                  onValueChange={(itemValue, itemIndex) => {
+                    this.setState({
+                      statedGoal: itemValue
+                    });
+                  }}
+                  enabled={this.edits["six"]}
+                  ref={input => {
+                    this.textInput["six"] = input;
+                  }}
+                  onEndEditing={() => this.focusNextTextInput("six")}
+                />
+              </View>
+            </TouchableOpacity>
 
-          <TouchableOpacity title="Logout" onPress={() => this.removeItem()}>
-            <View style={styles.logOutCard}>
-              <Text style={styles.attrib}>Logout</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity title="Logout" onPress={() => this.removeItem()}>
+              <View style={styles.logOutCard}>
+                <Text style={styles.attrib}>Logout</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  weightContainer: {
+  weightMacros: {
     backgroundColor: "#E76B74",
-    height: "33%",
-    justifyContent: "space-evenly",
+    height: "100%",
+    justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
     padding: 10,
-    flexDirection: "row"
+    marginBottom: 10
   },
+
   weight: {
     backgroundColor: "#E76B74",
     height: "40%",
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
-    padding: 10,
-
-    marginBottom: 10
+    padding: 13,
   },
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: '#F0F7F4'
+    backgroundColor: "#F0F7F4"
+  },
+  macroContainer: {
+    flex: 2,
+    height: "100%",
+    maxHeight: '100%',
+    backgroundColor: "plum"
   },
   cardsContainer: {
     flex: 1,
