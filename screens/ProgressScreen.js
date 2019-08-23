@@ -300,7 +300,6 @@ class ProgressScreen extends React.Component {
     const buttons = ['7 Day', '30 Day', 'YTD'];
     const { selectedIndex } = this.state;
     const { height, width } = Dimensions.get('window');
-    // console.log('height', height, 'width', width);
     return (
       <View style={styles.mainContainer}>
         <ButtonGroup
@@ -355,8 +354,8 @@ class ProgressScreen extends React.Component {
             data={this.state[this.state.goalShowData]}
           />
           <VictoryLegend
-            x={125}
-            y={300}
+            x={width * 0.966 - 14}
+            y={height * 0.357 - 20}
             orientation="horizontal"
             gutter={20}
             data={[
@@ -368,8 +367,8 @@ class ProgressScreen extends React.Component {
         <VictoryChart
           theme={VictoryTheme.material}
           domainPadding={20}
-          height={320}
-          width={400}
+          height={height * 0.357}
+          width={width * 0.966}
         >
           <VictoryAxis
             style={{
@@ -404,8 +403,8 @@ class ProgressScreen extends React.Component {
             data={this.state[this.state.burnedShowData]}
           />
           <VictoryLegend
-            x={60}
-            y={300}
+            x={width * 0.966 - 14}
+            y={height * 0.357 - 20}
             orientation="horizontal"
             data={[
               { name: 'Calories Burned', symbol: { fill: '#FF6347' } },
