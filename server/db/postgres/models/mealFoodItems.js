@@ -49,7 +49,6 @@ MealFoodItems.afterSave(async (mealFoodItem, options) => {
     fat += foodItem.fat * unit;
     protein += foodItem.protein * unit;
   });
-  console.log(totalCalories)
   const meal = await Meals.findByPk(mealFoodItem.mealId, {
     transaction: options.transaction,
   });
