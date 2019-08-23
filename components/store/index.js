@@ -7,6 +7,7 @@ import user from './user';
 import exercises from './exercises';
 import checkIns from './checkIns';
 import recommendedMeals from './recommendedMeals';
+import recommendedFoods from './recommendedFoods';
 
 const reducer = combineReducers({
   meals,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   exercises,
   checkIns,
   recommendedMeals,
+  recommendedFoods,
 });
 
 const middleware = composeWithDevTools(

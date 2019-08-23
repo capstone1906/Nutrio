@@ -1,16 +1,10 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-} from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { getRecommendedMealsThunk } from '../components/store/recommendedMeals';
 import MealCard from '../components/MealCard';
+import { postFood } from '../components/store/meals';
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -32,16 +26,42 @@ const MealButton = props => {
     />
   );
 };
-
 const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+
 class RecommendedMeals extends React.Component {
   constructor() {
     super();
     this.state = {
       activeButton: 'Breakfast',
-      meals: [],
     };
     this.handlePress = this.handlePress.bind(this);
+    this.postFood = this.postFood.bind(this);
+  }
+  componentDidMount() {
+    this.handlePress(this.state.activeButton);
+  }
+  postFood(foodItems, mealId) {
+    foodItems.map(food => {
+      let newFood = {
+        food_name: food.food_name,
+        calories: food.calories,
+        fat: food.fat,
+        protein: food.protein,
+        carbohydrates: food.carbohydrates,
+        weight: food.weight,
+        servingSize: food.servingSize,
+      };
+      let quantity = 0;
+      let grams = 0;
+      if (food.mealFoodItems.quantity > 0) {
+        quantity = food.mealFoodItems.quantity;
+      } else {
+        grams = food.mealFoodItems.quantity;
+      }
+      this.props.postFood(newFood, mealId, quantity, grams);
+    });
+    this.props.navigation.pop();
+    this.props.navigation.pop();
   }
   async handlePress(evt) {
     const dailyGoals = this.props.user.dailyGoal;
@@ -58,7 +78,6 @@ class RecommendedMeals extends React.Component {
     });
   }
   render() {
-    console.log(this.props.recommendedMeals);
     return (
       <View>
         <View style={styles.buttonContainer}>
@@ -74,7 +93,12 @@ class RecommendedMeals extends React.Component {
         <ScrollView>
           {this.props.recommendedMeals.length
             ? this.props.recommendedMeals.map(meal => (
-                <MealCard key={meal.id} meal={meal} />
+                <MealCard
+                  key={meal.id}
+                  meal={meal}
+                  postFood={this.postFood}
+                  mealType={this.state.activeButton}
+                />
               ))
             : null}
         </ScrollView>
@@ -100,6 +124,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getRecs: meal => dispatch(getRecommendedMealsThunk(meal)),
+    postFood: (food, mealId, quantity, grams) =>
+      dispatch(postFood(food, mealId, quantity, grams)),
   };
 };
 
