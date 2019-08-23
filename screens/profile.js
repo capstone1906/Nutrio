@@ -248,9 +248,9 @@ class Profile extends React.Component {
             shadowColor="#999"
             bgColor="#E76B74"
           >
-            <Text style={{ fontSize: 18, color: "white" }}>{`${
-              user.weight
-            } lbs `}</Text>
+            <Text
+              style={{ fontSize: 18, color: "white" }}
+            >{`${user.weight} lbs `}</Text>
           </ProgressCircle>
           <Text style={{ color: "white", paddingTop: 10 }}>weeks left: 10</Text>
           <Text style={{ color: "white" }}>
@@ -334,7 +334,7 @@ class Profile extends React.Component {
               )}%`}
             </Text>
 
-            <VictoryPie 
+            <VictoryPie
               height={300}
               colorScale={["crimson", "limegreen", "navy"]}
               data={[
@@ -363,8 +363,6 @@ class Profile extends React.Component {
             />
 
             <Text style={{ color: "white" }}>Calorie Goal: {bmr}</Text>
-
-
 
             {/* </View> */}
           </View>
@@ -591,7 +589,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
-    padding: 13,
+    padding: 13
   },
   container: {
     flex: 1,
@@ -601,7 +599,7 @@ const styles = StyleSheet.create({
   macroContainer: {
     flex: 2,
     height: "100%",
-    maxHeight: '100%',
+    maxHeight: "100%",
     backgroundColor: "plum"
   },
   cardsContainer: {
