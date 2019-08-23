@@ -137,6 +137,7 @@ class FoodSearchItem extends React.Component {
     });
   }
 
+  // eslint-disable-next-line complexity
   render() {
     const options = [
       { value: 0, label: "gram" },
