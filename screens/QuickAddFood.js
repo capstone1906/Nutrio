@@ -13,6 +13,8 @@ import {
 const { width: winWidth } = Dimensions.get('window');
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { Col, Row, Grid } from 'react-native-easy-grid';
+import { Ionicons } from '@expo/vector-icons';
 import { ListItem } from 'react-native-elements';
 import { postFood } from '../components/store/meals';
 
@@ -140,8 +142,9 @@ class QuickAddFood extends React.Component {
     />
   );
 
-  postFood = array => {
+  postFood = () => {
     const mealId = this.props.navigation.getParam('mealId');
+    const array = this.state.selectedFoodsInfo;
 
     for (let i = 0; i < array.length; i++) {
       const newFood = {
@@ -171,32 +174,60 @@ class QuickAddFood extends React.Component {
     console.log('selectedFoodsInfo is now ', selectedFoodsInfo);
 
     return (
-      <FlatList
-        keyExtractor={this.keyExtractor}
-        data={selectedFoodsInfo}
-        renderItem={this.renderItem}
-        ItemSeparatorComponent={this.renderSeparator}
-      />
+      <View style={{ flex: 1 }}>
+        <FlatList
+          keyExtractor={this.keyExtractor}
+          data={selectedFoodsInfo}
+          renderItem={this.renderItem}
+          ItemSeparatorComponent={this.renderSeparator}
+        />
+        <Grid style={styles.resultToolbar}>
+          <Row>
+            <Col>
+              <TouchableOpacity style={{ backgroundColor: '#d9534e' }}>
+                <Ionicons
+                  style={styles.closeButton}
+                  onPress={() => {
+                    this.props.navigation.navigate('FoodSearch');
+                  }}
+                  name="md-close"
+                  color="white"
+                  size={35}
+                />
+              </TouchableOpacity>
+            </Col>
+            <Col>
+              <TouchableOpacity style={{ backgroundColor: '#337ab7' }}>
+                <Ionicons
+                  style={styles.closeButton}
+                  onPress={() => this.postFood()}
+                  name="md-checkmark"
+                  color="white"
+                  size={35}
+                />
+              </TouchableOpacity>
+            </Col>
+          </Row>
+        </Grid>
+      </View>
     );
   }
 }
 
-QuickAddFood.navigationOptions = {
-  headerTitle: 'Enter Serving Size',
-  headerRight: (
-    <Button
-      style={{ fontWeight: 'bold' }}
-      onPress={() =>
-        this.postFood(this.props.navigation.getParam('selectedFoodsInfo'))
-      }
-      title="Add  "
-      color="#fff"
-    />
-  ),
-  headerStyle: {
-    backgroundColor: 'crimson',
+const styles = StyleSheet.create({
+  closeButton: {
+    textAlign: 'center',
   },
-  headerTintColor: 'white',
+  resultToolbar: {
+    width: winWidth,
+    position: 'absolute',
+    height: 37,
+    bottom: 0,
+  },
+});
+
+QuickAddFood.navigationOptions = {
+  header: null,
 };
 
 const mapDispatch = dispatch => {
