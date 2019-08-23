@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     maxWidth: '85%',
     maxHeight: '55%',
     marginTop: 10,
+    borderRadius: 10,
   },
   absoluteView: {
     flex: 5,
@@ -53,10 +54,15 @@ const styles = StyleSheet.create({
   },
   touchAble: {
     flex: 9,
+    paddingBottom: 0,
+    paddingTop: 40,
   },
   text: {
     textAlign: 'center',
     marginTop: 10,
+    padding: 5,
+    fontSize: 16,
+    color: 'black'
   },
   container: {
     flex: 40,
