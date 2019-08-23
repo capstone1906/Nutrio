@@ -302,5 +302,9 @@ const styles = StyleSheet.create({
 });
 
 CameraInterface.navigationOptions = {
-  header: null,
+  headerTitle: "Food Scanner",
+  headerStyle: {
+    backgroundColor: "crimson"
+  },
+  headerTintColor: "white"
 };
