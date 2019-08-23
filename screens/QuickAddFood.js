@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   FlatList,
   StyleSheet,
@@ -8,36 +8,36 @@ import {
   Dimensions,
   TextInput,
   Image,
-  Button,
-} from 'react-native';
-const { width: winWidth } = Dimensions.get('window');
-import { connect } from 'react-redux';
-import axios from 'axios';
-import { Col, Row, Grid } from 'react-native-easy-grid';
-import { Ionicons } from '@expo/vector-icons';
-import { ListItem } from 'react-native-elements';
-import { postFood } from '../components/store/meals';
+  Button
+} from "react-native";
+const { width: winWidth } = Dimensions.get("window");
+import { connect } from "react-redux";
+import axios from "axios";
+import { Col, Row, Grid } from "react-native-easy-grid";
+import { Ionicons } from "@expo/vector-icons";
+import { ListItem } from "react-native-elements";
+import { postFood } from "../components/store/meals";
 
 class QuickAddFood extends React.Component {
   state = {
-    selectedFoodsInfo: [],
+    selectedFoodsInfo: []
   };
 
   async componentDidMount() {
-    const foodsSelected = this.props.navigation.getParam('foodsSelected');
+    const foodsSelected = this.props.navigation.getParam("foodsSelected");
     await this.getInfoArray(foodsSelected);
     this.props.navigation.setParams({
-      selectedFoodsInfo: this.state.selectedFoodsInfo,
+      selectedFoodsInfo: this.state.selectedFoodsInfo
     });
   }
 
   retrieveData = async item => {
-    console.log('checking for ', item);
+
     try {
       const res = await axios.post(
         `https://trackapi.nutritionix.com/v2/natural/nutrients`,
         {
-          query: `${item}`,
+          query: `${item}`
         },
         {
           headers: {
@@ -57,11 +57,11 @@ class QuickAddFood extends React.Component {
           protein: food.nf_protein,
           carbohydrates: food.nf_total_carbohydrate,
           weight: food.serving_weight_grams,
-          servingSize: food.serving_unit,
+          servingSize: food.serving_unit
         };
       }
     } catch (error) {
-      console.log('ERROR for ', item);
+      console.log("ERROR for ", item);
       return false;
     }
   };
@@ -83,7 +83,7 @@ class QuickAddFood extends React.Component {
           carbohydrates: itemInfo.carbohydrates,
           weight: itemInfo.weight,
           servingSize: itemInfo.servingSize,
-          quantity: '',
+          quantity: ""
         });
       }
     }
@@ -106,9 +106,9 @@ class QuickAddFood extends React.Component {
       <View
         style={{
           height: 1,
-          width: '82%',
-          backgroundColor: '#CED0CE',
-          marginLeft: '18%',
+          width: "82%",
+          backgroundColor: "#CED0CE",
+          marginLeft: "18%"
         }}
       />
     );
@@ -120,7 +120,7 @@ class QuickAddFood extends React.Component {
     <ListItem
       title={
         <View>
-          <Text style={{ fontSize: 26, fontWeight: 'bold' }}>{item.name}</Text>
+          <Text style={{ fontSize: 26, fontWeight: "bold" }}>{item.name}</Text>
         </View>
       }
       subtitle={
@@ -146,7 +146,7 @@ class QuickAddFood extends React.Component {
   );
 
   postFood = () => {
-    const mealId = this.props.navigation.getParam('mealId');
+    const mealId = this.props.navigation.getParam("mealId");
     const array = this.state.selectedFoodsInfo;
 
     for (let i = 0; i < array.length; i++) {
@@ -157,7 +157,7 @@ class QuickAddFood extends React.Component {
         protein: array[i].protein,
         carbohydrates: array[i].carbohydrates,
         weight: array[i].weight,
-        servingSize: array[i].servingSize,
+        servingSize: array[i].servingSize
       };
 
       this.props.postFood(
@@ -168,14 +168,14 @@ class QuickAddFood extends React.Component {
       );
     }
 
-    alert('Added to Meal');
-    this.props.navigation.navigate('DailyLog');
+    alert("Added to Meal");
+    this.props.navigation.navigate("DailyLog");
   };
 
   render() {
     const { selectedFoodsInfo } = this.state;
 
-    console.log('selectedFoodsInfo is now ', selectedFoodsInfo);
+    console.log("selectedFoodsInfo is now ", selectedFoodsInfo);
 
     return (
       <View style={{ flex: 1 }}>
@@ -188,11 +188,11 @@ class QuickAddFood extends React.Component {
         <Grid style={styles.resultToolbar}>
           <Row>
             <Col>
-              <TouchableOpacity style={{ backgroundColor: '#d9534e' }}>
+              <TouchableOpacity style={{ backgroundColor: "#d9534e" }}>
                 <Ionicons
                   style={styles.closeButton}
                   onPress={() => {
-                    this.props.navigation.navigate('FoodSearch');
+                    this.props.navigation.navigate("FoodSearch");
                   }}
                   name="md-close"
                   color="white"
@@ -201,7 +201,7 @@ class QuickAddFood extends React.Component {
               </TouchableOpacity>
             </Col>
             <Col>
-              <TouchableOpacity style={{ backgroundColor: '#337ab7' }}>
+              <TouchableOpacity style={{ backgroundColor: "#337ab7" }}>
                 <Ionicons
                   style={styles.closeButton}
                   onPress={() => this.postFood()}
@@ -220,14 +220,14 @@ class QuickAddFood extends React.Component {
 
 const styles = StyleSheet.create({
   closeButton: {
-    textAlign: 'center',
+    textAlign: "center"
   },
   resultToolbar: {
     width: winWidth,
-    position: 'absolute',
+    position: "absolute",
     height: 37,
-    bottom: 0,
-  },
+    bottom: 0
+  }
 });
 
 QuickAddFood.navigationOptions = {
@@ -241,7 +241,7 @@ QuickAddFood.navigationOptions = {
 const mapDispatch = dispatch => {
   return {
     postFood: (food, mealId, quantity, grams) =>
-      dispatch(postFood(food, mealId, quantity, grams)),
+      dispatch(postFood(food, mealId, quantity, grams))
   };
 };
 
