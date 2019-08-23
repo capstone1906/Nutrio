@@ -18,15 +18,15 @@ import {
 } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 
-// import FoodSearchItem from "../components/FoodSearchItem";
-
 export default class FoodSearch extends React.Component {
   constructor() {
     super();
     this.state = {
       currentSearch: [],
       showError: false,
-      searchName: ""
+      searchName: '',
+      predictions: [],
+      chosenImage: null,
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -71,18 +71,14 @@ export default class FoodSearch extends React.Component {
         <View style={styles.cameraToolbar}>
           <TouchableOpacity>
             <Ionicons
-              // onPress={}
+              onPress={() => {
+                this.props.navigation.navigate('CameraInterface', {
+                  mealId: this.props.navigation.getParam('mealId'),
+                });
+              }}
               name="ios-camera"
               color="red"
               size={90}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons
-              onPress={this._pickImage}
-              name="ios-photos"
-              color="red"
-              size={65}
             />
           </TouchableOpacity>
         </View>
@@ -142,7 +138,7 @@ const styles = StyleSheet.create({
 });
 
 FoodSearch.navigationOptions = {
-  headerTitle: "Today's log",
+  headerTitle: "Today's Log",
   headerStyle: {
     backgroundColor: "crimson"
   },

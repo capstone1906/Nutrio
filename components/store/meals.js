@@ -54,8 +54,10 @@ export const getMealsThunk = dateVar => async dispatch => {
         day = '0' + day;
       }
 
-      todaysDate = year + '-' + month + '-' + day;
+      todaysDate = year + "-" + month + "-" + day;
     }
+
+
 
     var foods = res.data;
     var breakfast = {};
