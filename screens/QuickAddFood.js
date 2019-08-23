@@ -166,6 +166,7 @@ class QuickAddFood extends React.Component {
     }
 
     alert('Added to Meal');
+    this.props.navigation.navigate('DailyLog');
   };
 
   render() {
