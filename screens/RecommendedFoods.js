@@ -19,7 +19,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   warningButton: {
-    color: 'red',
+    width: '90%',
+    alignSelf: 'center',
+    borderRadius: 10,
+    marginTop: 15
   },
 });
 
