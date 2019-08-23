@@ -41,8 +41,8 @@ class QuickAddFood extends React.Component {
         },
         {
           headers: {
-            'x-app-id': '7a42448a',
-            'x-app-key': '92293c0963350c83ea7c179c74fb65d1',
+            'x-app-id': '5e27fd08',
+            'x-app-key': '1e1ee4d0779fb25127320c91ced7c367',
             'x-remote-user-id': '0',
           },
         }
@@ -126,14 +126,17 @@ class QuickAddFood extends React.Component {
       subtitle={
         <View>
           <TextInput
-            style={{ fontSize: 17 }}
+            style={{ fontSize: 18 }}
             onChangeText={text => this.handleChange(text, index)}
             value={item.quantity}
             keyboardType="number-pad"
             placeholder="Enter Quantity"
           />
           <Text style={{ fontSize: 20, fontStyle: 'italic' }}>
-            {Math.round(Number(item.calories) * Number(item.quantity))} Cal
+            {Math.round(Number(item.calories) * Number(item.quantity)) === 0
+              ? ''
+              : Math.round(Number(item.calories) * Number(item.quantity))}{' '}
+            Cal
           </Text>
         </View>
       }
@@ -228,11 +231,11 @@ const styles = StyleSheet.create({
 });
 
 QuickAddFood.navigationOptions = {
-  headerTitle: "Add to Meal",
+  headerTitle: 'Add to Meal',
   headerStyle: {
-    backgroundColor: "crimson"
+    backgroundColor: 'crimson',
   },
-  headerTintColor: "white"
+  headerTintColor: 'white',
 };
 
 const mapDispatch = dispatch => {
