@@ -1,2 +1,2 @@
-const ngrok = 'https://9e584b3c.ngrok.io';
+export const ngrok = 'https://8ef75c12.ngrok.io';
 module.exports = ngrok
