@@ -355,7 +355,7 @@ class ProgressScreen extends React.Component {
           />
           <VictoryLegend
             x={width * 0.302}
-            y={height * 0.334}
+            y={height * 0.33}
             orientation="horizontal"
             gutter={20}
             data={[
@@ -404,7 +404,7 @@ class ProgressScreen extends React.Component {
           />
           <VictoryLegend
             x={width * 0.144}
-            y={height * 0.334}
+            y={height * 0.33}
             orientation="horizontal"
             data={[
               { name: 'Calories Burned', symbol: { fill: '#FF6347' } },
