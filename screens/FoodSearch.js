@@ -6,7 +6,6 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  TextInput
 } from "react-native";
 const { width: winWidth } = Dimensions.get("window");
 import axios from "axios";
@@ -15,6 +14,7 @@ import {
   ListItem,
   ThemeProvider,
   Divider,
+  Input
 } from "react-native-elements";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -84,7 +84,7 @@ export default class FoodSearch extends React.Component {
         </View>
 
         <Text>Search for Food Items</Text>
-        <TextInput keyboardAppearance="dark" onChange={this.handleChange} />
+        <Input keyboardAppearance="dark" onChange={this.handleChange} />
 
         {this.state.searchName !== "" && (
           <ScrollView style={styles.results}>
