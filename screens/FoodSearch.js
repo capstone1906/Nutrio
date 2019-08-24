@@ -1,22 +1,25 @@
-import React from "react";
+import React from 'react';
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  Dimensions
-} from "react-native";
-const { width: winWidth } = Dimensions.get("window");
-import axios from "axios";
+  Dimensions,
+} from 'react-native';
+const { width: winWidth } = Dimensions.get('window');
+import axios from 'axios';
 import {
   Button,
   ListItem,
   ThemeProvider,
   Divider,
-  Input
-} from "react-native-elements";
-import { Ionicons } from "@expo/vector-icons";
+  Input,
+  SearchBar,
+  Icon
+} from 'react-native-elements';
+import { Ionicons } from '@expo/vector-icons';
+// import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class FoodSearch extends React.Component {
   constructor() {
@@ -35,7 +38,7 @@ export default class FoodSearch extends React.Component {
     event.preventDefault();
 
     this.setState({
-      searchName: event.nativeEvent.text
+      searchName: event.nativeEvent.text,
     });
 
     const res = await axios.get(
@@ -51,11 +54,11 @@ export default class FoodSearch extends React.Component {
     if (res.data.common) {
       this.setState({
         currentSearch: res.data.common.concat(res.data.branded),
-        showError: false
+        showError: false,
       });
     } else {
       this.setState({
-        showError: true
+        showError: true,
       });
     }
   }
@@ -82,9 +85,28 @@ export default class FoodSearch extends React.Component {
         </View>
 
         <Text>Search for Food Items</Text>
-        <Input keyboardAppearance="dark" onChange={this.handleChange} />
+        <View style={{ justifyContent: 'center' }}>
+          <Input
+            inputContainerStyle={{
+              borderBottomWidth: 0,
+              borderRadius: 10,
+              backgroundColor: '#e5e4ea',
+              width: '85%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            containerStyle={{
+              justifyContent: 'center',
+              marginTop: 13,
+            }}
+            leftIcon={{ type: 'font-awesome', name: 'search' }}
+            leftIconContainerStyle={{ marginRight: 9 }}
+            keyboardAppearance="dark"
+            onChange={this.handleChange}
+          />
+        </View>
 
-        {this.state.searchName !== "" && (
+        {this.state.searchName !== '' && (
           <ScrollView style={styles.results}>
             {foods.map(food => {
               return (
@@ -92,15 +114,15 @@ export default class FoodSearch extends React.Component {
                   <Text
                     style={styles.foodName}
                     onPress={() => {
-                      this.props.navigation.navigate("FoodSearchItem", {
+                      this.props.navigation.navigate('FoodSearchItem', {
                         food: food,
-                        mealId: this.props.navigation.getParam("mealId")
+                        mealId: this.props.navigation.getParam('mealId'),
                       });
                     }}
                   >
                     {food.food_name}
                   </Text>
-                  <Divider style={{ backgroundColor: "blue" }} />
+                  <Divider style={{ backgroundColor: 'blue' }} />
                 </TouchableOpacity>
               );
             })}
@@ -114,31 +136,32 @@ export default class FoodSearch extends React.Component {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    marginTop: 10
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginTop: 10,
   },
   cameraToolbar: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
     height: 100,
-    width: winWidth
+    width: winWidth,
   },
   results: {
-    width: "90%",
-    alignContent: "center"
+    width: '90%',
+    alignContent: 'center',
   },
   foodName: {
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });
 
 FoodSearch.navigationOptions = {
   headerTitle: "Today's Log",
   headerStyle: {
-    backgroundColor: "crimson"
+    backgroundColor: 'crimson',
   },
-  headerTintColor: "white"
+  headerTintColor: 'white',
+  headerLeft: <Icon name='pencil-outline' type='material-community' color='white'/>
 };
