@@ -11,7 +11,7 @@ import {
   AlertIOS
 } from "react-native";
 import { connect } from "react-redux";
-import { VictoryPie, VictoryLegend } from 'victory-native';
+import { VictoryPie, VictoryLegend } from "victory-native";
 import { Button, Divider } from "react-native-elements";
 import { getUserThunk } from "../components/store/user";
 import ProgressCircle from "react-native-progress-circle";
@@ -238,7 +238,6 @@ class Profile extends React.Component {
 
     return (
       <View style={styles.container}>
-        {/* <View style={styles.weightContainer}> */}
         <View style={styles.weight}>
           <ProgressCircle
             percent={per}
@@ -252,18 +251,18 @@ class Profile extends React.Component {
               style={{ fontSize: 18, color: "black" }}
             >{`${user.weight} lbs `}</Text>
           </ProgressCircle>
-          <Text style={{ color: "black", paddingTop: 10 }}>weeks left: 10</Text>
-          <Text style={{ color: "black" }}>
+          <Text style={{ fontSize: 16, color: "black", paddingTop: 10 }}>weeks left: 10</Text>
+          <Text style={{ fontSize: 16, color: "black" }}>
             Start date: {user.longTermGoal.startDate.split("T0")[0]}
           </Text>
-          <Text style={{ color: "black" }}>
+          <Text style={{ fontSize: 16, color: "black" }}>
             End date: {user.longTermGoal.endDate.split("T0")[0]}
           </Text>
 
           <View
             style={{
-              paddingBottom: 10,
-              paddingTop: 10,
+              paddingBottom: 0,
+              paddingTop: 15,
               flexDirection: "row",
               justifyContent: "center",
               alignItems: "center",
@@ -309,81 +308,78 @@ class Profile extends React.Component {
               onPress={() => this.updateProfile()}
             />
           </View>
+
         </View>
+        <Divider style={{ backgroundColor: 'blue' }} />
 
         {this.state.buttonToggle ? (
           <View style={styles.macroContainer}>
-            {/* <View style={{ backgroundColor: "grey" }}> */}
-            {/* <Text style={{ color: "white" }}>Macros </Text>
-            <Text style={{ color: "white" }}>
-              🥓: {user.dailyGoal.fatLimit}
-              {` g                   ${Math.ceil(
-                ((user.dailyGoal.fatLimit * 9) / bmr) * 100
-              )}%`}
+            <Text
+              style={{ color: "black", fontSize: 25, paddingBottom: 10, paddingTop: 70 }}
+            >
+              Calorie Goal: {bmr}
             </Text>
-            <Text style={{ color: "white" }}>
-              🥩: {user.dailyGoal.proteinLimit}
-              {` g              ${Math.ceil(
-                ((user.dailyGoal.proteinLimit * 4) / bmr) * 100
-              )}%`}
-            </Text>
-            <Text style={{ color: "white" }}>
-              🍞: {user.dailyGoal.carbLimit}
-              {` g                 ${Math.ceil(
-                ((user.dailyGoal.carbLimit * 4) / bmr) * 100
-              )}%`}
-            </Text> */}
 
-            <View >
-              <VictoryPie
-                height={165}
-                width={165}
-                padAngle={2}
-                innerRadius={55}
-                colorScale={["crimson", "limegreen", "#0438E2"]}
-                data={[
-                  {
-                    x: 1,
-                    y: user.dailyGoal.fatLimit
-                  },
-                  {
-                    x: 2,
-                    y: user.dailyGoal.carbLimit
-                  },
-                  {
-                    x: 3,
-                    y: user.dailyGoal.proteinLimit
-                  }
-                ]}
-                labelRadius={87}
-                style={{
-                  labels: {
-                    fill: "white",
-                    fontSize: 0
-                  }
-                }}
-              />
-              <VictoryLegend
-                x={0}
-                y={0}
-                height={140}
-                width={350}
-                title="Macros"
-                centerTitle
-                orientation="vertical"
-                gutter={10}
-                style={{ title: { fontSize: 14 }, data: { fontSize: 10 } }}
-                data={[
-                  { name: `Protein ${user.dailyGoal.proteinLimit}g`, symbol: { fill: "#058ED9" } },
-                  { name: `Fat ${user.dailyGoal.fatLimit}g`, symbol: { fill: "crimson" } },
-                  { name: `Carbs ${user.dailyGoal.carbLimit}g`, symbol: { fill: "limegreen" } }
-                ]}
-              />
-            </View>
+            <VictoryPie
+              height={165}
+              width={165}
+              padAngle={2}
+              innerRadius={55}
+              colorScale={["crimson", "#4CEF90", "#0438E2"]}
+              data={[
+                {
+                  x: 1,
+                  y: user.dailyGoal.fatLimit
+                },
+                {
+                  x: 2,
+                  y: user.dailyGoal.carbLimit
+                },
+                {
+                  x: 3,
+                  y: user.dailyGoal.proteinLimit
+                }
+              ]}
+              labelRadius={87}
+              style={{
+                labels: {
+                  fill: "#F5ECCD",
+                  fontSize: 0,
+                  color: ""
+                }
+              }}
+            />
 
-            <Text style={{ color: "plum" }}>Calorie Goal: {bmr}</Text>
-
-            {/* </View> */}
+            <VictoryLegend
+              x={25}
+              y={0}
+              height={140}
+              width={350}
+              title="Macros"
+              centerTitle
+              orientation="horizontal"
+              gutter={10}
+              style={{
+                title: { fontSize: 24 },
+                data: { fontSize: 18 },
+                padding: 0,
+                margin: 0
+              }}
+              data={[
+                {
+                  name: `Protein ${user.dailyGoal.proteinLimit}g`,
+                  symbol: { fill: "#0438E2" }
+                },
+                {
+                  name: `Fat ${user.dailyGoal.fatLimit}g`,
+                  symbol: { fill: "crimson" }
+                },
+                {
+                  name: `Carbs ${user.dailyGoal.carbLimit}g`,
+                  symbol: { fill: "#4CEF90" }
+                }
+              ]}
+            />
           </View>
         ) : (
           <View style={styles.cardsContainer}>
@@ -592,36 +588,28 @@ class Profile extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  weightMacros: {
-    backgroundColor: "#E76B74",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
-    padding: 10,
-    marginBottom: 10
-  },
-
   weight: {
     backgroundColor: "#F5ECCD",
-
-    
-    height: "40%",
+    height: "43%",
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
-    padding: 13
+    padding: 15
   },
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#F0F7F4"
+    backgroundColor: "#F5ECCD"
   },
   macroContainer: {
     flex: 2,
     height: "100%",
     maxHeight: "100%",
-    backgroundColor: "white"
+    backgroundColor: "#F5ECCD",
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    width: "100%"
   },
   cardsContainer: {
     flex: 1,
