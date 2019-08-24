@@ -5,6 +5,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+
   Dimensions,
 } from 'react-native';
 const { width: winWidth } = Dimensions.get('window');
@@ -26,9 +27,9 @@ export default class FoodSearch extends React.Component {
     this.state = {
       currentSearch: [],
       showError: false,
-      searchName: '',
+      searchName: "",
       predictions: [],
-      chosenImage: null,
+      chosenImage: null
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -41,11 +42,10 @@ export default class FoodSearch extends React.Component {
     });
 
     const res = await axios.get(
-      `https://trackapi.nutritionix.com/v2/search/instant?query=${
-        event.nativeEvent.text
-      }`,
+      `https://trackapi.nutritionix.com/v2/search/instant?query=${event.nativeEvent.text}`,
       {
         headers: {
+
           'x-app-id': '5e27fd08',
           'x-app-key': '1e1ee4d0779fb25127320c91ced7c367',
         },
@@ -74,8 +74,8 @@ export default class FoodSearch extends React.Component {
           <TouchableOpacity>
             <Ionicons
               onPress={() => {
-                this.props.navigation.navigate('CameraInterface', {
-                  mealId: this.props.navigation.getParam('mealId'),
+                this.props.navigation.navigate("CameraInterface", {
+                  mealId: this.props.navigation.getParam("mealId")
                 });
               }}
               name="ios-camera"
