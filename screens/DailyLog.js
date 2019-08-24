@@ -22,10 +22,10 @@ const FoodTimeHeader = props => {
   return (
     <View style={styles.FoodTimeHeader}>
       <View style={{ flex: 3 }}>
-        <Text style={{ fontSize: 18 }}>{props.time}</Text>
+        <Text style={{ fontSize: 18, color: 'white' }}>{props.time}</Text>
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 18 }}>Calories</Text>
+        <Text style={{ fontSize: 18, color: 'white' }}>Calories</Text>
       </View>
     </View>
   );
@@ -345,21 +345,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
-    // paddingLeft: 40,
     paddingTop: 20,
     paddingBottom: 25,
   },
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: "#F5ECCD"
   },
 
   FoodTimeHeader: {
     flexDirection: 'row',
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#1E90FF',
     height: 40,
     justifyContent: 'space-between',
-
+    color: 'white',
     padding: 10,
     borderRadius: 10,
   },
@@ -369,8 +369,11 @@ const styles = StyleSheet.create({
   addFoodButton: {
     width: 100,
     height: 50,
-    backgroundColor: 'limegreen',
+    backgroundColor: "#1E90FF",
+    marginTop: 5,
+    marginLeft: 5
   },
+
   foodAmount: {
     fontSize: 12,
     color: 'grey',
@@ -380,7 +383,7 @@ const styles = StyleSheet.create({
 DailyLog.navigationOptions = {
   headerTitle: 'Daily log',
   headerStyle: {
-    backgroundColor: 'crimson',
+    backgroundColor: '#1E90FF',
   },
   headerTintColor: 'white',
 };
