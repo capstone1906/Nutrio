@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
 FoodSearchItem.navigationOptions = {
   headerTitle: "Today's log",
   headerStyle: {
-    backgroundColor: "crimson"
+    backgroundColor: "#1E90FF"
   },
   headerTintColor: "white"
 };

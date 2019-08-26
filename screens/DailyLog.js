@@ -53,14 +53,6 @@ const ExerciseContainer = props => {
       </View>
 
       <Divider style={{ backgroundColor: "blue" }} />
-
-      <Button
-        buttonStyle={styles.addFoodButton}
-        title="Add Exercise"
-        onPress={() => {
-          props.navigation.navigate("Exercise");
-        }}
-      />
     </View>
   );
 };
@@ -158,12 +150,10 @@ const FoodTimeContainer = props => {
       <FoodTimeHeader time={props.time} />
 
       {foodItems.map((food, idx) => {
-
-        // console.log("food is", food);
-
         return (
           <FoodItem
             food={food}
+            key={food.id}
             navigation={props.navigation}
             mealId={props.meal.id}
             addToDelete={props.addToDelete}
@@ -183,8 +173,8 @@ const FoodTimeContainer = props => {
         }}
       />
     </View>
-  )
-}
+  );
+};
 
 class DailyLog extends React.Component {
   constructor() {
@@ -252,7 +242,22 @@ class DailyLog extends React.Component {
                   }
             }
           />
-          <Text style={{ color: "white" }}>Edit log</Text>
+          <Text style={{ color: "white" }}>
+            {itemsToDelete.length > 0 ? "Delete items" : "Edit log"}
+          </Text>
+        </View>
+      ),
+      headerRight: (
+        <View style={{ paddingRight: 5, marginRight: 5 }}>
+          <Icon
+            name="run-fast"
+            type="material-community"
+            color="white"
+            onPress={() => {
+              params.navigate("Checkin");
+            }}
+          />
+          <Text style={{ color: "white" }}> Check in</Text>
         </View>
       )
     };
@@ -262,7 +267,8 @@ class DailyLog extends React.Component {
     this.props.navigation.setParams({
       toggleLog: this.toggleLog,
       itemsToDelete: this.state.itemsToDelete,
-      deleteItems: this.deleteItems
+      deleteItems: this.deleteItems,
+      navigate: this.props.navigation.navigate
     });
   }
 
@@ -290,11 +296,11 @@ class DailyLog extends React.Component {
       itemsToDelete: newState
     });
 
-    console.log("NEW STATE IS", newState);
     this.props.navigation.setParams({
       toggleLog: this.toggleLog,
       itemsToDelete: this.state.itemsToDelete,
-      deleteItems: this.deleteItems
+      deleteItems: this.deleteItems,
+      navigate: this.props.navigation.navigate
     });
   }
 
@@ -302,18 +308,19 @@ class DailyLog extends React.Component {
 
   async deleteItems() {
     var items = [...this.state.itemsToDelete];
-    console.log("items are", items);
-    items.forEach(item => {
-     this.props.deleteMealItem(item.food.id, item.mealId)
-    })
+    await Promise.all(
+      items.map(item => {
+        return this.props.deleteMealItem(item.food.id, item.mealId);
+      })
+    );
 
-    await this.setState({ itemsToDelete: [] });
+    this.setState({ itemsToDelete: [] });
     this.props.navigation.setParams({
       toggleLog: this.toggleLog,
       itemsToDelete: [],
-      deleteItems: this.deleteItems
-    })
-    // await this.props.getMeals(this.state.date, this.props.user.id);
+      deleteItems: this.deleteItems,
+      navigate: this.props.navigation.navigate
+    });
   }
 
   async componentDidMount() {
@@ -341,11 +348,19 @@ class DailyLog extends React.Component {
 
     if (this.props.user.dailyGoal && foods.todaysMeals.length > 0) {
       calorieLimit = this.props.user.dailyGoal.calorieLimit;
-      totalCals =
-        breakfast.totalCalories +
-        lunch.totalCalories +
-        dinner.totalCalories +
-        snacks.totalCalories;
+
+      breakfast.foodItems.forEach(food => {
+        totalCals += food.calories;
+      });
+      lunch.foodItems.forEach(food => {
+        totalCals += food.calories;
+      });
+      dinner.foodItems.forEach(food => {
+        totalCals += food.calories;
+      });
+      snacks.foodItems.forEach(food => {
+        totalCals += food.calories;
+      });
     }
 
     var percent = Number(totalCals / calorieLimit).toFixed(1);
@@ -389,10 +404,6 @@ class DailyLog extends React.Component {
                 this.setState({ date: date });
                 this.props.getMeals(date, this.props.user.id);
               }}
-            />
-            <Button
-              onPress={() => this.props.navigation.navigate("Checkin")}
-              title="Check-In"
             />
           </View>
 
@@ -450,7 +461,6 @@ class DailyLog extends React.Component {
           <ExerciseContainer
             todaysCheckIn={this.props.checkIns.todaysCheckIn}
             time="exercise"
-            navigation={this.props.navigation}
             resetCaloriesBurned={this.resetCaloriesBurned}
           />
         </ScrollView>
@@ -474,7 +484,7 @@ const styles = StyleSheet.create({
   },
   date: {
     justifyContent: "space-around",
-    paddingLeft: 75,
+    // paddingLeft: 75,
     flexDirection: "row"
   },
   progress: {
