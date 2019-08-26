@@ -1,3 +1,5 @@
+/* eslint-disable max-statements */
+/* eslint-disable complexity */
 import React from 'react';
 import {
   ScrollView,
@@ -5,6 +7,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -68,6 +71,7 @@ const ExerciseContainer = props => {
         buttonStyle={styles.addFoodButton}
         title="Add Exercise"
         onPress={() => {
+          console.log(props.navigation);
           props.navigation.navigate('Exercise');
         }}
       />
@@ -243,86 +247,93 @@ class DailyLog extends React.Component {
     if (percent >= 0.9) {
       barColor = 'crimson';
     }
-
-    return (
-      <ScrollView style={styles.container}>
-        <View style={styles.date}>
-          <DatePicker
-            style={{ width: 150, paddingBottom: 10 }}
-            date={this.state.date}
-            mode="date"
-            placeholder="select date"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: 'absolute',
-                left: 0,
-                top: 4,
-                marginLeft: 0,
-              },
-              dateInput: {
-                marginLeft: 36,
-              },
-            }}
-            onDateChange={date => {
-              this.setState({ date: date });
-              this.props.getMeals(date, this.props.user.id);
-            }}
-          />
-        </View>
-
-        <View style={styles.progress}>
-          <View style={{ justifyContent: 'center', flexDirection: 'column' }}>
-            <Text>Calories: </Text>
-            <Text> {totalCals.toFixed(0)}</Text>
+    if (this.props.user && this.props.meals && this.props.checkIns) {
+      return (
+        <ScrollView style={styles.container}>
+          <View style={styles.date}>
+            <DatePicker
+              style={{ width: 150, paddingBottom: 10 }}
+              date={this.state.date}
+              mode="date"
+              placeholder="select date"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0,
+                },
+                dateInput: {
+                  marginLeft: 36,
+                },
+              }}
+              onDateChange={date => {
+                this.setState({ date: date });
+                this.props.getMeals(date, this.props.user.id);
+              }}
+            />
+            <Button
+              onPress={() => this.props.navigation.navigate('Checkin')}
+              title="Check-In"
+            />
           </View>
 
-          <Progress.Bar
-            progress={percent}
-            width={225}
-            height={15}
-            color={barColor}
-          />
+          <View style={styles.progress}>
+            <View style={{ justifyContent: 'center', flexDirection: 'column' }}>
+              <Text>Calories: </Text>
+              <Text> {totalCals.toFixed(0)}</Text>
+            </View>
 
-          <View style={{ justifyContent: 'center', flexDirection: 'column' }}>
-            <Text>Limit: </Text>
-            <Text> {calorieLimit.toFixed(0)}</Text>
+            <Progress.Bar
+              progress={percent}
+              width={225}
+              height={15}
+              color={barColor}
+            />
+
+            <View style={{ justifyContent: 'center', flexDirection: 'column' }}>
+              <Text>Limit: </Text>
+              <Text> {calorieLimit.toFixed(0)}</Text>
+            </View>
           </View>
-        </View>
 
-        <FoodTimeContainer
-          time="Breakfast"
-          navigation={this.props.navigation}
-          meal={breakfast}
-          deleteItem={this.deleteItem}
-        />
-        <FoodTimeContainer
-          time="Lunch"
-          navigation={this.props.navigation}
-          meal={lunch}
-          deleteItem={this.deleteItem}
-        />
-        <FoodTimeContainer
-          time="Dinner"
-          navigation={this.props.navigation}
-          meal={dinner}
-          deleteItem={this.deleteItem}
-        />
-        <FoodTimeContainer
-          time="Snacks"
-          navigation={this.props.navigation}
-          meal={snacks}
-          deleteItem={this.deleteItem}
-        />
-        <ExerciseContainer
-          todaysCheckIn={this.props.checkIns.todaysCheckIn}
-          time="exercise"
-          navigation={this.props.navigation}
-          resetCaloriesBurned={this.resetCaloriesBurned}
-        />
-      </ScrollView>
-    );
+          <FoodTimeContainer
+            time="Breakfast"
+            navigation={this.props.navigation}
+            meal={breakfast}
+            deleteItem={this.deleteItem}
+          />
+          <FoodTimeContainer
+            time="Lunch"
+            navigation={this.props.navigation}
+            meal={lunch}
+            deleteItem={this.deleteItem}
+          />
+          <FoodTimeContainer
+            time="Dinner"
+            navigation={this.props.navigation}
+            meal={dinner}
+            deleteItem={this.deleteItem}
+          />
+          <FoodTimeContainer
+            time="Snacks"
+            navigation={this.props.navigation}
+            meal={snacks}
+            deleteItem={this.deleteItem}
+          />
+          <ExerciseContainer
+            todaysCheckIn={this.props.checkIns.todaysCheckIn}
+            time="exercise"
+            navigation={this.props.navigation}
+            resetCaloriesBurned={this.resetCaloriesBurned}
+          />
+        </ScrollView>
+      );
+    } else {
+      return <ActivityIndicator size="large" color="#0000ff" />;
+    }
   }
 }
 
@@ -337,8 +348,9 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
   },
   date: {
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     paddingLeft: 75,
+    flexDirection: 'row',
   },
   progress: {
     flexDirection: 'row',

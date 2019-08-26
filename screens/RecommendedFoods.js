@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native';
 import { getRecommendedFoodsThunk } from '../components/store/recommendedFoods';
 import { connect } from 'react-redux';
 import FoodCard from '../components/FoodCard';
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     width: '90%',
     alignSelf: 'center',
     borderRadius: 10,
-    marginTop: 15
+    marginTop: 15,
   },
 });
 
@@ -92,55 +92,59 @@ class RecommendedFoods extends React.Component {
     });
   }
   render() {
-    return (
-      <View>
-        <View style={styles.buttonContainer}>
-          {meals.map((meal, idx) => (
-            <FoodButton
-              key={idx}
-              title={meal}
-              handlePress={this.handlePress}
-              state={this.state.activeButton}
-            />
-          ))}
+    if (this.props.user && this.props.meals && this.props.recommendedFoods) {
+      return (
+        <View>
+          <View style={styles.buttonContainer}>
+            {meals.map((meal, idx) => (
+              <FoodButton
+                key={idx}
+                title={meal}
+                handlePress={this.handlePress}
+                state={this.state.activeButton}
+              />
+            ))}
+          </View>
+          <ScrollView>
+            {this.props.recommendedFoods.length ? (
+              this.props.recommendedFoods.map(food => (
+                <FoodCard
+                  key={food.id}
+                  food={food}
+                  mealType={this.state.activeButton}
+                  postFood={this.postFood}
+                />
+              ))
+            ) : (
+              <View>
+                <Text
+                  h1
+                  style={styles.warningText}
+                >{`You've hit your calorie limit for ${
+                  this.state.activeButton
+                }`}</Text>
+                <Button
+                  title="Click to remove calorie and macro limit"
+                  onPress={() => {
+                    this.handlePress(this.state.activeButton, 'unlimited');
+                  }}
+                  style={styles.warningButton}
+                />
+              </View>
+            )}
+          </ScrollView>
         </View>
-        <ScrollView>
-          {this.props.recommendedFoods.length ? (
-            this.props.recommendedFoods.map(food => (
-              <FoodCard
-                key={food.id}
-                food={food}
-                mealType={this.state.activeButton}
-                postFood={this.postFood}
-              />
-            ))
-          ) : (
-            <View>
-              <Text
-                h1
-                style={styles.warningText}
-              >{`You've hit your calorie limit for ${
-                this.state.activeButton
-              }`}</Text>
-              <Button
-                title="Click to remove calorie and macro limit"
-                onPress={() => {
-                  this.handlePress(this.state.activeButton, 'unlimited');
-                }}
-                style={styles.warningButton}
-              />
-            </View>
-          )}
-        </ScrollView>
-      </View>
-    );
+      );
+    } else {
+      return <ActivityIndicator size="large" color="#0000ff" />;
+    }
   }
 }
 
 RecommendedFoods.navigationOptions = {
   headerTitle: 'Recommended Foods',
   headerStyle: {
-    backgroundColor: 'crimson',
+    backgroundColor: '#1E90FF',
   },
   headerTintColor: 'white',
 };

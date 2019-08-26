@@ -13,7 +13,7 @@ import {
 import { connect } from 'react-redux';
 import { getUserThunk } from '../components/store/user';
 import { getCheckInsThunk } from '../components/store/checkIns';
-import {getMealsThunk} from '../components/store/meals'
+import { getMealsThunk } from '../components/store/meals';
 
 class AuthHomeScreen extends React.Component {
   constructor(props) {
@@ -44,8 +44,8 @@ class AuthHomeScreen extends React.Component {
     return (
       <ImageBackground
         style={styles.backgroundImage}
-        source={require('../assets/images/trail-in-the-woods.jpg')}
-        blurRadius={2}
+        source={require('../assets/images/balancedDiet.jpeg')}
+        blurRadius={1}
       >
         <View style={styles.container}>
           <ScrollView
@@ -53,10 +53,10 @@ class AuthHomeScreen extends React.Component {
             contentContainerStyle={styles.contentContainer}
           >
             <View style={styles.welcomeContainer}>
-              <Image
+              {/* <Image
                 source={require('../assets/images/robot-dev.png')}
                 style={styles.welcomeImage}
-              />
+              /> */}
               <Text style={styles.name}>Wellness Tracker</Text>
             </View>
             <View>
@@ -84,10 +84,13 @@ AuthHomeScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   backgroundImage: {
-    flex: 1,
+    // flex: 1,
+    width: '100%',
+    height: '100%',
   },
   container: {
     flex: 1,
+    paddingTop: 100,
   },
   welcomeContainer: {
     alignItems: 'center',
@@ -162,7 +165,7 @@ const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(getUserThunk()),
     getCheckIns: () => dispatch(getCheckInsThunk()),
-    getMeals: (date, userId) => dispatch(getMealsThunk(date, userId))
+    getMeals: (date, userId) => dispatch(getMealsThunk(date, userId)),
   };
 };
 
