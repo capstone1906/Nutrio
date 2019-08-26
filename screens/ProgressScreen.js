@@ -238,14 +238,15 @@ class ProgressScreen extends React.Component {
         }
       }
       if (this.state.consumedYtd.length === 0) {
-        let ytdTemp = this.state.consumedAllData.slice(1).reverse();
+        console.log(this.state.consumedAllData);
+        let ytdTemp = this.state.consumedAllData.reverse().slice(1);
         let correctingOrder = [];
         for (let m = 0; m < ytdTemp.length; m += ytdTemp.length / 10) {
           if (ytdTemp[m] !== undefined && ytdTemp[m].y !== 0) {
             correctingOrder.push(ytdTemp[m]);
           }
           for (let ma = 0; ma < correctingOrder.length; ma++) {
-            this.state.consumedYtd.push(correctingOrder.pop());
+            this.state.consumedYtd.unshift(correctingOrder.pop());
           }
         }
       }
@@ -287,7 +288,8 @@ class ProgressScreen extends React.Component {
         }
       }
       if (this.state.burnedYtd.length === 0) {
-        let ytdTemp = this.state.burnedAllData.slice(1).reverse();
+        console.log(this.state.burnedAllData);
+        let ytdTemp = this.state.burnedAllData.reverse().slice(1);
         let correctingOrder = [];
         for (let m = 0; m < ytdTemp.length; m += ytdTemp.length / 10) {
           if (ytdTemp[m] !== undefined && ytdTemp[m].y !== 0) {
@@ -296,7 +298,7 @@ class ProgressScreen extends React.Component {
           for (let ma = 0; ma < 10; ma++) {
             let check = correctingOrder.pop();
             if (check) {
-              this.state.burnedYtd.push(check);
+              this.state.burnedYtd.unshift(check);
             }
           }
         }
@@ -306,143 +308,148 @@ class ProgressScreen extends React.Component {
     const buttons = ['7 Day', '30 Day', 'YTD'];
     const { selectedIndex } = this.state;
     const { height, width } = Dimensions.get('window');
-    if (this.props.user && this.props.checkIns) {
-      return (
-        <View style={styles.mainContainer}>
-          <ButtonGroup
-            onPress={this.updateIndex}
-            selectedIndex={selectedIndex}
-            buttons={buttons}
-            containerStyle={{ height: 50, marginRight: 20 }}
-            selectedTextStyle={{ color: 'white' }}
-            buttonStyle={{ backgroundColor: '#058ED9' }}
-          />
-          <VictoryChart
-            theme={VictoryTheme.material}
-            height={height * 0.357}
-            width={width * 0.966}
-          >
-            <VictoryAxis
-              style={{
-                tickLabels: {
-                  fontSize: '14px',
-                  fontFamily: 'gothicApple',
-                  fillOpacity: 1,
-                  angle: 30,
-                },
-              }}
-            />
-            <VictoryAxis
-              dependentAxis
-              domain={[180, 200]}
-              style={{
-                tickLabels: {
-                  fontSize: '15px',
-                  fontFamily: 'gothicApple',
-                  fillOpacity: 1,
-                  angle: 0,
-                },
-                axisLabel: {
-                  fontsize: 13,
-                },
-              }}
-            />
-            <VictoryLine
-              style={{
-                data: { stroke: '#4682B4' },
-                parent: { border: '1px solid #ccc' },
-              }}
-              data={this.state[this.state.showData]}
-            />
-            <VictoryLine
-              style={{
-                data: { stroke: '#00FA9A' },
-                parent: { border: '1px solid #ccc' },
-              }}
-              data={this.state[this.state.goalShowData]}
-            />
-            <VictoryLegend
-              x={width * 0.302}
-              y={height * 0.33}
-              orientation="horizontal"
-              gutter={20}
-              data={[
-                { name: 'Weight', symbol: { fill: '#4682B4' } },
-                { name: 'Goal', symbol: { fill: '#00FA9A' } },
-              ]}
-            />
-            <VictoryLegend
-              title={['Weight at check-in per date']}
-              x={80}
-              y={25}
-              orientation="horizontal"
-              gutter={20}
-              data={[]}
-              style={{ title: { fontSize: 16 } }}
-            />
-          </VictoryChart>
-          <VictoryChart
-            theme={VictoryTheme.material}
-            domainPadding={20}
-            height={height * 0.357}
-            width={width * 0.966}
-          >
-            <VictoryAxis
-              style={{
-                tickLabels: {
-                  fontSize: '14px',
-                  fontFamily: 'gothicApple',
-                  fillOpacity: 1,
-                  angle: 30,
-                },
-              }}
-            />
-            <VictoryAxis
-              dependentAxis
-              style={{
-                tickLabels: {
-                  fontSize: '15px',
-                  fontFamily: 'gothicApple',
-                  fillOpacity: 1,
-                  angle: 0,
-                },
-                axisLabel: {
-                  fontsize: 13,
-                },
-              }}
-            />
-            <VictoryBar
-              style={{ data: { fill: '#4682B4' } }}
-              data={this.state[this.state.consumedShowData]}
-            />
-            <VictoryBar
-              style={{ data: { fill: '#00FA9A' } }}
-              data={this.state[this.state.burnedShowData]}
-            />
-            <VictoryLegend
-              x={width * 0.144}
-              y={height * 0.33}
-              orientation="horizontal"
-              data={[
-                { name: 'Calories Burned', symbol: { fill: '#00FA9A' } },
-                { name: 'Calories Consumed', symbol: { fill: '#4682B4' } },
-              ]}
-            />
-            <VictoryLegend
-              title={['Calories burned and consumed per date']}
-              x={35}
-              y={25}
-              orientation="horizontal"
-              gutter={20}
-              data={[]}
-              style={{ title: { fontSize: 16 } }}
-            />
-          </VictoryChart>
-        </View>
-      );
-    } else {
-      return <ActivityIndicator size="large" color="#0000ff" />;
-    }
+    return (
+      <View style={styles.mainContainer}>
+        <ButtonGroup
+          onPress={this.updateIndex}
+          selectedIndex={selectedIndex}
+          buttons={buttons}
+          containerStyle={{ height: 50, marginRight: 20 }}
+          selectedTextStyle={{ color: 'white' }}
+          buttonStyle={{ backgroundColor: '#058ED9' }}
+        />
+        {!this.props.user.activityLevel ||
+        !this.props.checkIns.checkIns.length ? (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#1E90FF" />
+          </View>
+        ) : (
+          <View>
+            <VictoryChart
+              theme={VictoryTheme.material}
+              height={height * 0.357}
+              width={width * 0.966}
+            >
+              <VictoryAxis
+                style={{
+                  tickLabels: {
+                    fontSize: '14px',
+                    fontFamily: 'gothicApple',
+                    fillOpacity: 1,
+                    angle: 30,
+                  },
+                }}
+              />
+              <VictoryAxis
+                dependentAxis
+                domain={[180, 200]}
+                style={{
+                  tickLabels: {
+                    fontSize: '15px',
+                    fontFamily: 'gothicApple',
+                    fillOpacity: 1,
+                    angle: 0,
+                  },
+                  axisLabel: {
+                    fontsize: 13,
+                  },
+                }}
+              />
+              <VictoryLine
+                style={{
+                  data: { stroke: '#4682B4' },
+                  parent: { border: '1px solid #ccc' },
+                }}
+                data={this.state[this.state.showData]}
+              />
+              <VictoryLine
+                style={{
+                  data: { stroke: '#00FA9A' },
+                  parent: { border: '1px solid #ccc' },
+                }}
+                data={this.state[this.state.goalShowData]}
+              />
+              <VictoryLegend
+                x={width * 0.302}
+                y={height * 0.33}
+                orientation="horizontal"
+                gutter={20}
+                data={[
+                  { name: 'Weight', symbol: { fill: '#4682B4' } },
+                  { name: 'Goal', symbol: { fill: '#00FA9A' } },
+                ]}
+              />
+              <VictoryLegend
+                title={['Weight at check-in per date']}
+                x={80}
+                y={25}
+                orientation="horizontal"
+                gutter={20}
+                data={[]}
+                style={{ title: { fontSize: 16 } }}
+              />
+            </VictoryChart>
+            <VictoryChart
+              theme={VictoryTheme.material}
+              domainPadding={20}
+              height={height * 0.357}
+              width={width * 0.966}
+            >
+              <VictoryAxis
+                style={{
+                  tickLabels: {
+                    fontSize: '14px',
+                    fontFamily: 'gothicApple',
+                    fillOpacity: 1,
+                    angle: 30,
+                  },
+                }}
+              />
+              <VictoryAxis
+                dependentAxis
+                style={{
+                  tickLabels: {
+                    fontSize: '15px',
+                    fontFamily: 'gothicApple',
+                    fillOpacity: 1,
+                    angle: 0,
+                  },
+                  axisLabel: {
+                    fontsize: 13,
+                  },
+                }}
+              />
+              <VictoryBar
+                style={{ data: { fill: '#4682B4' } }}
+                data={this.state[this.state.consumedShowData]}
+              />
+              <VictoryBar
+                style={{ data: { fill: '#00FA9A' } }}
+                data={this.state[this.state.burnedShowData]}
+              />
+              <VictoryLegend
+                x={width * 0.144}
+                y={height * 0.33}
+                orientation="horizontal"
+                data={[
+                  { name: 'Calories Burned', symbol: { fill: '#00FA9A' } },
+                  { name: 'Calories Consumed', symbol: { fill: '#4682B4' } },
+                ]}
+              />
+              <VictoryLegend
+                title={['Calories burned and consumed per date']}
+                x={35}
+                y={25}
+                orientation="horizontal"
+                gutter={20}
+                data={[]}
+                style={{ title: { fontSize: 16 } }}
+              />
+            </VictoryChart>
+          </View>
+        )}
+      </View>
+    );
   }
 }
 
@@ -459,6 +466,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: 50,
     paddingLeft: 20,
+    backgroundColor: '#F5ECCD',
+  },
+  loader: {
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
     backgroundColor: '#F5ECCD',
   },
 });

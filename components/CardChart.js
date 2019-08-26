@@ -15,9 +15,10 @@ const CardChart = props => {
   let protein;
   let fat;
   if (props.meal) {
-    carbs = props.meal.totalCarbs;
-    protein = props.meal.totalProtein;
-    fat = props.meal.totalFat;
+    const meal = props.helper(props.meal)
+    carbs = meal.carbs;
+    protein = meal.protein;
+    fat = meal.fat;
   } else {
     carbs = props.food.carbohydrates;
     protein = props.food.protein;

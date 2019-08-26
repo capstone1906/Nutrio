@@ -58,7 +58,7 @@ class RecommendedMeals extends React.Component {
       } else {
         grams = food.mealFoodItems.quantity;
       }
-      this.props.postFood(newFood, mealId, quantity, grams);
+      this.props.postFood(newFood, mealId, quantity, grams, this.props.user.id);
     });
     this.props.navigation.pop();
     this.props.navigation.pop();
@@ -81,9 +81,9 @@ class RecommendedMeals extends React.Component {
     return (
       <View>
         <View style={styles.buttonContainer}>
-          {meals.map((meal, idx) => (
+          {meals.map(meal => (
             <MealButton
-              key={idx}
+              key={meal}
               title={meal}
               handlePress={this.handlePress}
               state={this.state.activeButton}
@@ -124,8 +124,8 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getRecs: meal => dispatch(getRecommendedMealsThunk(meal)),
-    postFood: (food, mealId, quantity, grams) =>
-      dispatch(postFood(food, mealId, quantity, grams)),
+    postFood: (food, mealId, quantity, grams, userId) =>
+      dispatch(postFood(food, mealId, quantity, grams, userId)),
   };
 };
 

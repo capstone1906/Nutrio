@@ -10,7 +10,6 @@ const createMeal = meal => {
         totalCarbs: $totalCarbs,
         totalFat: $totalFat,
         totalProtein: $totalProtein,
-        dominantMacro: $dominantMacro,
         entreeType: $entreeType
       }
       ON MATCH SET m += {
@@ -19,18 +18,16 @@ const createMeal = meal => {
         totalCarbs: $totalCarbs,
         totalFat: $totalFat,
         totalProtein: $totalProtein,
-        dominantMacro: $dominantMacro,
         entreeType: $entreeType
       }
       RETURN m`,
       {
         id: meal.id,
         name: meal.name,
-        totalCalories: meal.totalCalories,
-        totalCarbs: meal.totalCarbs,
-        totalFat: meal.totalFat,
-        totalProtein: meal.totalProtein,
-        dominantMacro: meal.dominantMacro,
+        totalCalories: meal.calories,
+        totalCarbs: meal.carbs,
+        totalFat: meal.fat,
+        totalProtein: meal.protein,
         entreeType: meal.entreeType,
       }
     )

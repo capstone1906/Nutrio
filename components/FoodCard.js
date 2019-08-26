@@ -1,9 +1,8 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Card, Button, Text} from 'react-native-elements';
+import { Card, Button, Text } from 'react-native-elements';
 import CardChart from './CardChart';
 import { connect } from 'react-redux';
-
 
 const styles = StyleSheet.create({
   card: {
@@ -27,7 +26,9 @@ function FoodCard(props) {
   return (
     <Card title={props.name} style={styles.card}>
       <View>
-        <Text h2 style={styles.text}>{foodNameHelper(props.food.food_name)}</Text>
+        <Text h2 style={styles.text}>
+          {foodNameHelper(props.food.food_name)}
+        </Text>
         <Text style={styles.text}>Total Calories: {props.food.calories}</Text>
       </View>
       <View style={styles.chartContainer}>
@@ -54,7 +55,7 @@ function FoodCard(props) {
 const mapState = state => {
   return {
     meals: state.meals,
-    user: state.user
+    user: state.user,
   };
 };
 

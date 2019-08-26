@@ -378,96 +378,111 @@ class DailyLog extends React.Component {
     if (percent > 1.0) {
       barColor = "crimson";
     }
-    if (this.props.user && this.props.meals && this.props.checkIns) {
-      return (
-        <ScrollView style={styles.container}>
-          <View style={styles.date}>
-            <DatePicker
-              style={{ width: 150, paddingBottom: 10 }}
-              date={this.state.date}
-              mode="date"
-              placeholder="select date"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: "absolute",
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: {
-                  marginLeft: 36
-                }
-              }}
-              onDateChange={date => {
-                this.setState({ date: date });
-                this.props.getMeals(date, this.props.user.id);
-              }}
-            />
-          </View>
 
-          <View style={styles.progress}>
-            <View style={{ justifyContent: "center", flexDirection: "column" }}>
-              <Text>Calories: </Text>
-              <Text> {totalCals.toFixed(0)}</Text>
+    return (
+      <ScrollView style={styles.container}>
+        {!this.props.user.activityLevel ||
+        !this.props.checkIns.checkIns.length ||
+        !this.props.meals.allMeals.length ? (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#1E90FF" />
+          </View>
+        ) : (
+          <View>
+            <View style={styles.date}>
+              <DatePicker
+                style={{ width: 150, paddingBottom: 10 }}
+                date={this.state.date}
+                mode="date"
+                placeholder="select date"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: "absolute",
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: {
+                    marginLeft: 36
+                  }
+                }}
+                onDateChange={date => {
+                  this.setState({ date: date });
+                  this.props.getMeals(date, this.props.user.id);
+                }}
+              />
+              <Button
+                onPress={() => this.props.navigation.navigate("Checkin")}
+                title="Check-In"
+              />
             </View>
 
-            <Progress.Bar
-              progress={percent}
-              width={225}
-              height={15}
-              color={barColor}
-            />
+            <View style={styles.progress}>
+              <View
+                style={{ justifyContent: "center", flexDirection: "column" }}
+              >
+                <Text>Calories: </Text>
+                <Text> {totalCals.toFixed(0)}</Text>
+              </View>
 
-            <View style={{ justifyContent: "center", flexDirection: "column" }}>
-              <Text>Limit: </Text>
-              <Text> {calorieLimit.toFixed(0)}</Text>
+              <Progress.Bar
+                progress={percent}
+                width={225}
+                height={15}
+                color={barColor}
+              />
+
+              <View
+                style={{ justifyContent: "center", flexDirection: "column" }}
+              >
+                <Text>Limit: </Text>
+                <Text> {calorieLimit.toFixed(0)}</Text>
+              </View>
             </View>
-          </View>
 
-          <FoodTimeContainer
-            time="Breakfast"
-            navigation={this.props.navigation}
-            meal={breakfast}
-            deleteItems={this.deleteItems}
-            addToDelete={this.addToDelete}
-            editLog={this.state.editLog}
-          />
-          <FoodTimeContainer
-            time="Lunch"
-            navigation={this.props.navigation}
-            meal={lunch}
-            deleteItems={this.deleteItems}
-            addToDelete={this.addToDelete}
-            editLog={this.state.editLog}
-          />
-          <FoodTimeContainer
-            time="Dinner"
-            navigation={this.props.navigation}
-            meal={dinner}
-            deleteItems={this.deleteItems}
-            addToDelete={this.addToDelete}
-            editLog={this.state.editLog}
-          />
-          <FoodTimeContainer
-            time="Snacks"
-            navigation={this.props.navigation}
-            meal={snacks}
-            deleteItems={this.deleteItems}
-            addToDelete={this.addToDelete}
-            editLog={this.state.editLog}
-          />
-          <ExerciseContainer
-            todaysCheckIn={this.props.checkIns.todaysCheckIn}
-            time="exercise"
-            resetCaloriesBurned={this.resetCaloriesBurned}
-          />
-        </ScrollView>
-      );
-    } else {
-      return <ActivityIndicator size="large" color="#0000ff" />;
-    }
+            <FoodTimeContainer
+              time="Breakfast"
+              navigation={this.props.navigation}
+              meal={breakfast}
+              deleteItems={this.deleteItems}
+              addToDelete={this.addToDelete}
+              editLog={this.state.editLog}
+            />
+            <FoodTimeContainer
+              time="Lunch"
+              navigation={this.props.navigation}
+              meal={lunch}
+              deleteItems={this.deleteItems}
+              addToDelete={this.addToDelete}
+              editLog={this.state.editLog}
+            />
+            <FoodTimeContainer
+              time="Dinner"
+              navigation={this.props.navigation}
+              meal={dinner}
+              deleteItems={this.deleteItems}
+              addToDelete={this.addToDelete}
+              editLog={this.state.editLog}
+            />
+            <FoodTimeContainer
+              time="Snacks"
+              navigation={this.props.navigation}
+              meal={snacks}
+              deleteItems={this.deleteItems}
+              addToDelete={this.addToDelete}
+              editLog={this.state.editLog}
+            />
+            <ExerciseContainer
+              todaysCheckIn={this.props.checkIns.todaysCheckIn}
+              time="exercise"
+              resetCaloriesBurned={this.resetCaloriesBurned}
+            />
+          </View>
+        )}
+      </ScrollView>
+    );
   }
 }
 
@@ -520,10 +535,17 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 5
   },
-
   foodAmount: {
     fontSize: 12,
     color: "grey"
+  },
+  loader: {
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    backgroundColor: "#F5ECCD"
   }
 });
 

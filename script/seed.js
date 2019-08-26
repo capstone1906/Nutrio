@@ -453,7 +453,7 @@ async function seed() {
   ]);
 
   // Create food items
-  //breakfast
+  // Breakfast
   const food1 = {
     food_name: 'banana',
     calories: 105,
@@ -463,7 +463,6 @@ async function seed() {
     servingSize: `medium (7" to 7-7/8" long)`,
     weight: 118,
   };
-
   const food2 = {
     food_name: 'cocoa puffs',
     calories: 138,
@@ -474,7 +473,7 @@ async function seed() {
     weight: 36,
   };
   const food3 = {
-    food_name: 'Protein Shake',
+    food_name: 'protein shake',
     calories: 171,
     fat: 9,
     carbohydrates: 3,
@@ -545,9 +544,99 @@ async function seed() {
     servingSize: 'slice',
     weight: 22,
   };
-
-  //lunch
   const food11 = {
+    food_name: 'pancake',
+    calories: 91,
+    fat: 4,
+    carbohydrates: 11,
+    protein: 3,
+    servingSize: 'pancake',
+    weight: 40,
+  };
+  const food12 = {
+    food_name: 'cereal bar',
+    calories: 127,
+    fat: 0,
+    carbohydrates: 29,
+    protein: 2,
+    servingSize: 'bar',
+    weight: 37,
+  };
+  const food13 = {
+    food_name: 'crepe',
+    calories: 106,
+    fat: 5,
+    carbohydrates: 10,
+    protein: 4,
+    servingSize: '8-inch crepe',
+    weight: 64,
+  };
+  const food14 = {
+    food_name: 'croissant',
+    calories: 272,
+    fat: 14,
+    carbohydrates: 31,
+    protein: 5,
+    servingSize: 'croissant, large',
+    weight: 67,
+  };
+  const food15 = {
+    food_name: 'french toast',
+    calories: 219,
+    fat: 11,
+    carbohydrates: 23,
+    protein: 7,
+    servingSize: 'slice without syrup',
+    weight: 84,
+  };
+  const food16 = {
+    food_name: 'grits',
+    calories: 151,
+    fat: 1,
+    carbohydrates: 32,
+    protein: 3,
+    servingSize: 'cup',
+    weight: 233,
+  };
+  const food17 = {
+    food_name: 'hash browns',
+    calories: 144,
+    fat: 9,
+    carbohydrates: 15,
+    protein: 1,
+    servingSize: 'patty',
+    weight: 53,
+  };
+  const food18 = {
+    food_name: 'orange juice',
+    calories: 112,
+    fat: 1,
+    carbohydrates: 26,
+    protein: 2,
+    servingSize: 'cup',
+    weight: 248,
+  };
+  const food19 = {
+    food_name: 'yogurt',
+    calories: 107,
+    fat: 3,
+    carbohydrates: 12,
+    protein: 9,
+    servingSize: 'container (6 oz)',
+    weight: 170,
+  };
+  const food20 = {
+    food_name: 'waffle',
+    calories: 218,
+    fat: 2,
+    carbohydrates: 25,
+    protein: 6,
+    servingSize: 'waffle, round (7" dia)',
+    weight: 75,
+  };
+
+  // Lunch
+  const food21 = {
     food_name: 'rice',
     calories: 205,
     fat: 1,
@@ -556,7 +645,7 @@ async function seed() {
     servingSize: 'cup',
     weight: 158,
   };
-  const food12 = {
+  const food22 = {
     food_name: 'broccoli',
     calories: 13,
     fat: 1,
@@ -565,7 +654,7 @@ async function seed() {
     servingSize: `spear (about 5" long)`,
     weight: 37,
   };
-  const food13 = {
+  const food23 = {
     food_name: 'chicken breast',
     calories: 198,
     fat: 5,
@@ -574,7 +663,7 @@ async function seed() {
     servingSize: 'breast',
     weight: 120,
   };
-  const food14 = {
+  const food24 = {
     food_name: 'brussel sprouts',
     calories: 8,
     fat: 1,
@@ -583,7 +672,7 @@ async function seed() {
     servingSize: 'sprout',
     weight: 168,
   };
-  const food15 = {
+  const food25 = {
     food_name: 'cheddar cheese',
     calories: 115,
     fat: 10,
@@ -592,7 +681,7 @@ async function seed() {
     servingSize: 'oz',
     weight: 29,
   };
-  const food16 = {
+  const food26 = {
     food_name: 'tomato',
     calories: 23,
     fat: 1,
@@ -601,7 +690,7 @@ async function seed() {
     servingSize: `medium whole (2.5" dia)`,
     weight: 123,
   };
-  const food17 = {
+  const food27 = {
     food_name: 'hamburger',
     calories: 540,
     fat: 27,
@@ -610,7 +699,7 @@ async function seed() {
     servingSize: 'sandwich',
     weight: 226,
   };
-  const food18 = {
+  const food28 = {
     food_name: 'pickle',
     calories: 5,
     fat: 0,
@@ -619,7 +708,7 @@ async function seed() {
     servingSize: 'spear',
     weight: 35,
   };
-  const food19 = {
+  const food29 = {
     food_name: 'hummus',
     calories: 400,
     fat: 24,
@@ -628,7 +717,7 @@ async function seed() {
     servingSize: 'cup',
     weight: 240,
   };
-  const food20 = {
+  const food30 = {
     food_name: 'pita chips',
     calories: 130,
     fat: 4,
@@ -637,18 +726,7 @@ async function seed() {
     servingSize: 'oz',
     weight: 29,
   };
-
-  //dinner
-  const food21 = {
-    food_name: 'pizza',
-    calories: 285,
-    fat: 11,
-    carbohydrates: 36,
-    protein: 13,
-    servingSize: 'slice',
-    weight: 108,
-  };
-  const food22 = {
+  const food31 = {
     food_name: 'can of tuna',
     calories: 220,
     fat: 5,
@@ -657,63 +735,61 @@ async function seed() {
     servingSize: 'can',
     weight: 172,
   };
-
-  const food23 = {
-    food_name: 'salmon',
-    calories: 468,
-    fat: 28,
-    carbohydrates: 0,
-    protein: 51,
-    servingSize: 'fillet',
-    weight: 227,
-  };
-  const food24 = {
-    food_name: 'pasta',
-    calories: 196,
-    fat: 2,
-    carbohydrates: 39,
-    protein: 8,
-    servingSize: 'cup',
-    weight: 124,
-  };
-
-  const food25 = {
-    food_name: 'sushi',
-    calories: 349,
-    fat: 19,
-    carbohydrates: 38,
-    protein: 8,
-    servingSize: `roll (8 pieces)`,
-    weight: 211,
-  };
-  const food26 = {
-    food_name: 'meatloaf',
-    calories: 330,
-    fat: 19,
-    carbohydrates: 14,
-    protein: 27,
-    servingSize: 'slice',
-    weight: 183,
-  };
-  const food27 = {
-    food_name: 'sweet potato',
-    calories: 115,
-    fat: 1,
-    carbohydrates: 27,
-    protein: 2,
-    servingSize: 'medium',
-    weight: 151,
-  };
-  const food28 = {
-    food_name: 'steak',
-    calories: 79,
+  const food32 = {
+    food_name: 'hot dog',
+    calories: 155,
     fat: 6,
-    carbohydrates: 0,
-    protein: 8,
-    servingSize: 'oz',
-    weight: 29,
+    carbohydrates: 1,
+    protein: 6,
+    servingSize: 'frankfurter',
+    weight: 48,
   };
-  const food29 = {
+  const food33 = {
+    food_name: 'sloppy joe',
+    calories: 399,
+    fat: 15,
+    carbohydrates: 37,
+    protein: 27,
+    servingSize: 'sandwich',
+    weight: 192,
+  };
+  const food34 = {
+    food_name: 'taco',
+    calories: 210,
+    fat: 10,
+    carbohydrates: 21,
+    protein: 9,
+    servingSize: 'taco',
+    weight: 102,
+  };
+  const food35 = {
+    food_name: 'grilled cheese',
+    calories: 366,
+    fat: 23,
+    carbohydrates: 28,
+    protein: 12,
+    servingSize: 'sandwich',
+    weight: 106,
+  };
+  const food36 = {
+    food_name: 'minestrone',
+    calories: 127,
+    fat: 3,
+    carbohydrates: 21,
+    protein: 5,
+    servingSize: 'cup',
+    weight: 240,
+  };
+  const food37 = {
+    food_name: 'chicken noodle soup',
+    calories: 124,
+    fat: 5,
+    carbohydrates: 15,
+    protein: 6,
+    servingSize: 'bowl (2 cups)',
+    weight: 496,
+  };
+  const food38 = {
     food_name: 'zucchini',
     calories: 33,
     fat: 1,
@@ -722,7 +798,7 @@ async function seed() {
     servingSize: 'medium',
     weight: 217,
   };
-  const food30 = {
+  const food39 = {
     food_name: 'bread roll',
     calories: 77,
     fat: 2,
@@ -731,8 +807,254 @@ async function seed() {
     servingSize: 'roll',
     weight: 28,
   };
-  //snacks
-  const food31 = {
+  const food40 = {
+    food_name: 'gyro',
+    calories: 723,
+    fat: 30,
+    carbohydrates: 43,
+    protein: 48,
+    servingSize: 'sandwich',
+    weight: 390,
+  };
+  const food41 = {
+    food_name: 'caprese salad',
+    calories: 220,
+    fat: 17,
+    carbohydrates: 5,
+    protein: 13,
+    servingSize: 'cup',
+    weight: 161,
+  };
+  const food42 = {
+    food_name: 'beef stew',
+    calories: 535,
+    fat: 16,
+    carbohydrates: 41,
+    protein: 58,
+    servingSize: 'bowl',
+    weight: 504,
+  };
+
+  // Dinner
+  const food43 = {
+    food_name: 'pasta',
+    calories: 196,
+    fat: 2,
+    carbohydrates: 39,
+    protein: 8,
+    servingSize: 'cup',
+    weight: 124,
+  };
+  const food44 = {
+    food_name: 'sushi',
+    calories: 349,
+    fat: 19,
+    carbohydrates: 38,
+    protein: 8,
+    servingSize: `roll (8 pieces)`,
+    weight: 211,
+  };
+  const food45 = {
+    food_name: 'meatloaf',
+    calories: 330,
+    fat: 19,
+    carbohydrates: 14,
+    protein: 27,
+    servingSize: 'slice',
+    weight: 183,
+  };
+  const food46 = {
+    food_name: 'sweet potato',
+    calories: 115,
+    fat: 1,
+    carbohydrates: 27,
+    protein: 2,
+    servingSize: 'medium',
+    weight: 151,
+  };
+  const food47 = {
+    food_name: 'steak',
+    calories: 79,
+    fat: 6,
+    carbohydrates: 0,
+    protein: 8,
+    servingSize: 'oz',
+    weight: 29,
+  };
+  const food48 = {
+    food_name: 'pizza',
+    calories: 285,
+    fat: 11,
+    carbohydrates: 36,
+    protein: 13,
+    servingSize: 'slice',
+    weight: 108,
+  };
+  const food49 = {
+    food_name: 'mozarella sticks',
+    calories: 101,
+    fat: 6,
+    carbohydrates: 8,
+    protein: 5,
+    servingSize: 'piece',
+    weight: 31,
+  };
+  const food50 = {
+    food_name: 'onion rings',
+    calories: 1004,
+    fat: 54,
+    carbohydrates: 115,
+    protein: 14,
+    servingSize: 'order',
+    weight: 282,
+  };
+  const food51 = {
+    food_name: 'breadsticks',
+    calories: 25,
+    fat: 1,
+    carbohydrates: 4,
+    protein: 1,
+    servingSize: 'stick (9-1/4")',
+    weight: 6,
+  };
+  const food52 = {
+    food_name: 'lasagna',
+    calories: 602,
+    fat: 32,
+    carbohydrates: 35,
+    protein: 44,
+    servingSize: 'serving (about 1.5 cups)',
+    weight: 385,
+  };
+  const food53 = {
+    food_name: 'stuffed pepper',
+    calories: 236,
+    fat: 12,
+    carbohydrates: 17,
+    protein: 16,
+    servingSize: 'pepper',
+    weight: 215,
+  };
+  const food54 = {
+    food_name: 'salisbury steak',
+    calories: 296,
+    fat: 6,
+    carbohydrates: 13,
+    protein: 24,
+    servingSize: 'serving',
+    weight: 172,
+  };
+  const food55 = {
+    food_name: 'baked potato',
+    calories: 161,
+    fat: 0,
+    carbohydrates: 37,
+    protein: 4,
+    servingSize: 'potato medium',
+    weight: 173,
+  };
+  const food56 = {
+    food_name: 'asparagus',
+    calories: 17,
+    fat: 0,
+    carbohydrates: 3,
+    protein: 2,
+    servingSize: 'spears',
+    weight: 75,
+  };
+  const food57 = {
+    food_name: 'curry',
+    calories: 243,
+    fat: 11,
+    carbohydrates: 8,
+    protein: 28,
+    servingSize: 'cup',
+    weight: 235,
+  };
+  const food58 = {
+    food_name: 'octopus',
+    calories: 139,
+    fat: 0,
+    carbohydrates: 4,
+    protein: 25,
+    servingSize: 'oz',
+    weight: 85,
+  };
+  const food59 = {
+    food_name: 'shrimp',
+    calories: 6,
+    fat: 0,
+    carbohydrates: 0,
+    protein: 1,
+    servingSize: 'shrimp',
+    weight: 5,
+  };
+  const food60 = {
+    food_name: 'cheesecake',
+    calories: 401,
+    fat: 28,
+    carbohydrates: 32,
+    protein: 7,
+    servingSize: 'piece (1 NLEa serving)',
+    weight: 125,
+  };
+  const food61 = {
+    food_name: 'italian beef',
+    calories: 384,
+    fat: 6,
+    carbohydrates: 12,
+    protein: 46,
+    servingSize: 'cup',
+    weight: 244,
+  };
+  const food62 = {
+    food_name: 'garlic bread',
+    calories: 150,
+    fat: 2,
+    carbohydrates: 18,
+    protein: 4,
+    servingSize: 'slice presliced',
+    weight: 43,
+  };
+  const food63 = {
+    food_name: 'hot fudge sundae',
+    calories: 379,
+    fat: 10,
+    carbohydrates: 47,
+    protein: 6,
+    servingSize: 'sundae',
+    weight: 165,
+  };
+  const food64 = {
+    food_name: 'swordfish',
+    calories: 182,
+    fat: 8,
+    carbohydrates: 0,
+    protein: 25,
+    servingSize: 'piece',
+    weight: 106,
+  };
+  const food65 = {
+    food_name: 'lamb',
+    calories: 250,
+    fat: 18,
+    carbohydrates: 0,
+    protein: 21,
+    servingSize: 'oz',
+    weight: 85,
+  };
+  const food66 = {
+    food_name: 'crab',
+    calories: 98,
+    fat: 1,
+    carbohydrates: 0,
+    protein: 21,
+    servingSize: 'cup, flaked and pieces',
+    weight: 118,
+  };
+
+  // Snack
+  const food67 = {
     food_name: 'apple',
     calories: 95,
     fat: 1,
@@ -741,7 +1063,7 @@ async function seed() {
     servingSize: `medium (3" dia)`,
     weight: 182,
   };
-  const food32 = {
+  const food68 = {
     food_name: 'ritz crackers',
     calories: 17,
     fat: 1,
@@ -751,7 +1073,7 @@ async function seed() {
     weight: 4,
   };
 
-  const food33 = {
+  const food69 = {
     food_name: 'almond',
     calories: 8,
     fat: 1,
@@ -760,7 +1082,7 @@ async function seed() {
     servingSize: 'almond',
     weight: 2,
   };
-  const food34 = {
+  const food70 = {
     food_name: 'avocado',
     calories: 321,
     fat: 30,
@@ -769,7 +1091,7 @@ async function seed() {
     servingSize: 'medium',
     weight: 201,
   };
-  const food35 = {
+  const food71 = {
     food_name: 'blueberries',
     calories: 1,
     fat: 0,
@@ -778,7 +1100,7 @@ async function seed() {
     servingSize: 'berry',
     weight: 2,
   };
-  const food36 = {
+  const food72 = {
     food_name: 'granola bar',
     calories: 118,
     fat: 5,
@@ -787,7 +1109,7 @@ async function seed() {
     servingSize: 'bar',
     weight: 28,
   };
-  const food37 = {
+  const food73 = {
     food_name: 'cashews',
     calories: 162,
     fat: 14,
@@ -796,7 +1118,7 @@ async function seed() {
     servingSize: 'oz',
     weight: 28,
   };
-  const food38 = {
+  const food74 = {
     food_name: 'dried apricot',
     calories: 69,
     fat: 1,
@@ -805,7 +1127,7 @@ async function seed() {
     servingSize: 'oz',
     weight: 28,
   };
-  const food39 = {
+  const food75 = {
     food_name: 'beef stick',
     calories: 116,
     fat: 11,
@@ -814,7 +1136,7 @@ async function seed() {
     servingSize: 'stick',
     weight: 23,
   };
-  const food40 = {
+  const food76 = {
     food_name: 'strawberry',
     calories: 6,
     fat: 0,
@@ -823,6 +1145,47 @@ async function seed() {
     servingSize: 'large',
     weight: 18,
   };
+  const food77 = {
+    food_name: 'cherry',
+    calories: 5,
+    fat: 0,
+    carbohydrates: 1,
+    protein: 0,
+    servingSize: 'cherry',
+    weight: 8,
+  };
+  const food78 = {
+    food_name: 'watermelon',
+    calories: 86,
+    fat: 0,
+    carbohydrates: 22,
+    protein: 2,
+    servingSize: 'wedge (approx 1/16 of melon)',
+    weight: 286,
+  };
+  const food79 = {
+    food_name: 'plum',
+    calories: 30,
+    fat: 0,
+    carbohydrates: 8,
+    protein: 0,
+    servingSize: 'fruit (2-1/8" dia)',
+    weight: 66,
+  };
+  const food80 = {
+    food_name: 'trail mix',
+    calories: 353,
+    fat: 23,
+    carbohydrates: 33,
+    protein: 10,
+    servingSize: 'cup',
+    weight: 73,
+  };
+
+  // food1 - food20 is breakfast
+  // food21 - food42 is lunch
+  // food43 - food66 is dinner
+  // food67 - food 80 is snacks
 
   await Promise.all([
     FoodItems.create(food1),
@@ -865,6 +1228,46 @@ async function seed() {
     FoodItems.create(food38),
     FoodItems.create(food39),
     FoodItems.create(food40),
+    FoodItems.create(food41),
+    FoodItems.create(food42),
+    FoodItems.create(food43),
+    FoodItems.create(food44),
+    FoodItems.create(food45),
+    FoodItems.create(food46),
+    FoodItems.create(food47),
+    FoodItems.create(food48),
+    FoodItems.create(food49),
+    FoodItems.create(food50),
+    FoodItems.create(food51),
+    FoodItems.create(food52),
+    FoodItems.create(food53),
+    FoodItems.create(food54),
+    FoodItems.create(food55),
+    FoodItems.create(food56),
+    FoodItems.create(food57),
+    FoodItems.create(food58),
+    FoodItems.create(food59),
+    FoodItems.create(food60),
+    FoodItems.create(food61),
+    FoodItems.create(food62),
+    FoodItems.create(food63),
+    FoodItems.create(food64),
+    FoodItems.create(food65),
+    FoodItems.create(food66),
+    FoodItems.create(food67),
+    FoodItems.create(food68),
+    FoodItems.create(food69),
+    FoodItems.create(food70),
+    FoodItems.create(food71),
+    FoodItems.create(food72),
+    FoodItems.create(food73),
+    FoodItems.create(food74),
+    FoodItems.create(food75),
+    FoodItems.create(food76),
+    FoodItems.create(food77),
+    FoodItems.create(food78),
+    FoodItems.create(food79),
+    FoodItems.create(food80),
   ]);
 
   const userList = ['Cody', 'Murphy', 'Brad', 'Emily', 'Tasha', 'Eddy'];
@@ -956,11 +1359,12 @@ async function seed() {
       if (arr.indexOf(random) === -1) arr.push(random);
     }
     for (let j = 0; j < arr.length; j++) {
-      await MealFoodItems.create({
+      const mealItems = await MealFoodItems.create({
         foodItemId: arr[j],
         mealId: i,
         quantity: 1,
       });
+      MealFoodItems.beforeCreateSeed(mealItems);
     }
   }
 
@@ -972,11 +1376,12 @@ async function seed() {
       if (arr.indexOf(random) === -1) arr.push(random);
     }
     for (let j = 0; j < arr.length; j++) {
-      await MealFoodItems.create({
+      const mealItems = await MealFoodItems.create({
         foodItemId: arr[j] + 10,
         mealId: i,
         quantity: 1,
       });
+      MealFoodItems.beforeCreateSeed(mealItems);
     }
   }
 
@@ -988,11 +1393,12 @@ async function seed() {
       if (arr.indexOf(random) === -1) arr.push(random);
     }
     for (let j = 0; j < arr.length; j++) {
-      await MealFoodItems.create({
+      const mealItems = await MealFoodItems.create({
         foodItemId: arr[j] + 20,
         mealId: i,
         quantity: 1,
       });
+      MealFoodItems.beforeCreateSeed(mealItems);
     }
   }
 
@@ -1004,11 +1410,12 @@ async function seed() {
       if (arr.indexOf(random) === -1) arr.push(random);
     }
     for (let j = 0; j < arr.length; j++) {
-      await MealFoodItems.create({
+      const mealItems = await MealFoodItems.create({
         foodItemId: arr[j] + 30,
         mealId: i,
         quantity: 1,
       });
+      MealFoodItems.beforeCreateSeed(mealItems);
     }
   }
 

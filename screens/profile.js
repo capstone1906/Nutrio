@@ -732,7 +732,15 @@ const styles = StyleSheet.create({
     shadowColor: "black",
     shadowOpacity: 0.7,
     borderRadius: 10
-  }
+  },
+    loader: {
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    backgroundColor: '#F5ECCD',
+  },
 });
 
 const mapState = state => {

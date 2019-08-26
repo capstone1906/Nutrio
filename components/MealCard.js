@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Card, Text, Button } from 'react-native-elements';
 import MealCardChart from './CardChart';
 import { connect } from 'react-redux';
-
+import totalCalc from './utils/helper'
 
 const styles = StyleSheet.create({
   card: {
@@ -40,9 +40,11 @@ function MealCard(props) {
   return (
     <Card title={props.name} style={styles.card}>
       <View>
-        <Text h2 style={styles.text}>{props.meal.name}</Text>
+        <Text h2 style={styles.text}>
+          {props.meal.name}
+        </Text>
         <Text style={styles.text}>
-          Total Calories: {props.meal.totalCalories}
+          Total Calories: {totalCalc(props.meal).calories}
         </Text>
         {props.meal.foodItems.map(food => (
           <Text style={styles.text} key={food.id}>
@@ -57,7 +59,7 @@ function MealCard(props) {
         ))}
       </View>
       <View style={styles.chartContainer}>
-        <MealCardChart meal={props.meal} />
+        <MealCardChart meal={props.meal} helper={totalCalc} />
       </View>
       <View>
         <Button
@@ -80,7 +82,7 @@ function MealCard(props) {
 const mapState = state => {
   return {
     meals: state.meals,
-    user: state.user
+    user: state.user,
   };
 };
 
