@@ -31,7 +31,7 @@ class AuthHomeScreen extends React.Component {
       if (value !== null) {
         await this.props.getUser();
         await this.props.getCheckIns();
-        await this.props.getMeals();
+        await this.props.getMeals('', this.props.user.id);
         this.props.navigation.navigate('Main');
       }
     } catch (err) {
@@ -162,7 +162,7 @@ const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(getUserThunk()),
     getCheckIns: () => dispatch(getCheckInsThunk()),
-    getMeals: () => dispatch(getMealsThunk())
+    getMeals: (date, userId) => dispatch(getMealsThunk(date, userId))
   };
 };
 

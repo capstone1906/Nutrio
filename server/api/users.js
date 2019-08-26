@@ -47,7 +47,7 @@ router.put('/:id', async (req, res, next) => {
       statedGoal: req.body.statedGoal,
     })
 
-    
+
 
     res.json(me);
   } catch (err) {

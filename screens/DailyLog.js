@@ -186,14 +186,14 @@ class DailyLog extends React.Component {
 
   resetCaloriesBurned() {}
 
-  async deleteItem(foodId, mealId) {
+  deleteItem(foodId, mealId) {
     this.props.deleteMealItem(foodId, mealId);
-    await this.props.getMeals(this.state.date);
+    // await this.props.getMeals(this.state.date, this.props.user.id);
   }
 
   async componentDidMount() {
     await this.props.getCheckIns();
-    await this.props.getMeals(this.state.date);
+    await this.props.getMeals(this.state.date, this.props.user.id);
     await this.props.getUser();
   }
 
@@ -267,7 +267,7 @@ class DailyLog extends React.Component {
             }}
             onDateChange={date => {
               this.setState({ date: date });
-              this.props.getMeals(date);
+              this.props.getMeals(date, this.props.user.id);
             }}
           />
         </View>
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#F5ECCD"
+    backgroundColor: '#F5ECCD',
   },
 
   FoodTimeHeader: {
@@ -369,9 +369,9 @@ const styles = StyleSheet.create({
   addFoodButton: {
     width: 100,
     height: 50,
-    backgroundColor: "#1E90FF",
+    backgroundColor: '#1E90FF',
     marginTop: 5,
-    marginLeft: 5
+    marginLeft: 5,
   },
 
   foodAmount: {
@@ -398,10 +398,9 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getMeals: date => dispatch(getMealsThunk(date)),
+    getMeals: (date, userId) => dispatch(getMealsThunk(date, userId)),
     getUser: () => dispatch(getUserThunk()),
     getCheckIns: () => dispatch(getCheckInsThunk()),
-
     deleteMealItem: (foodId, mealId) =>
       dispatch(deleteMealItem(foodId, mealId)),
   };
