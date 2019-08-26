@@ -43,7 +43,7 @@ function FoodCard(props) {
                 return meal.id;
               }
             })[0].id;
-            props.postFood(props.food, mealId);
+            props.postFood(props.food, mealId, 0, 0, props.user.id);
           }}
         />
       </View>
@@ -54,6 +54,7 @@ function FoodCard(props) {
 const mapState = state => {
   return {
     meals: state.meals,
+    user: state.user
   };
 };
 

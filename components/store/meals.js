@@ -43,7 +43,6 @@ export const deleteMealItem = (foodId, mealId) => async dispatch => {
 
 export const getMealsThunk = (dateVar, userId) => async dispatch => {
   try {
-    console.log('userId', userId);
     var res = await axios.get(`${ngrok}/api/meals/${userId}`);
     var todaysDate = dateVar;
     if (!dateVar) {
@@ -136,7 +135,7 @@ export const postFood = (
       `${ngrok}/api/mealFoodItems/${mealId}/${quantity}/${grams}`,
       food
     );
-    dispatch(getMealsThunk(userId));
+    dispatch(getMealsThunk('', userId));
   } catch (err) {
     console.error(err);
   }

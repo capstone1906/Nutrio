@@ -164,7 +164,8 @@ class QuickAddFood extends React.Component {
         newFood,
         mealId,
         Math.round(Number(array[i].quantity)),
-        0
+        0,
+        this.props.user.id
       );
     }
 
@@ -240,12 +241,18 @@ QuickAddFood.navigationOptions = {
 
 const mapDispatch = dispatch => {
   return {
-    postFood: (food, mealId, quantity, grams) =>
-      dispatch(postFood(food, mealId, quantity, grams))
+    postFood: (food, mealId, quantity, grams, userId) =>
+      dispatch(postFood(food, mealId, quantity, grams, userId))
   };
 };
 
+const mapState = state =>{
+  return {
+    user: state.user
+  }
+}
+
 export default connect(
-  null,
+  mapState,
   mapDispatch
 )(QuickAddFood);
