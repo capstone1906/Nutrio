@@ -19,7 +19,6 @@ const Checkins = db.define('checkins', {
 });
 
 Checkins.afterCreate(async checkin => {
-  console.log(checkin)
   if (checkin.weight === 0) {
     const prevCheckin = await Checkins.findOne({
       where: { id: checkin.id - 1 },

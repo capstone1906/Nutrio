@@ -79,16 +79,62 @@ class Profile extends React.Component {
     this.toggleButtons = this.toggleButtons.bind(this);
   }
 
+  static navigationOptions = ({ navigation }) => {
+    const params = navigation.state.params || {};
+
+
+    return {
+      headerTitle: "Profile",
+      headerStyle: {
+        backgroundColor: "#1E90FF"
+      },
+      headerTintColor: "white",
+      headerRight: (
+        <TouchableOpacity style={{ paddingRight: 12 }} onPress={() => params.removeItem()}>
+          <Text style={{ color: "white", fontSize: 16 }}>Logout</Text>
+        </TouchableOpacity>
+      )
+    };
+  };
+
+  componentWillMount() {
+    this.props.navigation.setParams({
+
+      removeItem: this.removeItem
+    });
+  }
+
   toggleButtons() {
-    AlertIOS.alert(
-      "Modify goals?",
-      "Modifying goals will reset your goal(start date and end date)",
-      [
+    if (this.state.buttonToggle === true) {
+      AlertIOS.alert(
+        "Modify goals?",
+        "Modifying goals will reset your goal(start date and end date)",
+        [
+          {
+            text: "Cancel",
+            onPress: () => {
+              this.setState({
+                buttonToggle: true
+              });
+            }
+          },
+          {
+            text: "Proceed",
+            onPress: () => {
+              this.setState({
+                buttonToggle: false
+              });
+            }
+          }
+        ]
+      );
+    } else {
+      AlertIOS.alert("Are you sure you want to cancel?", "", [
         {
-          text: "Cancel",
+          text: "Keep editing",
           onPress: () => {
             this.setState({
-              buttonToggle: true
+              buttonToggle: false
             });
           }
         },
@@ -96,12 +142,12 @@ class Profile extends React.Component {
           text: "Proceed",
           onPress: () => {
             this.setState({
-              buttonToggle: false
+              buttonToggle: true
             });
           }
         }
-      ]
-    );
+      ]);
+    }
   }
 
   updateProfile() {
@@ -251,7 +297,9 @@ class Profile extends React.Component {
               style={{ fontSize: 18, color: "black" }}
             >{`${user.weight} lbs `}</Text>
           </ProgressCircle>
-          <Text style={{ fontSize: 16, color: "black", paddingTop: 10 }}>weeks left: 10</Text>
+          <Text style={{ fontSize: 16, color: "black", paddingTop: 10 }}>
+            weeks left: 10
+          </Text>
           <Text style={{ fontSize: 16, color: "black" }}>
             Start date: {user.longTermGoal.startDate.split("T0")[0]}
           </Text>
@@ -307,14 +355,18 @@ class Profile extends React.Component {
               onPress={() => this.updateProfile()}
             />
           </View>
-
         </View>
-        <Divider style={{ backgroundColor: 'blue' }} />
+        <Divider style={{ backgroundColor: "blue" }} />
 
         {this.state.buttonToggle ? (
           <View style={styles.macroContainer}>
             <Text
-              style={{ color: "black", fontSize: 25, paddingBottom: 10, paddingTop: 70 }}
+              style={{
+                color: "black",
+                fontSize: 25,
+                paddingBottom: 10,
+                paddingTop: 70
+              }}
             >
               Calorie Goal: {bmr}
             </Text>
@@ -574,11 +626,6 @@ class Profile extends React.Component {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity title="Logout" onPress={() => this.removeItem()}>
-              <View style={styles.logOutCard}>
-                <Text style={styles.attrib}>Logout</Text>
-              </View>
-            </TouchableOpacity>
           </View>
         )}
       </View>
@@ -687,14 +734,6 @@ const styles = StyleSheet.create({
     borderRadius: 10
   }
 });
-
-Profile.navigationOptions = {
-  headerTitle: "Profile",
-  headerStyle: {
-    backgroundColor: "#1E90FF"
-  },
-  headerTintColor: "white"
-};
 
 const mapState = state => {
   return {
