@@ -1,15 +1,15 @@
 /* eslint-disable max-statements */
 /* eslint-disable complexity */
-import React from 'react';
+import React from "react";
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import { connect } from 'react-redux';
+  ActivityIndicator
+} from "react-native";
+import { connect } from "react-redux";
 
 import DatePicker from "react-native-datepicker";
 import { getMealsThunk, deleteMealItem } from "../components/store/meals";
@@ -19,7 +19,6 @@ import { Button, Divider, Icon } from "react-native-elements";
 
 import * as Progress from "react-native-progress";
 import { getCheckInsThunk } from "../components/store/checkIns";
-
 
 const FoodTimeHeader = props => {
   return (
@@ -85,17 +84,14 @@ class FoodItem extends React.Component {
 
   render() {
     var food = {};
-    var calories = 0
+    var calories = 0;
 
     if (this.state.food.mealFoodItems) {
       food = this.state.food;
       calories = food.mealFoodItems.calories;
+    } else {
+      return null;
     }
-    else {
-      return null
-    }
-
-  
 
     return (
       <View key={food.food_name} backgroundColor="white">
@@ -103,8 +99,8 @@ class FoodItem extends React.Component {
           onPress={
             this.props.editLog
               ? () => {
-                  this.props.addToDelete(food.id, this.state.mealId);
-                  this.setState({pressed: !this.state.pressed})
+                  this.props.addToDelete(food, this.state.mealId);
+                  this.setState({ pressed: !this.state.pressed });
                 }
               : () => {
                   this.props.navigation.navigate("FoodSearchItem", {
@@ -119,7 +115,7 @@ class FoodItem extends React.Component {
               <View style={{ paddingRight: 10 }}>
                 <Icon
                   type="material-community"
-                  name={this.state.pressed ? 'square' : "square-outline"}
+                  name={this.state.pressed ? "square" : "square-outline"}
                   color="black"
                 />
               </View>
@@ -162,6 +158,9 @@ const FoodTimeContainer = props => {
       <FoodTimeHeader time={props.time} />
 
       {foodItems.map((food, idx) => {
+
+        // console.log("food is", food);
+
         return (
           <FoodItem
             food={food}
@@ -184,8 +183,8 @@ const FoodTimeContainer = props => {
         }}
       />
     </View>
-  );
-};
+  )
+}
 
 class DailyLog extends React.Component {
   constructor() {
@@ -243,42 +242,21 @@ class DailyLog extends React.Component {
             }
             type="material-community"
             color="white"
-            onPress={itemsToDelete.length > 0 ? () => {params.deleteItems()} : () => {
-              params.toggleLog();
-            }}
+            onPress={
+              itemsToDelete.length > 0
+                ? () => {
+                    params.deleteItems();
+                  }
+                : () => {
+                    params.toggleLog();
+                  }
+            }
           />
           <Text style={{ color: "white" }}>Edit log</Text>
         </View>
       )
     };
   };
-
-  async addToDelete(foodId, mealId) {
-    var newState = [...this.state.itemsToDelete];
-    var exists = false;
-
-    newState = newState.filter((item, idx) => {
-      if (item.foodId === foodId && item.mealId === mealId) {
-        exists = true;
-      } else {
-        return item;
-      }
-    });
-
-    if (exists === false) {
-      newState.push({ foodId, mealId });
-    }
-
-    await this.setState({
-      itemsToDelete: newState
-    });
-
-    this.props.navigation.setParams({
-      toggleLog: this.toggleLog,
-      itemsToDelete: this.state.itemsToDelete,
-      deleteItems: this.deleteItems
-    });
-  }
 
   componentWillMount() {
     this.props.navigation.setParams({
@@ -292,15 +270,50 @@ class DailyLog extends React.Component {
     this.setState({ editLog: !this.state.editLog });
   };
 
+  async addToDelete(food, mealId) {
+    var newState = [...this.state.itemsToDelete];
+    var exists = false;
+
+    newState = newState.filter((item, idx) => {
+      if (item.food.id === food.id && item.mealId === mealId) {
+        exists = true;
+      } else {
+        return item;
+      }
+    });
+
+    if (exists === false) {
+      newState.push({ food, mealId });
+    }
+
+    await this.setState({
+      itemsToDelete: newState
+    });
+
+    console.log("NEW STATE IS", newState);
+    this.props.navigation.setParams({
+      toggleLog: this.toggleLog,
+      itemsToDelete: this.state.itemsToDelete,
+      deleteItems: this.deleteItems
+    });
+  }
+
   resetCaloriesBurned() {}
 
-  async deleteItems(foodId, mealId) {
-    var items = [...this.state.itemsToDelete]
+  async deleteItems() {
+    var items = [...this.state.itemsToDelete];
+    console.log("items are", items);
     items.forEach(item => {
-      this.props.deleteMealItem(item.foodId, item.mealId);
+     this.props.deleteMealItem(item.food.id, item.mealId)
     })
 
-    await this.setState({itemsToDelete: []})
+    await this.setState({ itemsToDelete: [] });
+    this.props.navigation.setParams({
+      toggleLog: this.toggleLog,
+      itemsToDelete: [],
+      deleteItems: this.deleteItems
+    })
+    // await this.props.getMeals(this.state.date, this.props.user.id);
   }
 
   async componentDidMount() {
@@ -340,19 +353,14 @@ class DailyLog extends React.Component {
     if (isNaN(percent)) {
       percent = 0;
     }
-    if (percent < 0.25) {
-      barColor = "blue";
-    }
-    if (percent < 0.5) {
-      barColor = "green";
-    }
-    if (percent > 0.5) {
+
+    if (percent < 0.9) {
       barColor = "orange";
     }
-    if (percent >= 0.8) {
-      barColor = "red";
-    }
     if (percent >= 0.9) {
+      barColor = "#4CEF90";
+    }
+    if (percent > 1.0) {
       barColor = "crimson";
     }
     if (this.props.user && this.props.meals && this.props.checkIns) {
@@ -368,14 +376,14 @@ class DailyLog extends React.Component {
               cancelBtnText="Cancel"
               customStyles={{
                 dateIcon: {
-                  position: 'absolute',
+                  position: "absolute",
                   left: 0,
                   top: 4,
-                  marginLeft: 0,
+                  marginLeft: 0
                 },
                 dateInput: {
-                  marginLeft: 36,
-                },
+                  marginLeft: 36
+                }
               }}
               onDateChange={date => {
                 this.setState({ date: date });
@@ -383,13 +391,13 @@ class DailyLog extends React.Component {
               }}
             />
             <Button
-              onPress={() => this.props.navigation.navigate('Checkin')}
+              onPress={() => this.props.navigation.navigate("Checkin")}
               title="Check-In"
             />
           </View>
 
           <View style={styles.progress}>
-            <View style={{ justifyContent: 'center', flexDirection: 'column' }}>
+            <View style={{ justifyContent: "center", flexDirection: "column" }}>
               <Text>Calories: </Text>
               <Text> {totalCals.toFixed(0)}</Text>
             </View>
@@ -401,7 +409,7 @@ class DailyLog extends React.Component {
               color={barColor}
             />
 
-            <View style={{ justifyContent: 'center', flexDirection: 'column' }}>
+            <View style={{ justifyContent: "center", flexDirection: "column" }}>
               <Text>Limit: </Text>
               <Text> {calorieLimit.toFixed(0)}</Text>
             </View>
@@ -413,7 +421,7 @@ class DailyLog extends React.Component {
             meal={breakfast}
             deleteItems={this.deleteItems}
             addToDelete={this.addToDelete}
-
+            editLog={this.state.editLog}
           />
           <FoodTimeContainer
             time="Lunch"
@@ -421,7 +429,7 @@ class DailyLog extends React.Component {
             meal={lunch}
             deleteItems={this.deleteItems}
             addToDelete={this.addToDelete}
-
+            editLog={this.state.editLog}
           />
           <FoodTimeContainer
             time="Dinner"
@@ -429,6 +437,7 @@ class DailyLog extends React.Component {
             meal={dinner}
             deleteItems={this.deleteItems}
             addToDelete={this.addToDelete}
+            editLog={this.state.editLog}
           />
           <FoodTimeContainer
             time="Snacks"
@@ -436,7 +445,7 @@ class DailyLog extends React.Component {
             meal={snacks}
             deleteItems={this.deleteItems}
             addToDelete={this.addToDelete}
-
+            editLog={this.state.editLog}
           />
           <ExerciseContainer
             todaysCheckIn={this.props.checkIns.todaysCheckIn}
@@ -464,9 +473,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   date: {
-    justifyContent: 'space-around',
+    justifyContent: "space-around",
     paddingLeft: 75,
-    flexDirection: 'row',
+    flexDirection: "row"
   },
   progress: {
     flexDirection: "row",
@@ -479,7 +488,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#F5ECCD',
+    backgroundColor: "#F5ECCD"
   },
 
   FoodTimeHeader: {
@@ -497,9 +506,9 @@ const styles = StyleSheet.create({
   addFoodButton: {
     width: 100,
     height: 50,
-    backgroundColor: '#1E90FF',
+    backgroundColor: "#1E90FF",
     marginTop: 5,
-    marginLeft: 5,
+    marginLeft: 5
   },
 
   foodAmount: {
@@ -521,8 +530,7 @@ const mapDispatch = dispatch => {
     getMeals: (date, userId) => dispatch(getMealsThunk(date, userId)),
     getUser: () => dispatch(getUserThunk()),
     getCheckIns: () => dispatch(getCheckInsThunk()),
-    deleteMealItem: (foodId, mealId) =>
-      dispatch(deleteMealItem(foodId, mealId)),
+    deleteMealItem: (foodId, mealId) => dispatch(deleteMealItem(foodId, mealId))
   };
 };
 
