@@ -60,8 +60,8 @@ class UserJoinScreen extends React.Component {
     return (
       <ImageBackground
         style={styles.backgroundImage}
-        source={require('../assets/images/trail-in-the-woods.jpg')}
-        blurRadius={2}
+        source={require('../assets/images/balancedDiet.jpeg')}
+        blurRadius={1}
       >
         <View style={styles.formBackground}>
           <View style={styles.form}>

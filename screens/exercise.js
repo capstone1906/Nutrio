@@ -1,22 +1,22 @@
-import React from "react";
+import React from 'react';
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
-} from "react-native";
-import { connect } from "react-redux";
+  TouchableOpacity,
+} from 'react-native';
+import { connect } from 'react-redux';
 
-import { getExercisesThunk } from "../components/store/exercises";
-import { Input, ListItem, Divider, Icon } from "react-native-elements";
+import { getExercisesThunk } from '../components/store/exercises';
+import { Input, ListItem, Divider, Icon } from 'react-native-elements';
 
 class Exercise extends React.Component {
   constructor() {
     super();
     this.state = {
       exercises: [],
-      searchName: ''
+      searchName: '',
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -26,14 +26,14 @@ class Exercise extends React.Component {
     var text = event.nativeEvent.text;
 
     if (!text) {
-      text = " ";
+      text = ' ';
     }
 
     await this.props.getExercises(text);
 
     this.setState({
       searchName: text,
-      exercises: this.props.exercises
+      exercises: this.props.exercises,
     });
   }
 
@@ -56,15 +56,23 @@ class Exercise extends React.Component {
             <View>
               <ListItem
                 key={i}
-                rightIcon={<Icon name='arrow-right-circle' type='material-community' color='limegreen'/>}
+                rightIcon={
+                  <Icon
+                    name="arrow-right-circle"
+                    type="material-community"
+                    color="limegreen"
+                  />
+                }
                 title={exercise.activity}
                 subtitle={exercise.description}
                 onPress={() => {
-                    this.props.navigation.navigate('SingleExercise', {exercise: exercise})
+                  this.props.navigation.navigate('SingleExercise', {
+                    exercise: exercise,
+                  });
                 }}
               />
 
-              <Divider style={{ backgroundColor: "blue" }} />
+              <Divider style={{ backgroundColor: 'blue' }} />
             </View>
           );
         })}
@@ -74,22 +82,22 @@ class Exercise extends React.Component {
 }
 
 Exercise.navigationOptions = {
-  headerTitle: "Exercise",
+  headerTitle: 'Exercise',
   headerStyle: {
-    backgroundColor: "crimson"
+    backgroundColor: '#1E90FF',
   },
-  headerTintColor: "white"
+  headerTintColor: 'white',
 };
 
 const mapState = state => {
   return {
-    exercises: state.exercises
+    exercises: state.exercises,
   };
 };
 
 const mapDispatch = dispatch => {
   return {
-    getExercises: name => dispatch(getExercisesThunk(name))
+    getExercises: name => dispatch(getExercisesThunk(name)),
   };
 };
 

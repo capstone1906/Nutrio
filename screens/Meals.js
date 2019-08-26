@@ -62,18 +62,19 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 5,
     fontSize: 16,
-    color: 'black'
+    color: 'black',
   },
   container: {
     flex: 40,
     alignItems: 'center',
+    backgroundColor: '#F5ECCD',
   },
 });
 
 Meals.navigationOptions = {
   headerTitle: 'Meals',
   headerStyle: {
-    backgroundColor: 'crimson',
+    backgroundColor: '#1E90FF',
   },
   headerTintColor: 'white',
 };

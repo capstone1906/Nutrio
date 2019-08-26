@@ -5,13 +5,13 @@ import {
   Text,
   View,
   TouchableOpacity,
-  TextInput
-} from "react-native";
-import { connect } from "react-redux";
+  TextInput,
+} from 'react-native';
+import { connect } from 'react-redux';
 
-import { getExercisesThunk } from "../components/store/exercises";
-import {  ListItem, Divider, Icon, Button } from "react-native-elements";
-import { getCheckInsThunk, updateCheckIn } from "../components/store/checkIns";
+import { getExercisesThunk } from '../components/store/exercises';
+import { ListItem, Divider, Icon, Button } from 'react-native-elements';
+import { getCheckInsThunk, updateCheckIn } from '../components/store/checkIns';
 
 class SingleExercise extends React.Component {
   constructor() {
