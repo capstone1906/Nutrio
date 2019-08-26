@@ -80,7 +80,7 @@ export default class FoodSearch extends React.Component {
                 });
               }}
               name="ios-camera"
-              color="red"
+              color="crimson"
               size={90}
             />
           </TouchableOpacity>

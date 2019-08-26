@@ -74,7 +74,7 @@ class QuickAddFood extends React.Component {
       if (itemInfo) {
         // check this
         infoArray.push({
-          name: `${itemInfo.name.charAt(0).toUpperCase() +
+          name: `${itemInfo.name.charAt(0).toLowerCase() +
             itemInfo.name.slice(1)}`,
           image: itemInfo.photo,
           calories: itemInfo.calories,
@@ -160,10 +160,15 @@ class QuickAddFood extends React.Component {
         servingSize: array[i].servingSize
       };
 
+      var quantity = Math.round(Number(array[i].quantity));
+      if(quantity === 0) {
+        quantity = 1
+      }
+
       this.props.postFood(
         newFood,
         mealId,
-        Math.round(Number(array[i].quantity)),
+        quantity,
         0,
         this.props.user.id
       );

@@ -1,101 +1,70 @@
-import React from 'react';
+import React from "react";
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  TextInput,
-} from 'react-native';
-import { connect } from 'react-redux';
+  TextInput
+} from "react-native";
+import { connect } from "react-redux";
 
-import { getExercisesThunk } from '../components/store/exercises';
-import { ListItem, Divider, Icon, Button } from 'react-native-elements';
-import { getCheckInsThunk, updateCheckIn } from '../components/store/checkIns';
+import { getExercisesThunk } from "../components/store/exercises";
+import { ListItem, Divider, Icon, Button, Input } from "react-native-elements";
+import { getCheckInsThunk, updateCheckIn } from "../components/store/checkIns";
 
-class SingleExercise extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      exercise: {},
-      minutesPerformed: 0,
-      caloriesBurned: 0,
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.addTolog = this.addTolog.bind(this);
-  }
+const SingleExercise = props => {
+  exercise = props.exercise
+  return (
+    <View>
+      <Text style={{ fontSize: 18 }}>
+        {exercise.activity
+          ? exercise.activity + " - " + exercise.description
+          : null}
+      </Text>
+      <Text style={{ fontSize: 18 }}>
+        Minutes performed: {props.minutesPerformed}{" "}
+      </Text>
 
-  addTolog() {
-    var cals = this.state.caloriesBurned;
-    if (isNaN(this.state.caloriesBurned)) {
-      cals = 0;
-    }
-    this.props.updateCheckIn(this.props.checkIns.todaysCheckIn.id, {
-      caloriesBurned: cals,
-    });
-  }
+      <Input
+        inputContainerStyle={{
+          borderBottomWidth: 0,
+          borderRadius: 10,
+          backgroundColor: "#e5e4ea",
+          width: "85%",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+        containerStyle={{
+          justifyContent: "center",
+          marginTop: 13
+        }}
+        leftIconContainerStyle={{ marginRight: 9 }}
+        keyboardAppearance="dark"
+        placeholder="Enter minutes performed"
+        onChange={props.handleChange}
+      />
 
-  handleChange(event) {
-    var text = event.nativeEvent.text;
-
-    this.setState({
-      minutesPerformed: text,
-      caloriesBurned: (
-        this.state.exercise.met *
-        (this.props.user.weight / 2.2) *
-        (text / 60)
-      ).toFixed(0),
-    });
-  }
-
-  async componentDidMount() {
-    await this.props.getCheckIns();
-    var exercise = this.props.navigation.getParam('exercise');
-    this.setState({ exercise });
-  }
-
-  render() {
-    var exercise = {};
-    if (this.state.exercise.activity) {
-      exercise = this.state.exercise;
-    }
-    return (
-      <View>
-        <Text>
-          {' '}
-          {exercise.activity
-            ? exercise.activity + ' - ' + exercise.description
-            : null}
-        </Text>
-        <Text>Minutes performed: {this.state.minutesPerformed} </Text>
-
-        <TextInput
-          keyboardType="number-pad"
-          keyboardAppearance="dark"
-          onChange={this.handleChange}
-        />
-
-        <Text>Calories Burned: {this.state.caloriesBurned}</Text>
-
-        <Button onPress={() => this.addTolog()} title="Add to log" />
-      </View>
-    );
-  }
-}
+      <Text style={{ fontSize: 18 }}>
+        Calories Burned: {props.caloriesBurned}
+      </Text>
+    </View>
+  );
+};
 
 SingleExercise.navigationOptions = {
-  headerTitle: 'Exercise',
+  headerTitle: "Exercise",
   headerStyle: {
-    backgroundColor: 'crimson',
+    backgroundColor: "crimson"
   },
-  headerTintColor: 'white',
+  headerTintColor: "white"
 };
 
 const mapState = state => {
   return {
     exercises: state.exercises,
     user: state.user,
-    checkIns: state.checkIns,
+    checkIns: state.checkIns
   };
 };
 
@@ -103,7 +72,7 @@ const mapDispatch = dispatch => {
   return {
     getExercises: name => dispatch(getExercisesThunk(name)),
     getCheckIns: () => dispatch(getCheckInsThunk()),
-    updateCheckIn: (id, checkIn) => dispatch(updateCheckIn(id, checkIn)),
+    updateCheckIn: (id, checkIn) => dispatch(updateCheckIn(id, checkIn))
   };
 };
 

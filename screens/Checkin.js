@@ -1,12 +1,13 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { connect } from 'react-redux';
-import { Input, Button } from 'react-native-elements';
-import DatePicker from 'react-native-datepicker';
-import { ScrollView } from 'react-native-gesture-handler';
+import React from "react";
+import { View, StyleSheet, Text } from "react-native";
+import { connect } from "react-redux";
+import { Input, Button } from "react-native-elements";
+import DatePicker from "react-native-datepicker";
+import { ScrollView } from "react-native-gesture-handler";
 
-import { getUserThunk } from '../components/store/user';
-import { getCheckInsThunk, updateCheckIn } from '../components/store/checkIns';
+import { getUserThunk } from "../components/store/user";
+import { getCheckInsThunk, updateCheckIn } from "../components/store/checkIns";
+import Exercise from "./exercise";
 
 class Checkin extends React.Component {
   constructor() {
@@ -20,19 +21,41 @@ class Checkin extends React.Component {
     var day = dateNow.getDate().toString();
 
     if (month < 10) {
-      month = '0' + month;
+      month = "0" + month;
     }
     if (day < 10) {
-      day = '0' + day;
+      day = "0" + day;
     }
 
-    todaysDate = year + '-' + month + '-' + day;
+    todaysDate = year + "-" + month + "-" + day;
 
     this.state = {
       date: todaysDate,
-      updatedWeight: '0',
+      updatedWeight: "0",
+      minutesPerformed: 0,
+      caloriesBurned: 0,
+      selectedExercise: {}
     };
     this.updateLog = this.updateLog.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.selectExercise = this.selectExercise.bind(this);
+  }
+
+  selectExercise(exercise) {
+    this.setState({ selectedExercise: exercise });
+  }
+
+  handleChange(event) {
+    var text = event.nativeEvent.text;
+
+    this.setState({
+      minutesPerformed: text,
+      caloriesBurned: (
+        this.state.exercise.met *
+        (this.props.user.weight / 2.2) *
+        (text / 60)
+      ).toFixed(0)
+    });
   }
 
   componentDidMount = () => {
@@ -41,15 +64,23 @@ class Checkin extends React.Component {
   };
 
   updateLog = () => {
-    let number = Number(this.state.updatedWeight + '.0');
+    // var cals = this.state.caloriesBurned;
+    // if (isNaN(this.state.caloriesBurned)) {
+    //   cals = 0;
+    // }
+    // this.props.updateCheckIn(this.props.checkIns.todaysCheckIn.id, {
+    //   caloriesBurned: cals
+    // });
+
+    let number = Number(this.state.updatedWeight + ".0");
     this.props.updateCheckIn(this.props.checkIns.todaysCheckIn.id, {
-      weight: number,
+      weight: number
     });
   };
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.date}>
           <DatePicker
             style={{ width: 150, paddingBottom: 10 }}
@@ -60,14 +91,14 @@ class Checkin extends React.Component {
             cancelBtnText="Cancel"
             customStyles={{
               dateIcon: {
-                position: 'absolute',
+                position: "absolute",
                 left: 0,
                 top: 4,
-                marginLeft: 0,
+                marginLeft: 0
               },
               dateInput: {
-                marginLeft: 36,
-              },
+                marginLeft: 36
+              }
             }}
             onDateChange={date => {
               this.setState({ date: date });
@@ -75,38 +106,61 @@ class Checkin extends React.Component {
             }}
           />
         </View>
+
         <Input onChangeText={text => this.setState({ updatedWeight: text })} />
-        <Text style={styles.formLabelText}>Weight</Text>
-        <Button title="Submit Check-in" onPress={() => this.updateLog()} />
-      </ScrollView>
+
+        <Text style={{ paddingBottom: 50 }}>Weight</Text>
+
+        <Exercise
+          navigation={this.props.navigation}
+          selectExercise={this.selectExercise}
+          handleChange={this.handleChange}
+          selectedExercise={this.state.selectedExercise}
+        />
+
+        <View style={styles.submit}>
+          <Button title="Submit Check-in" onPress={() => this.updateLog()} />
+        </View>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   date: {
-    justifyContent: 'space-around',
-    flexDirection: 'row',
+    justifyContent: "space-around",
+    flexDirection: "row",
+    alignItems: "center",
+    alignContent: "center"
   },
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#F5ECCD',
+    backgroundColor: "#F5ECCD"
   },
+  submit: {
+    width: "100%",
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 0,
+    paddingLeft: 40
+  }
 });
 
 Checkin.navigationOptions = {
-  headerTitle: 'Check-In',
+  headerTitle: "Check-In",
   headerStyle: {
-    backgroundColor: '#1E90FF',
+    backgroundColor: "#1E90FF"
   },
-  headerTintColor: 'white',
+  headerTintColor: "white"
 };
 
 const mapState = state => {
   return {
     user: state.user,
-    checkIns: state.checkIns,
+    checkIns: state.checkIns
   };
 };
 
@@ -114,7 +168,7 @@ const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(getUserThunk()),
     getCheckIns: () => dispatch(getCheckInsThunk()),
-    updateCheckIn: (id, checkIn) => dispatch(updateCheckIn(id, checkIn)),
+    updateCheckIn: (id, checkIn) => dispatch(updateCheckIn(id, checkIn))
   };
 };
 
