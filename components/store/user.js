@@ -27,7 +27,6 @@ const addUser = user => ({ type: ADD_USER, user });
 export const updateUserThunk = (newUser) => async dispatch => {
   try {
     var res = await axios.put(`${ngrok}/api/user/:id`, newUser);
-
     dispatch(getUserThunk());
   } catch (err) {
     console.error(err);

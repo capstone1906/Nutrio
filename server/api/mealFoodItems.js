@@ -31,6 +31,10 @@ router.delete('/:foodId/:mealId', async (req, res, next) => {
     });
 
     await mealFoodItem.destroy();
+    const updatedMeal = await Meals.findByPk(req.params.mealId, {
+      include: [FoodItems]
+    })
+    res.json(updatedMeal)
   } catch (err) {
     next(err);
   }

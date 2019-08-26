@@ -1,12 +1,15 @@
-import React from "react";
+/* eslint-disable max-statements */
+/* eslint-disable complexity */
+import React from 'react';
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
-} from "react-native";
-import { connect } from "react-redux";
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import { connect } from 'react-redux';
 
 import DatePicker from "react-native-datepicker";
 import { getMealsThunk, deleteMealItem } from "../components/store/meals";
@@ -287,7 +290,6 @@ class DailyLog extends React.Component {
 
   toggleLog = () => {
     this.setState({ editLog: !this.state.editLog });
-    console.log('togglign log ')
   };
 
   resetCaloriesBurned() {}
@@ -299,14 +301,11 @@ class DailyLog extends React.Component {
     })
 
     await this.setState({itemsToDelete: []})
-    await this.props.getMeals(this.state.date);
-    console.log('deleting')
-
   }
 
   async componentDidMount() {
     await this.props.getCheckIns();
-    await this.props.getMeals(this.state.date);
+    await this.props.getMeals(this.state.date, this.props.user.id);
     await this.props.getUser();
   }
 
@@ -356,94 +355,100 @@ class DailyLog extends React.Component {
     if (percent >= 0.9) {
       barColor = "crimson";
     }
-
-    return (
-      <ScrollView style={styles.container}>
-        <View style={styles.date}>
-          <DatePicker
-            style={{ width: 150, paddingBottom: 10 }}
-            date={this.state.date}
-            mode="date"
-            placeholder="select date"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: "absolute",
-                left: 0,
-                top: 4,
-                marginLeft: 0
-              },
-              dateInput: {
-                marginLeft: 36
-              }
-            }}
-            onDateChange={date => {
-              this.setState({ date: date });
-              this.props.getMeals(date);
-            }}
-          />
-        </View>
-
-        <View style={styles.progress}>
-          <View style={{ justifyContent: "center", flexDirection: "column" }}>
-            <Text>Calories: </Text>
-            <Text> {totalCals.toFixed(0)}</Text>
+    if (this.props.user && this.props.meals && this.props.checkIns) {
+      return (
+        <ScrollView style={styles.container}>
+          <View style={styles.date}>
+            <DatePicker
+              style={{ width: 150, paddingBottom: 10 }}
+              date={this.state.date}
+              mode="date"
+              placeholder="select date"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0,
+                },
+                dateInput: {
+                  marginLeft: 36,
+                },
+              }}
+              onDateChange={date => {
+                this.setState({ date: date });
+                this.props.getMeals(date, this.props.user.id);
+              }}
+            />
+            <Button
+              onPress={() => this.props.navigation.navigate('Checkin')}
+              title="Check-In"
+            />
           </View>
 
-          <Progress.Bar
-            progress={percent}
-            width={225}
-            height={15}
-            color={barColor}
-          />
+          <View style={styles.progress}>
+            <View style={{ justifyContent: 'center', flexDirection: 'column' }}>
+              <Text>Calories: </Text>
+              <Text> {totalCals.toFixed(0)}</Text>
+            </View>
 
-          <View style={{ justifyContent: "center", flexDirection: "column" }}>
-            <Text>Limit: </Text>
-            <Text> {calorieLimit.toFixed(0)}</Text>
+            <Progress.Bar
+              progress={percent}
+              width={225}
+              height={15}
+              color={barColor}
+            />
+
+            <View style={{ justifyContent: 'center', flexDirection: 'column' }}>
+              <Text>Limit: </Text>
+              <Text> {calorieLimit.toFixed(0)}</Text>
+            </View>
           </View>
-        </View>
 
-        <FoodTimeContainer
-          time="Breakfast"
-          navigation={this.props.navigation}
-          meal={breakfast}
-          deleteItem={this.deleteItem}
-          editLog={this.state.editLog}
-          addToDelete={this.addToDelete}
-        />
-        <FoodTimeContainer
-          time="Lunch"
-          navigation={this.props.navigation}
-          meal={lunch}
-          deleteItem={this.deleteItem}
-          editLog={this.state.editLog}
-          addToDelete={this.addToDelete}
-        />
-        <FoodTimeContainer
-          time="Dinner"
-          navigation={this.props.navigation}
-          meal={dinner}
-          deleteItem={this.deleteItem}
-          editLog={this.state.editLog}
-          addToDelete={this.addToDelete}
-        />
-        <FoodTimeContainer
-          time="Snacks"
-          navigation={this.props.navigation}
-          meal={snacks}
-          deleteItem={this.deleteItem}
-          editLog={this.state.editLog}
-          addToDelete={this.addToDelete}
-        />
-        <ExerciseContainer
-          todaysCheckIn={this.props.checkIns.todaysCheckIn}
-          time="exercise"
-          navigation={this.props.navigation}
-          resetCaloriesBurned={this.resetCaloriesBurned}
-        />
-      </ScrollView>
-    );
+          <FoodTimeContainer
+            time="Breakfast"
+            navigation={this.props.navigation}
+            meal={breakfast}
+            deleteItems={this.deleteItems}
+            addToDelete={this.addToDelete}
+
+          />
+          <FoodTimeContainer
+            time="Lunch"
+            navigation={this.props.navigation}
+            meal={lunch}
+            deleteItems={this.deleteItems}
+            addToDelete={this.addToDelete}
+
+          />
+          <FoodTimeContainer
+            time="Dinner"
+            navigation={this.props.navigation}
+            meal={dinner}
+            deleteItems={this.deleteItems}
+            addToDelete={this.addToDelete}
+          />
+          <FoodTimeContainer
+            time="Snacks"
+            navigation={this.props.navigation}
+            meal={snacks}
+            deleteItems={this.deleteItems}
+            addToDelete={this.addToDelete}
+
+          />
+          <ExerciseContainer
+            todaysCheckIn={this.props.checkIns.todaysCheckIn}
+            time="exercise"
+            navigation={this.props.navigation}
+            resetCaloriesBurned={this.resetCaloriesBurned}
+          />
+        </ScrollView>
+      );
+    } else {
+      return <ActivityIndicator size="large" color="#0000ff" />;
+    }
   }
 }
 
@@ -459,8 +464,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   date: {
-    justifyContent: "center",
-    paddingLeft: 75
+    justifyContent: 'space-around',
+    paddingLeft: 75,
+    flexDirection: 'row',
   },
   progress: {
     flexDirection: "row",
@@ -473,7 +479,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#F5ECCD"
+    backgroundColor: '#F5ECCD',
   },
 
   FoodTimeHeader: {
@@ -491,9 +497,9 @@ const styles = StyleSheet.create({
   addFoodButton: {
     width: 100,
     height: 50,
-    backgroundColor: "#1E90FF",
+    backgroundColor: '#1E90FF',
     marginTop: 5,
-    marginLeft: 5
+    marginLeft: 5,
   },
 
   foodAmount: {
@@ -512,11 +518,11 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getMeals: date => dispatch(getMealsThunk(date)),
+    getMeals: (date, userId) => dispatch(getMealsThunk(date, userId)),
     getUser: () => dispatch(getUserThunk()),
     getCheckIns: () => dispatch(getCheckInsThunk()),
-
-    deleteMealItem: (foodId, mealId) => dispatch(deleteMealItem(foodId, mealId))
+    deleteMealItem: (foodId, mealId) =>
+      dispatch(deleteMealItem(foodId, mealId)),
   };
 };
 

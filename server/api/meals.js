@@ -3,15 +3,28 @@ const {
   Meals,
   FoodItems,
   MealFoodItems,
+  UserMeals,
 } = require('../db/postgres/models/index');
 const { getRecommendedMeals } = require('../db/neo4j/models/meals');
 module.exports = router;
 
-router.get('/', async (req, res, next) => {
+router.get('/:userId', async (req, res, next) => {
   try {
-    const meals = await Meals.findAll({
-      include: [{ all: true }],
+    const userId = Number(req.params.userId);
+    const mealFoodItems = await UserMeals.findAll({
+      where: {
+        userId: userId,
+      },
     });
+    const meals = mealFoodItems.map(m => {
+      return Meals.findOne({
+        where: {
+          id: m.mealId,
+        },
+        include: [FoodItems],
+      });
+    });
+    const response = await Promise.all(meals);
     const dateNow = new Date();
     var todaysDate;
 
@@ -29,8 +42,8 @@ router.get('/', async (req, res, next) => {
     todaysDate = year + '-' + month + '-' + day;
     var todaysMeals = [];
 
-    for (let i = 0; i < meals.length; i++) {
-      var time = meals[i].dataValues.createdAt;
+    for (let i = 0; i < response.length; i++) {
+      var time = response[i].dataValues.createdAt;
       var newyear = time.getFullYear().toString();
       var newmonth = (time.getMonth() + 1).toString();
       var newday = time.getDate().toString();
@@ -44,13 +57,12 @@ router.get('/', async (req, res, next) => {
 
       var newDate = newyear + '-' + newmonth + '-' + newday;
       if (newDate === todaysDate) {
-        todaysMeals.push(meals[i]);
+        todaysMeals.push(response[i]);
       }
     }
 
     if (todaysMeals.length < 1) {
       var breakfast = await Meals.create({
-        userId: 1,
         entreeType: 'Breakfast',
         totalCalories: 0,
         averageRating: 2.0,
@@ -59,8 +71,12 @@ router.get('/', async (req, res, next) => {
         totalFat: 0,
         dominantMacro: 'protein',
       });
+      await UserMeals.create({
+        userId: userId,
+        mealId: breakfast.dataValues.id,
+      });
       var Lunch = await Meals.create({
-        userId: 1,
+        userId: userId,
         entreeType: 'Lunch',
         totalCalories: 0,
         averageRating: 2.0,
@@ -69,8 +85,12 @@ router.get('/', async (req, res, next) => {
         totalFat: 0,
         dominantMacro: 'protein',
       });
+      await UserMeals.create({
+        userId: userId,
+        mealId: Lunch.dataValues.id,
+      });
       var Dinner = await Meals.create({
-        userId: 1,
+        userId: userId,
         entreeType: 'Dinner',
         totalCalories: 0,
         averageRating: 2.0,
@@ -79,8 +99,12 @@ router.get('/', async (req, res, next) => {
         totalFat: 0,
         dominantMacro: 'protein',
       });
+      await UserMeals.create({
+        userId: userId,
+        mealId: Dinner.dataValues.id,
+      });
       var Snacks = await Meals.create({
-        userId: 1,
+        userId: userId,
         entreeType: 'Snacks',
         totalCalories: 0,
         averageRating: 2.0,
@@ -89,27 +113,40 @@ router.get('/', async (req, res, next) => {
         totalFat: 0,
         dominantMacro: 'protein',
       });
-
+      await UserMeals.create({
+        userId: userId,
+        mealId: Snacks.dataValues.id,
+      });
       todaysMeals.push(breakfast, Lunch, Dinner, Snacks);
     }
 
-    const meals2 = await Meals.findAll({
-      include: [{ all: true }],
+    const mealFoodItems2 = await UserMeals.findAll({
+      where: {
+        userId: userId,
+      },
     });
-
-    res.json(meals2);
+    const meals2 = mealFoodItems2.map(m => {
+      return Meals.findOne({
+        where: {
+          id: m.mealId,
+        },
+        include: [FoodItems],
+      });
+    });
+    const response2 = await Promise.all(meals);
+    res.json(response2);
   } catch (err) {
     next(err);
   }
 });
 
-router.get('/recommendedMeals', async (req, res, next) => {
+router.get('/recommendedMeals/:entreeType', async (req, res, next) => {
   const meal = {
     calories: Number(req.query.calories),
     carbs: Number(req.query.carbs),
     protein: Number(req.query.protein),
     fat: Number(req.query.fat),
-    type: req.query.type,
+    type: req.params.entreeType,
   };
   try {
     const meals = await getRecommendedMeals(meal);

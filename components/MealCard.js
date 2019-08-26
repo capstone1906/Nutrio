@@ -69,7 +69,7 @@ function MealCard(props) {
                 return meal.id;
               }
             })[0].id;
-            props.postFood(props.meal.foodItems, mealId);
+            props.postFood(props.meal.foodItems, mealId, 0, 0, props.user);
           }}
         />
       </View>
@@ -80,6 +80,7 @@ function MealCard(props) {
 const mapState = state => {
   return {
     meals: state.meals,
+    user: state.user
   };
 };
 

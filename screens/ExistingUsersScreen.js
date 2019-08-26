@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   AsyncStorage,
+  ImageBackground,
 } from 'react-native';
 import { Input } from 'react-native-elements';
 import { connect } from 'react-redux';
@@ -45,7 +46,11 @@ class ExistingUsersScreen extends React.Component {
 
   render() {
     return (
-      <View>
+      <ImageBackground
+        style={styles.backgroundImage}
+        source={require('../assets/images/balancedDiet.jpeg')}
+        blurRadius={1}
+      >
         <View style={styles.inputFields}>
           <Input onChangeText={text => this.setState({ email: text })} />
           <Text style={styles.formLabelText}>Email</Text>
@@ -59,10 +64,14 @@ class ExistingUsersScreen extends React.Component {
             <Text style={styles.buttonText}>Sign In </Text>
           </View>
         </TouchableOpacity>
-      </View>
+      </ImageBackground>
     );
   }
 }
+
+ExistingUsersScreen.navigationOptions = {
+  header: null,
+};
 
 const styles = StyleSheet.create({
   joinSignIn: {
@@ -75,6 +84,10 @@ const styles = StyleSheet.create({
     fontSize: 25,
     color: '#2e78b7',
     margin: 20,
+  },
+  backgroundImage: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });
 

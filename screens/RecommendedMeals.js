@@ -110,7 +110,7 @@ class RecommendedMeals extends React.Component {
 RecommendedMeals.navigationOptions = {
   headerTitle: 'Recommended Meals',
   headerStyle: {
-    backgroundColor: 'crimson',
+    backgroundColor: '#1E90FF',
   },
   headerTintColor: 'white',
 };

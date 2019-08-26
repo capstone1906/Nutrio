@@ -81,7 +81,7 @@ class FoodSearchItem extends React.Component {
     }
 
 
-    this.props.postFood(newFood, mealId, quantity, grams);
+    this.props.postFood(newFood, mealId, quantity, grams, this.props.user.id);
     this.props.navigation.pop()
     this.props.navigation.pop()
 
@@ -321,14 +321,15 @@ FoodSearchItem.navigationOptions = {
 
 const mapState = state => {
   return {
-    meals: state.meals
+    meals: state.meals,
+    user: state.user
   };
 };
 
 const mapDispatch = dispatch => {
   return {
-    postFood: (food, mealId, quantity, grams) =>
-      dispatch(postFood(food, mealId, quantity, grams))
+    postFood: (food, mealId, quantity, grams, userId) =>
+      dispatch(postFood(food, mealId, quantity, grams, userId))
   };
 };
 
