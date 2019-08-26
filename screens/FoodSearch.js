@@ -163,5 +163,5 @@ FoodSearch.navigationOptions = {
     backgroundColor: 'crimson',
   },
   headerTintColor: 'white',
-  headerLeft: <Icon name='pencil-outline' type='material-community' color='white'/>
+
 };
