@@ -301,7 +301,6 @@ class Profile extends React.Component {
               buttonStyle={{
                 width: 100,
                 height: 50,
-                color: "white",
                 backgroundColor: "limegreen",
                 fontSize: 12
               }}

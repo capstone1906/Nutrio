@@ -5,6 +5,7 @@ import { ngrok } from '../../secret';
  * ACTION TYPES
  */
 const GET_MEALS = 'GET_MEALS';
+const REMOVE_FROM_MEAL = 'REMOVE_FROM_MEAL';
 
 /**
  * INITIAL STATE
@@ -18,6 +19,12 @@ const meals = {
  * ACTION CREATORS
  */
 const getMeals = meals => ({ type: GET_MEALS, meals });
+const deleteFromMeal = (foodId, mealId, meal) => ({
+  type: REMOVE_FROM_MEAL,
+  foodId,
+  mealId,
+  meal,
+});
 
 /**
  * THUNK CREATORS
@@ -25,19 +32,18 @@ const getMeals = meals => ({ type: GET_MEALS, meals });
 
 export const deleteMealItem = (foodId, mealId) => async dispatch => {
   try {
-    var res2 = await axios.delete(
+    const { data } = await axios.delete(
       `${ngrok}/api/mealFoodItems/${foodId}/${mealId}`
     );
-    // var res = await axios.get(`${ngrok}/api/meals`);
-    dispatch(getMealsThunk());
+    dispatch(deleteFromMeal(foodId, mealId, data));
   } catch (err) {
     console.error(err);
   }
 };
 
-export const getMealsThunk = dateVar => async dispatch => {
+export const getMealsThunk = (dateVar, userId) => async dispatch => {
   try {
-    var res = await axios.get(`${ngrok}/api/meals`);
+    var res = await axios.get(`${ngrok}/api/meals/${userId}`);
     var todaysDate = dateVar;
     if (!dateVar) {
       todaysDate = new Date();
@@ -53,10 +59,8 @@ export const getMealsThunk = dateVar => async dispatch => {
       if (day < 10) {
         day = '0' + day;
       }
-      todaysDate = year + "-" + month + "-" + day;
+      todaysDate = year + '-' + month + '-' + day;
     }
-
-
 
     var foods = res.data;
     var breakfast = {};
@@ -119,13 +123,19 @@ export const getMealsThunk = dateVar => async dispatch => {
   }
 };
 
-export const postFood = (food, mealId, quantity, grams) => async dispatch => {
+export const postFood = (
+  food,
+  mealId,
+  quantity,
+  grams,
+  userId
+) => async dispatch => {
   try {
     var res2 = await axios.post(
       `${ngrok}/api/mealFoodItems/${mealId}/${quantity}/${grams}`,
       food
     );
-    dispatch(getMealsThunk());
+    dispatch(getMealsThunk('', userId));
   } catch (err) {
     console.error(err);
   }
@@ -138,7 +148,15 @@ export default function(state = meals, action) {
   switch (action.type) {
     case GET_MEALS:
       return action.meals;
-
+    case REMOVE_FROM_MEAL:
+      const newTodaysMeals = state.todaysMeals.map(meal => {
+        if (meal.id === action.mealId) {
+          meal = action.meal;
+          return meal;
+        }
+        return meal;
+      });
+      return { ...state, todaysMeals: newTodaysMeals };
     default:
       return state;
   }
