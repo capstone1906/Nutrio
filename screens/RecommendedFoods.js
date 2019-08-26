@@ -1,5 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  List,
+  ActivityIndicator,
+} from 'react-native';
 import { getRecommendedFoodsThunk } from '../components/store/recommendedFoods';
 import { connect } from 'react-redux';
 import FoodCard from '../components/FoodCard';
@@ -23,6 +29,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 10,
     marginTop: 15,
+  },
+  loader: {
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    backgroundColor: '#F5ECCD',
   },
 });
 
@@ -92,52 +106,53 @@ class RecommendedFoods extends React.Component {
     });
   }
   render() {
-    if (this.props.user && this.props.meals && this.props.recommendedFoods) {
-      return (
-        <View>
-          <View style={styles.buttonContainer}>
-            {meals.map((meal, idx) => (
-              <FoodButton
-                key={idx}
-                title={meal}
-                handlePress={this.handlePress}
-                state={this.state.activeButton}
-              />
-            ))}
-          </View>
-          <ScrollView>
-            {this.props.recommendedFoods.length ? (
-              this.props.recommendedFoods.map(food => (
-                <FoodCard
-                  key={food.id}
-                  food={food}
-                  mealType={this.state.activeButton}
-                  postFood={this.postFood}
-                />
-              ))
-            ) : (
-              <View>
-                <Text
-                  h1
-                  style={styles.warningText}
-                >{`You've hit your calorie limit for ${
-                  this.state.activeButton
-                }`}</Text>
-                <Button
-                  title="Click to remove calorie and macro limit"
-                  onPress={() => {
-                    this.handlePress(this.state.activeButton, 'unlimited');
-                  }}
-                  style={styles.warningButton}
-                />
-              </View>
-            )}
-          </ScrollView>
+    return (
+      <View>
+        <View style={styles.buttonContainer}>
+          {meals.map((meal, idx) => (
+            <FoodButton
+              key={idx}
+              title={meal}
+              handlePress={this.handlePress}
+              state={this.state.activeButton}
+            />
+          ))}
         </View>
-      );
-    } else {
-      return <ActivityIndicator size="large" color="#0000ff" />;
-    }
+        {!this.props.recommendedFoods.length ? (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#1E90FF" />
+          </View>
+        ) : this.props.user.dailyGoal.calorieLimit <
+          this.props.checkIns.todaysCheckIn.caloriesConsumed -
+            this.props.checkIns.todaysCheckIn.caloriesBurned ? (
+          <View>
+            <Text h1 style={styles.warningText}>
+              {`You've hit your calorie limit for ${this.state.activeButton}`}
+            </Text>
+            <Button
+              title="Click to remove calorie and macro limit"
+              onPress={() => {
+                this.handlePress(this.state.activeButton, 'unlimited');
+              }}
+              style={styles.warningButton}
+            />
+          </View>
+        ) : (
+          <FlatList
+            data={this.props.recommendedFoods}
+            renderItem={({ item }) => (
+              <FoodCard
+                key={item.id}
+                food={item}
+                mealType={this.state.activeButton}
+                postFood={this.postFood}
+                style={styles.flatList}
+              />
+            )}
+          />
+        )}
+      </View>
+    );
   }
 }
 
@@ -154,6 +169,7 @@ const mapState = state => {
     user: state.user,
     recommendedFoods: state.recommendedFoods,
     meals: state.meals,
+    checkIns: state.checkIns,
   };
 };
 const mapDispatch = dispatch => {
