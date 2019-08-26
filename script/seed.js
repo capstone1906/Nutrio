@@ -956,11 +956,12 @@ async function seed() {
       if (arr.indexOf(random) === -1) arr.push(random);
     }
     for (let j = 0; j < arr.length; j++) {
-      await MealFoodItems.create({
+      const mealItems = await MealFoodItems.create({
         foodItemId: arr[j],
         mealId: i,
         quantity: 1,
       });
+      MealFoodItems.beforeCreateSeed(mealItems);
     }
   }
 
@@ -972,11 +973,12 @@ async function seed() {
       if (arr.indexOf(random) === -1) arr.push(random);
     }
     for (let j = 0; j < arr.length; j++) {
-      await MealFoodItems.create({
+      const mealItems = await MealFoodItems.create({
         foodItemId: arr[j] + 10,
         mealId: i,
         quantity: 1,
       });
+      MealFoodItems.beforeCreateSeed(mealItems);
     }
   }
 
@@ -988,11 +990,12 @@ async function seed() {
       if (arr.indexOf(random) === -1) arr.push(random);
     }
     for (let j = 0; j < arr.length; j++) {
-      await MealFoodItems.create({
+      const mealItems = await MealFoodItems.create({
         foodItemId: arr[j] + 20,
         mealId: i,
         quantity: 1,
       });
+      MealFoodItems.beforeCreateSeed(mealItems);
     }
   }
 
@@ -1004,11 +1007,12 @@ async function seed() {
       if (arr.indexOf(random) === -1) arr.push(random);
     }
     for (let j = 0; j < arr.length; j++) {
-      await MealFoodItems.create({
+      const mealItems = await MealFoodItems.create({
         foodItemId: arr[j] + 30,
         mealId: i,
         quantity: 1,
       });
+      MealFoodItems.beforeCreateSeed(mealItems);
     }
   }
 
