@@ -66,6 +66,7 @@ class Exercise extends React.Component {
       searchName: text,
       exercises: this.props.exercises
     });
+    this.props.disableInput()
   }
 
   async componentDidMount() {
@@ -108,7 +109,6 @@ class Exercise extends React.Component {
               handleChange={this.props.handleChange}
               minutesPerformed={this.props.minutesPerformed}
               caloriesBurned={this.props.caloriesBurned}
-
             />
           ) : (
             <AllExercises
