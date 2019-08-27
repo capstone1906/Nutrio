@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { Input, Button, Divider } from "react-native-elements";
-import {ngrok} from '../secret'
+import {ngrok} from '../secret8'
 
 import {
   ScrollView,

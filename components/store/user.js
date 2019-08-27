@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ngrok } from '../../secret';
+import { ngrok } from '../../8';
 
 /**
  * ACTION TYPES

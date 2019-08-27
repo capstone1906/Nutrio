@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ngrok } from '../../secret';
+import { ngrok } from '../../secret8';
 
 /**
  * ACTION TYPES
@@ -131,12 +131,12 @@ export const postFood = (
   userId
 ) => async dispatch => {
   try {
-    var {data} = await axios.post(
+    var { data } = await axios.post(
       `${ngrok}/api/mealFoodItems/${mealId}/${quantity}/${grams}`,
       food
     );
     dispatch(getMealsThunk('', userId));
-    return data
+    return data;
   } catch (err) {
     console.error(err);
   }
