@@ -113,7 +113,7 @@ async function seed() {
       weight: 205 - ((Math.floor(Math.random() * 5) + 10) / 100) * i,
       caloriesBurned: Math.floor(500 - Math.random() * 100),
       caloriesConsumed: Math.floor(1500 - Math.random() * 100),
-      createdAt: new Date(2019, 7, -110 + i),
+      createdAt: new Date(2019, 7, -112 + i), // -112 creates through 8/26
       userId: 1,
     });
   }
