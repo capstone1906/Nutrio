@@ -47,14 +47,14 @@ class RecommendedFoods extends React.Component {
     this.state = {
       selectedIndex: 0,
       mealType: 'Breakfast',
-      loading: true,
+      loading: false,
+      todayCalories: 0,
     };
     this.handlePress = this.handlePress.bind(this);
     this.postFood = this.postFood.bind(this);
   }
   componentDidMount() {
     this.handlePress(this.state.selectedIndex);
-    this.setState({ loading: false });
   }
 
   async postFood(food, mealId) {
@@ -124,9 +124,21 @@ class RecommendedFoods extends React.Component {
     this.setState({
       selectedIndex: evt,
       mealType,
+      todayCalories: 0,
     });
   }
   render() {
+    if (this.props.meals.todaysMeals.length && this.state.todayCalories === 0) {
+      const todayMeal = this.props.meals.todaysMeals.filter(meal => {
+        return meal.entreeType === this.state.mealType ? meal : null;
+      })[0];
+      const todayCalories = todayMeal.foodItems.reduce((accum, val) => {
+        return (accum += val.calories);
+      }, 0);
+      this.setState({
+        todayCalories: todayCalories,
+      });
+    }
     return (
       <View>
         <View>
@@ -139,13 +151,8 @@ class RecommendedFoods extends React.Component {
             buttonStyle={{ backgroundColor: '#058ED9' }}
           />
         </View>
-        {this.state.loading || !this.props.recommendedFoods.length ? (
-          <View style={styles.loader}>
-            <ActivityIndicator size="large" color="#1E90FF" />
-          </View>
-        ) : this.props.user.dailyGoal.calorieLimit <
-          this.props.checkIns.todaysCheckIn.caloriesConsumed -
-            this.props.checkIns.todaysCheckIn.caloriesBurned ? (
+        {this.props.user.dailyGoal.calorieLimit / 4 <
+        this.state.todayCalories ? (
           <View>
             <Text h1 style={styles.warningText}>
               {`You've hit your calorie limit for ${this.state.mealType}`}
@@ -157,6 +164,11 @@ class RecommendedFoods extends React.Component {
               }}
               style={styles.warningButton}
             />
+          </View>
+        ) : this.props.user.dailyGoal.calorieLimit / 4 >
+            this.state.todayCalories && this.state.loading ? (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#1E90FF" />
           </View>
         ) : (
           <FlatList

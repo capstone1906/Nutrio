@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, ButtonGroup } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { getRecommendedMealsThunk } from '../components/store/recommendedMeals';
 import MealCard from '../components/MealCard';
@@ -40,14 +40,15 @@ class RecommendedMeals extends React.Component {
   constructor() {
     super();
     this.state = {
-      activeButton: 'Breakfast',
+      selectedIndex: 0,
+      mealType: 'Breakfast',
       loading: true,
     };
     this.handlePress = this.handlePress.bind(this);
     this.postFood = this.postFood.bind(this);
   }
   componentDidMount() {
-    this.handlePress(this.state.activeButton);
+    this.handlePress(0);
     this.setState({ loading: false });
   }
   postFood(foodItems, mealId) {
@@ -74,6 +75,7 @@ class RecommendedMeals extends React.Component {
   }
   async handlePress(evt) {
     this.setState({
+      mealType: meals[evt],
       loading: true,
     });
     setTimeout(
@@ -88,25 +90,25 @@ class RecommendedMeals extends React.Component {
       carbs: dailyGoals.carbLimit / 4,
       protein: dailyGoals.proteinLimit / 4,
       fat: dailyGoals.fatLimit / 4,
-      type: evt,
+      type: meals[evt],
     };
     await this.props.getRecs(meal);
     this.setState({
-      activeButton: evt,
+      selectedIndex: evt,
     });
   }
   render() {
     return (
       <View>
-        <View style={styles.buttonContainer}>
-          {meals.map(meal => (
-            <MealButton
-              key={meal}
-              title={meal}
-              handlePress={this.handlePress}
-              state={this.state.activeButton}
-            />
-          ))}
+        <View>
+          <ButtonGroup
+            onPress={this.handlePress}
+            selectedIndex={this.state.selectedIndex}
+            buttons={['Breakfast', 'Lunch', 'Dinner', 'Snacks']}
+            containerStyle={{ height: 50, marginRight: 20 }}
+            selectedTextStyle={{ color: 'white' }}
+            buttonStyle={{ backgroundColor: '#058ED9' }}
+          />
         </View>
         {this.state.loading || !this.props.recommendedMeals.length ? (
           <View style={styles.loader}>
@@ -122,6 +124,7 @@ class RecommendedMeals extends React.Component {
                 postFood={this.postFood}
                 style={styles.flatList}
                 maxToRenderPerBatch={2}
+                mealType={this.state.mealType}
               />
             )}
           />
