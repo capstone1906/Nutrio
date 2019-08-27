@@ -53,7 +53,6 @@ router.get("/:userId", async (req, res, next) => {
       day = dateNow.getDate().toString();
     }
 
-    //pass in date here
     var todaysDate;
 
     if (month < 10) {
@@ -89,16 +88,27 @@ router.get("/:userId", async (req, res, next) => {
     }
 
     if (todaysMeals.length < 1) {
+
       day = (dateNow.getDate() + 1).toString();
 
       if (month < 10) {
         month = "0" + month;
       }
 
+      if (day < 10) {
+        day = "0" + day;
+      }
 
-      todaysDate = year + "-" + month + "-" + day;
+
+      todaysDate = year + "-" + month + "-" + day
 
       dateNow = new Date(todaysDate);
+
+      month = month.split('').splice(1,2).join('')
+      todaysDate = year + "/" + month + "/" + day
+
+
+      
 
       var breakfast = await Meals.create({
         entreeType: "Breakfast",
