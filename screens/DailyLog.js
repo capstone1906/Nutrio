@@ -341,6 +341,8 @@ class DailyLog extends React.Component {
       lunch = foods.todaysMeals[1];
       dinner = foods.todaysMeals[2];
       snacks = foods.todaysMeals[3];
+
+      console.log("HERE", breakfast,lunch, dinner, snacks)
     }
 
     var calorieLimit = 0;
@@ -469,6 +471,7 @@ class DailyLog extends React.Component {
               deleteItems={this.deleteItems}
               addToDelete={this.addToDelete}
               editLog={this.state.editLog}
+              key={1}
             />
             <FoodTimeContainer
               time="Lunch"
@@ -477,6 +480,7 @@ class DailyLog extends React.Component {
               deleteItems={this.deleteItems}
               addToDelete={this.addToDelete}
               editLog={this.state.editLog}
+              key={2}
             />
             <FoodTimeContainer
               time="Dinner"
@@ -485,6 +489,7 @@ class DailyLog extends React.Component {
               deleteItems={this.deleteItems}
               addToDelete={this.addToDelete}
               editLog={this.state.editLog}
+              key={3}
             />
             <FoodTimeContainer
               time="Snacks"
@@ -493,6 +498,7 @@ class DailyLog extends React.Component {
               deleteItems={this.deleteItems}
               addToDelete={this.addToDelete}
               editLog={this.state.editLog}
+              key={4}
             />
             <ExerciseContainer
               todaysCheckIn={this.props.checkIns.todaysCheckIn}
