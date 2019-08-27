@@ -88,11 +88,23 @@ class RecommendedFoods extends React.Component {
     const todayMeal = this.props.meals.todaysMeals.filter(meal => {
       return meal.entreeType === evt ? meal : null;
     })[0];
+    const todayCalories = todayMeal.foodItems.reduce((accum, val) => {
+      return (accum += val.calories);
+    }, 0);
+    const todayCarbs = todayMeal.foodItems.reduce((accum, val) => {
+      return (accum += val.carbohydrates);
+    }, 0);
+    const todayFat = todayMeal.foodItems.reduce((accum, val) => {
+      return (accum += val.fat);
+    }, 0);
+    const todayProtein = todayMeal.foodItems.reduce((accum, val) => {
+      return (accum += val.calories);
+    }, 0);
     if (type !== 'unlimited') {
-      food.calories = dailyGoals.calorieLimit / 4 - todayMeal.totalCalories;
-      food.carbs = dailyGoals.carbLimit / 4 - todayMeal.totalCarbs;
-      food.protein = dailyGoals.proteinLimit / 4 - todayMeal.totalProtein;
-      food.fat = dailyGoals.fatLimit / 4 - todayMeal.totalFat;
+      food.calories = dailyGoals.calorieLimit / 4 - todayCalories;
+      food.carbs = dailyGoals.carbLimit / 4 - todayCarbs;
+      food.protein = dailyGoals.proteinLimit / 4 - todayProtein;
+      food.fat = dailyGoals.fatLimit / 4 - todayFat;
     } else {
       food.calories = 2000;
       food.carbs = 300;

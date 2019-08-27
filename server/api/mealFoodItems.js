@@ -51,12 +51,11 @@ router.post('/:id/:quantity/:grams', async (req, res, next) => {
 
     var quantity = Number(req.params.quantity)
     var grams = parseInt(req.params.grams);
-
     var calsGram = foodItem[0].calories / foodItem[0].weight;
-
     var fatGram = foodItem[0].fat / foodItem[0].weight;
     var carbsGram = foodItem[0].carbohydrates / foodItem[0].weight;
     var proteinGram = foodItem[0].protein / foodItem[0].weight;
+    console.log('protein', proteinGram)
 
     const mealFoodItem = await MealFoodItems.findOrCreate({
       where: {
@@ -69,6 +68,10 @@ router.post('/:id/:quantity/:grams', async (req, res, next) => {
         quantity: grams === 0 ? quantity : 0,
         grams: grams === 1 ? quantity : 0,
         calories: quantity * (grams === 0 ? foodItem[0].calories : calsGram),
+        carbs: quantity * (grams === 0 ? foodItem[0].carbohydrates : carbsGram),
+        fat: quantity * (grams === 0 ? foodItem[0].fat : fatGram),
+        protein: quantity * (grams === 0 ? foodItem[0].protein : proteinGram),
+
       },
     });
 
@@ -79,6 +82,7 @@ router.post('/:id/:quantity/:grams', async (req, res, next) => {
         calories: quantity * (grams === 0 ? foodItem[0].calories : calsGram),
       });
     }
+    console.log(mealFoodItem[0])
 
     res.json({ foodItem, mealFoodItem });
   } catch (err) {
