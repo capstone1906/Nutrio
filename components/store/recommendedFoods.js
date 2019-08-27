@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ngrok } from '../../secret';
+import { ngrok } from '../../secret8';
 
 const GET_RECOMMENDED_FOODS = 'GET_RECOMMENDED_FOODS';
 

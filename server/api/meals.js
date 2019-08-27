@@ -16,6 +16,7 @@ router.get('/:userId', async (req, res, next) => {
         userId: userId,
       },
     });
+
     const meals = mealFoodItems.map(m => {
       return Meals.findOne({
         where: {
@@ -24,6 +25,7 @@ router.get('/:userId', async (req, res, next) => {
         include: [FoodItems],
       });
     });
+
     const response = await Promise.all(meals);
     const dateNow = new Date();
     var todaysDate;
@@ -124,6 +126,7 @@ router.get('/:userId', async (req, res, next) => {
       where: {
         userId: userId,
       },
+      
     });
     const meals2 = mealFoodItems2.map(m => {
       return Meals.findOne({
@@ -133,6 +136,7 @@ router.get('/:userId', async (req, res, next) => {
         include: [FoodItems],
       });
     });
+
     const response2 = await Promise.all(meals);
     res.json(response2);
   } catch (err) {

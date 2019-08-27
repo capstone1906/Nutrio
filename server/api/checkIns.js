@@ -13,8 +13,8 @@ router.get("/", async (req, res, next) => {
       }
     });
 
-    const dateNow = new Date();
-    var todaysDate;
+    const dateNow = new Date()
+    var todaysDate
 
     var year = dateNow.getFullYear().toString();
     var month = (dateNow.getMonth() + 1).toString();
@@ -54,6 +54,8 @@ router.get("/", async (req, res, next) => {
         userId: 1
       });
     }
+
+
 
     res.json({ checkIns, todaysCheckIn });
   } catch (err) {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ngrok } from '../../secret';
+import { ngrok } from '../../secret8';
 
 /**
  * ACTION TYPES
@@ -30,10 +30,10 @@ const deleteFromMeal = (foodId, mealId, meal) => ({
  * THUNK CREATORS
  */
 
-export const deleteMealItem = (foodId, mealId) => async dispatch => {
+export const deleteMealItem = (foodId, mealId, userId) => async dispatch => {
   try {
     const { data } = await axios.delete(
-      `${ngrok}/api/mealFoodItems/${foodId}/${mealId}`
+      `${ngrok}/api/mealFoodItems/${foodId}/${mealId}/${userId}`
     );
     dispatch(deleteFromMeal(foodId, mealId, data));
   } catch (err) {
@@ -132,7 +132,7 @@ export const postFood = (
 ) => async dispatch => {
   try {
     var {data} = await axios.post(
-      `${ngrok}/api/mealFoodItems/${mealId}/${quantity}/${grams}`,
+      `${ngrok}/api/mealFoodItems/${mealId}/${quantity}/${grams}/${userId}`,
       food
     );
     dispatch(getMealsThunk('', userId));

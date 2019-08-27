@@ -80,7 +80,7 @@ class FoodItem extends React.Component {
 
     if (this.state.food.mealFoodItems) {
       food = this.state.food;
-      calories = food.mealFoodItems.calories;
+      calories = food.mealFoodItems.calories
     } else {
       return null;
     }
@@ -310,7 +310,7 @@ class DailyLog extends React.Component {
     var items = [...this.state.itemsToDelete];
     await Promise.all(
       items.map(item => {
-        return this.props.deleteMealItem(item.food.id, item.mealId);
+        return this.props.deleteMealItem(item.food.id, item.mealId, this.props.user.id);
       })
     );
 
@@ -582,8 +582,8 @@ const mapDispatch = dispatch => {
     getMeals: (date, userId) => dispatch(getMealsThunk(date, userId)),
     getUser: () => dispatch(getUserThunk()),
     getCheckIns: () => dispatch(getCheckInsThunk()),
-    deleteMealItem: (foodId, mealId) =>
-      dispatch(deleteMealItem(foodId, mealId)),
+    deleteMealItem: (foodId, mealId, userId) =>
+      dispatch(deleteMealItem(foodId, mealId, userId)),
   };
 };
 

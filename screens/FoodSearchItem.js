@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { connect } from "react-redux";
 import { Input, Button, Divider } from "react-native-elements";
-import {ngrok} from '../secret'
+import { ngrok } from "../secret8";
 
 import {
   ScrollView,
@@ -17,7 +17,6 @@ import {
 import { VictoryPie, VictoryChart, VictoryTheme } from "victory-native";
 import { postFood } from "../components/store/meals";
 import SelectInput from "react-native-select-input-ios";
-
 
 const FoodTimeHeader = props => {
   return (
@@ -62,17 +61,16 @@ class FoodSearchItem extends React.Component {
       protein: this.state.foodInfo.nf_protein,
       carbohydrates: this.state.foodInfo.nf_total_carbohydrate,
       weight: this.state.foodInfo.serving_weight_grams,
-      servingSize: this.state.foodInfo.serving_unit,
+      servingSize: this.state.foodInfo.serving_unit
     };
 
     var quantity = 0;
-    var grams = 0
+    var grams = 0;
 
     if (this.state.serving === 1) {
       grams = 0;
-    }
-    else {
-      grams = 1
+    } else {
+      grams = 1;
     }
 
     if (this.state.quantity === 0) {
@@ -81,11 +79,9 @@ class FoodSearchItem extends React.Component {
       quantity = this.state.quantity;
     }
 
-
     this.props.postFood(newFood, mealId, quantity, grams, this.props.user.id);
-    this.props.navigation.pop()
-    this.props.navigation.pop()
-
+    this.props.navigation.pop();
+    this.props.navigation.pop();
   }
 
   async componentDidMount() {
@@ -111,20 +107,14 @@ class FoodSearchItem extends React.Component {
     food.caloriesGram = food.nf_calories / food.serving_weight_grams;
     food.proteinGram = food.nf_protein / food.serving_weight_grams;
 
-
     food.carbsGram = food.nf_total_carbohydrate / food.serving_weight_grams;
     food.fatGram = food.nf_total_fat / food.serving_weight_grams;
     var quantity = 0;
 
-
-    var findFood = await axios.get(
-      `${ngrok}/api/food/${food.food_name}`
-    );
+    var findFood = await axios.get(`${ngrok}/api/food/${food.food_name}`);
     if (findFood.data) {
       var mealFoodItem = await axios.get(
-        `${ngrok}/api/mealFoodItems/${
-          findFood.data.id
-        }/${mealId}`
+        `${ngrok}/api/mealFoodItems/${findFood.data.id}/${mealId}`
       );
       if (mealFoodItem.data) {
         quantity = mealFoodItem.data.quantity;
@@ -144,7 +134,6 @@ class FoodSearchItem extends React.Component {
       { value: 0, label: "gram" },
       { value: 1, label: `${this.state.foodInfo.serving_unit}` }
     ];
-
 
     return (
       <ScrollView>
@@ -167,28 +156,48 @@ class FoodSearchItem extends React.Component {
                   {this.state.serving === 1 ? (
                     <Text>{this.state.foodInfo.nf_calories}</Text>
                   ) : (
-                    <Text>{Number(this.state.foodInfo.caloriesGram * (this.state.quantity === 0 ? 1 : this.state.quantity)).toFixed(3) }</Text>
+                    <Text>
+                      {Number(
+                        this.state.foodInfo.caloriesGram *
+                          (this.state.quantity === 0 ? 1 : this.state.quantity)
+                      ).toFixed(3)}
+                    </Text>
                   )}
                 </View>
                 <View style={{ flex: 1 }}>
                   {this.state.serving === 1 ? (
                     <Text>{this.state.foodInfo.nf_total_carbohydrate}</Text>
                   ) : (
-                    <Text>{Number(this.state.foodInfo.carbsGram * (this.state.quantity === 0 ? 1 : this.state.quantity)).toFixed(3) }</Text>
+                    <Text>
+                      {Number(
+                        this.state.foodInfo.carbsGram *
+                          (this.state.quantity === 0 ? 1 : this.state.quantity)
+                      ).toFixed(3)}
+                    </Text>
                   )}
                 </View>
                 <View style={{ flex: 1 }}>
                   {this.state.serving === 1 ? (
                     <Text>{this.state.foodInfo.nf_total_fat}</Text>
                   ) : (
-                    <Text>{Number(this.state.foodInfo.fatGram * (this.state.quantity === 0 ? 1 : this.state.quantity)).toFixed(3) }</Text>
+                    <Text>
+                      {Number(
+                        this.state.foodInfo.fatGram *
+                          (this.state.quantity === 0 ? 1 : this.state.quantity)
+                      ).toFixed(3)}
+                    </Text>
                   )}
                 </View>
                 <View style={{ flex: 1 }}>
                   {this.state.serving === 1 ? (
                     <Text>{this.state.foodInfo.nf_protein}</Text>
                   ) : (
-                    <Text>{Number(this.state.foodInfo.proteinGram * (this.state.quantity === 0 ? 1 : this.state.quantity)).toFixed(3) }</Text>
+                    <Text>
+                      {Number(
+                        this.state.foodInfo.proteinGram *
+                          (this.state.quantity === 0 ? 1 : this.state.quantity)
+                      ).toFixed(3)}
+                    </Text>
                   )}
                 </View>
               </View>
@@ -226,8 +235,8 @@ class FoodSearchItem extends React.Component {
 
               <View>
                 <TextInput
-                  keyboardType='number-pad'
-                  keyboardAppearance='dark'
+                  keyboardType="number-pad"
+                  keyboardAppearance="dark"
                   style={{
                     height: 40,
                     borderColor: "gray",
