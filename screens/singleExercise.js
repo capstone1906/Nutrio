@@ -14,7 +14,7 @@ import { ListItem, Divider, Icon, Button, Input } from "react-native-elements";
 import { getCheckInsThunk, updateCheckIn } from "../components/store/checkIns";
 
 const SingleExercise = props => {
-  exercise = props.exercise
+  exercise = props.exercise;
   return (
     <View>
       <Text style={{ fontSize: 18 }}>
@@ -23,7 +23,7 @@ const SingleExercise = props => {
           : null}
       </Text>
       <Text style={{ fontSize: 18 }}>
-        Minutes performed: {props.minutesPerformed}{" "}
+        Minutes performed: {props.minutesPerformed}
       </Text>
 
       <Input
