@@ -81,7 +81,7 @@ class FoodItem extends React.Component {
 
     if (this.state.food.mealFoodItems) {
       food = this.state.food;
-      calories = food.mealFoodItems.calories
+      calories = food.mealFoodItems.calories;
     } else {
       return null;
     }
@@ -311,7 +311,11 @@ class DailyLog extends React.Component {
     var items = [...this.state.itemsToDelete];
     await Promise.all(
       items.map(item => {
-        return this.props.deleteMealItem(item.food.id, item.mealId, this.props.user.id);
+        return this.props.deleteMealItem(
+          item.food.id,
+          item.mealId,
+          this.props.user.id
+        );
       })
     );
 
@@ -342,8 +346,6 @@ class DailyLog extends React.Component {
       lunch = foods.todaysMeals[1];
       dinner = foods.todaysMeals[2];
       snacks = foods.todaysMeals[3];
-
-      console.log("HERE", breakfast,lunch, dinner, snacks)
     }
 
     var calorieLimit = 0;
