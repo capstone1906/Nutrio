@@ -616,15 +616,10 @@ const mapDispatch = dispatch => {
     getMeals: (date, userId) => dispatch(getMealsThunk(date, userId)),
     getUser: () => dispatch(getUserThunk()),
     getCheckIns: () => dispatch(getCheckInsThunk()),
-<<<<<<< HEAD
-    deleteMealItem: (foodId, mealId) =>
-      dispatch(deleteMealItem(foodId, mealId)),
     addToFavorite: (userId, mealId) =>
       dispatch(addToFavoriteMealsThunk(userId, mealId)),
-=======
     deleteMealItem: (foodId, mealId, userId) =>
       dispatch(deleteMealItem(foodId, mealId, userId)),
->>>>>>> ce369dda4f95ce18d05a4d57d4df2d2744fdd4ff
   };
 };
 
