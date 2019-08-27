@@ -1,8 +1,8 @@
-import React from "react";
-import axios from "axios";
-import { connect } from "react-redux";
-import { Input, Button, Divider } from "react-native-elements";
-import {ngrok} from '../secret8'
+import React from 'react';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { Input, Button, Divider } from 'react-native-elements';
+import { ngrok, nixID, nixKey } from '../secret8';
 
 import {
   ScrollView,
@@ -12,11 +12,11 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  Picker
-} from "react-native";
-import { VictoryPie, VictoryChart, VictoryTheme } from "victory-native";
-import { postFood } from "../components/store/meals";
-import SelectInput from "react-native-select-input-ios";
+  Picker,
+} from 'react-native';
+import { VictoryPie, VictoryChart, VictoryTheme } from 'victory-native';
+import { postFood } from '../components/store/meals';
+import SelectInput from 'react-native-select-input-ios';
 
 const FoodTimeHeader = props => {
   return (
@@ -46,13 +46,13 @@ class FoodSearchItem extends React.Component {
       showData: false,
       isOpen: false,
       quantity: 0,
-      serving: 1
+      serving: 1,
     };
     this.postFood = this.postFood.bind(this);
   }
 
   postFood() {
-    var mealId = this.props.navigation.getParam("mealId");
+    var mealId = this.props.navigation.getParam('mealId');
 
     var newFood = {
       food_name: this.state.foodInfo.food_name,
@@ -85,20 +85,20 @@ class FoodSearchItem extends React.Component {
   }
 
   async componentDidMount() {
-    var food = this.props.navigation.getParam("food");
-    var mealId = this.props.navigation.getParam("mealId");
+    var food = this.props.navigation.getParam('food');
+    var mealId = this.props.navigation.getParam('mealId');
 
     const res = await axios.post(
       `https://trackapi.nutritionix.com/v2/natural/nutrients`,
       {
-        query: `${food.food_name}`
+        query: `${food.food_name}`,
       },
       {
         headers: {
-          "x-app-id": "88718124",
-          "x-app-key": "e8e099aa8964c27ceef58fc2ac8d7375",
-          "x-remote-user-id": "0"
-        }
+          'x-app-id': nixID,
+          'x-app-key': nixKey,
+          'x-remote-user-id': '0',
+        },
       }
     );
 
@@ -124,15 +124,15 @@ class FoodSearchItem extends React.Component {
     this.setState({
       foodInfo: food,
       showData: !this.state.showData,
-      quantity
+      quantity,
     });
   }
 
   // eslint-disable-next-line complexity
   render() {
     const options = [
-      { value: 0, label: "gram" },
-      { value: 1, label: `${this.state.foodInfo.serving_unit}` }
+      { value: 0, label: 'gram' },
+      { value: 1, label: `${this.state.foodInfo.serving_unit}` },
     ];
 
     return (
@@ -141,7 +141,7 @@ class FoodSearchItem extends React.Component {
           <View style={styles.foodItemInfo}>
             <View>
               <Text style={styles.info}>{this.state.foodInfo.food_name}</Text>
-              <Divider style={{ backgroundColor: "blue" }} />
+              <Divider style={{ backgroundColor: 'blue' }} />
             </View>
 
             <Image
@@ -201,7 +201,7 @@ class FoodSearchItem extends React.Component {
                   )}
                 </View>
               </View>
-              <Divider style={{ backgroundColor: "blue" }} />
+              <Divider style={{ backgroundColor: 'blue' }} />
             </View>
 
             <View style={styles.servingSize}>
@@ -216,7 +216,7 @@ class FoodSearchItem extends React.Component {
                   onValueChange={(itemValue, itemIndex) => {
                     if (itemValue === 0) {
                       this.setState({
-                        serving: itemValue
+                        serving: itemValue,
                       });
                     } else {
                       this.setState({ serving: itemValue });
@@ -225,7 +225,7 @@ class FoodSearchItem extends React.Component {
                 />
               </View>
 
-              <Divider style={{ backgroundColor: "blue" }} />
+              <Divider style={{ backgroundColor: 'blue' }} />
             </View>
 
             <View style={styles.servingSize}>
@@ -239,9 +239,9 @@ class FoodSearchItem extends React.Component {
                   keyboardAppearance="dark"
                   style={{
                     height: 40,
-                    borderColor: "gray",
+                    borderColor: 'gray',
                     borderWidth: 1,
-                    width: 40
+                    width: 40,
                   }}
                   onChangeText={text => this.setState({ quantity: text })}
                   value={this.state.quantity.toString()}
@@ -249,42 +249,42 @@ class FoodSearchItem extends React.Component {
                 />
               </View>
 
-              <Divider style={{ backgroundColor: "blue" }} />
+              <Divider style={{ backgroundColor: 'blue' }} />
             </View>
 
-            <Divider style={{ backgroundColor: "blue" }} />
+            <Divider style={{ backgroundColor: 'blue' }} />
 
-            <Divider style={{ backgroundColor: "blue" }} />
+            <Divider style={{ backgroundColor: 'blue' }} />
 
             <Button title="add" onPress={() => this.postFood()} />
 
             <VictoryPie
-              colorScale={["crimson", "limegreen", "navy"]}
+              colorScale={['crimson', 'limegreen', 'navy']}
               data={[
                 {
                   x: `Fat: ${this.state.foodInfo.nf_total_fat}g`,
-                  y: this.state.foodInfo.nf_total_fat
+                  y: this.state.foodInfo.nf_total_fat,
                 },
                 {
                   x: `Carbs: ${this.state.foodInfo.nf_total_carbohydrate}g`,
-                  y: this.state.foodInfo.nf_total_carbohydrate
+                  y: this.state.foodInfo.nf_total_carbohydrate,
                 },
                 {
                   x: `Protein: ${this.state.foodInfo.nf_protein}g`,
-                  y: this.state.foodInfo.nf_protein
-                }
+                  y: this.state.foodInfo.nf_protein,
+                },
               ]}
               labelRadius={87}
               style={{
                 labels: {
-                  fill: "white",
+                  fill: 'white',
                   fontSize: 14,
-                  padding: "5px",
-                  margin: "5px"
-                }
+                  padding: '5px',
+                  margin: '5px',
+                },
               }}
             />
-            <Divider style={{ backgroundColor: "blue" }} />
+            <Divider style={{ backgroundColor: 'blue' }} />
           </View>
         ) : null}
       </ScrollView>
@@ -294,52 +294,52 @@ class FoodSearchItem extends React.Component {
 
 const styles = StyleSheet.create({
   FoodName: {
-    fontSize: 20
+    fontSize: 20,
   },
   foodItemInfo: {
-    alignItems: "center",
-    paddingTop: 15
+    alignItems: 'center',
+    paddingTop: 15,
   },
   servingSize: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    width: "100%",
-    maxWidth: 300
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+    maxWidth: 300,
   },
   info: {
-    fontSize: 20
+    fontSize: 20,
   },
   FoodTimeHeader: {
-    flexDirection: "row",
+    flexDirection: 'row',
     height: 40,
-    width: "90%",
-    justifyContent: "space-between"
+    width: '90%',
+    justifyContent: 'space-between',
   },
   size: {
     // marginRight: 250,
     // alignSelf: 'flex-start'
-  }
+  },
 });
 
 FoodSearchItem.navigationOptions = {
   headerTitle: "Today's log",
   headerStyle: {
-    backgroundColor: "#1E90FF"
+    backgroundColor: '#1E90FF',
   },
-  headerTintColor: "white"
+  headerTintColor: 'white',
 };
 
 const mapState = state => {
   return {
     meals: state.meals,
-    user: state.user
+    user: state.user,
   };
 };
 
 const mapDispatch = dispatch => {
   return {
     postFood: (food, mealId, quantity, grams, userId) =>
-      dispatch(postFood(food, mealId, quantity, grams, userId))
+      dispatch(postFood(food, mealId, quantity, grams, userId)),
   };
 };
 

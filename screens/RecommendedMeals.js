@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { getRecommendedMealsThunk } from '../components/store/recommendedMeals';
@@ -13,6 +13,14 @@ const styles = StyleSheet.create({
   },
   button: {
     margin: 5,
+  },
+  loader: {
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    backgroundColor: '#F5ECCD',
   },
 });
 
@@ -33,12 +41,14 @@ class RecommendedMeals extends React.Component {
     super();
     this.state = {
       activeButton: 'Breakfast',
+      loading: true,
     };
     this.handlePress = this.handlePress.bind(this);
     this.postFood = this.postFood.bind(this);
   }
   componentDidMount() {
     this.handlePress(this.state.activeButton);
+    this.setState({ loading: false });
   }
   postFood(foodItems, mealId) {
     foodItems.map(food => {
@@ -60,9 +70,18 @@ class RecommendedMeals extends React.Component {
       }
       this.props.postFood(newFood, mealId, quantity, grams, this.props.user.id);
     });
-    this.props.navigation.navigate('DailyLog')
+    this.props.navigation.navigate('DailyLog');
   }
   async handlePress(evt) {
+    this.setState({
+      loading: true,
+    });
+    setTimeout(
+      function() {
+        this.setState({ loading: false });
+      }.bind(this),
+      350
+    );
     const dailyGoals = this.props.user.dailyGoal;
     const meal = {
       calories: dailyGoals.calorieLimit / 4,
@@ -89,18 +108,24 @@ class RecommendedMeals extends React.Component {
             />
           ))}
         </View>
-        <ScrollView>
-          {this.props.recommendedMeals.length
-            ? this.props.recommendedMeals.map(meal => (
-                <MealCard
-                  key={meal.id}
-                  meal={meal}
-                  postFood={this.postFood}
-                  mealType={this.state.activeButton}
-                />
-              ))
-            : null}
-        </ScrollView>
+        {this.state.loading || !this.props.recommendedMeals.length ? (
+          <View style={styles.loader}>
+            <ActivityIndicator size="large" color="#1E90FF" />
+          </View>
+        ) : (
+          <FlatList
+            data={this.props.recommendedMeals}
+            renderItem={({ item }) => (
+              <MealCard
+                key={item.id}
+                meal={item}
+                postFood={this.postFood}
+                style={styles.flatList}
+                maxToRenderPerBatch={2}
+              />
+            )}
+          />
+        )}
       </View>
     );
   }

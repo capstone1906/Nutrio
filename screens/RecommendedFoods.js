@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   FlatList,
-  List,
   ActivityIndicator,
   AlertIOS,
 } from 'react-native';
@@ -41,17 +40,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// const FoodButton = props => {
-//   return (
-//     <Button
-//       style={styles.button}
-//       title={props.title}
-//       type={props.state === props.title ? 'outline' : 'solid'}
-//       onPress={() => props.handlePress(props.title)}
-//     />
-//   );
-// };
-
 const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
 class RecommendedFoods extends React.Component {
   constructor() {
@@ -59,12 +47,14 @@ class RecommendedFoods extends React.Component {
     this.state = {
       selectedIndex: 0,
       mealType: 'Breakfast',
+      loading: true,
     };
     this.handlePress = this.handlePress.bind(this);
     this.postFood = this.postFood.bind(this);
   }
   componentDidMount() {
     this.handlePress(this.state.selectedIndex);
+    this.setState({ loading: false });
   }
 
   async postFood(food, mealId) {
@@ -91,6 +81,15 @@ class RecommendedFoods extends React.Component {
     }
   }
   async handlePress(evt, type) {
+    this.setState({
+      loading: true,
+    });
+    setTimeout(
+      function() {
+        this.setState({ loading: false });
+      }.bind(this),
+      350
+    );
     let mealType = meals[evt];
     let food = {};
     const dailyGoals = this.props.user.dailyGoal;
@@ -140,7 +139,7 @@ class RecommendedFoods extends React.Component {
             buttonStyle={{ backgroundColor: '#058ED9' }}
           />
         </View>
-        {!this.props.recommendedFoods.length ? (
+        {this.state.loading || !this.props.recommendedFoods.length ? (
           <View style={styles.loader}>
             <ActivityIndicator size="large" color="#1E90FF" />
           </View>
@@ -169,6 +168,7 @@ class RecommendedFoods extends React.Component {
                 mealType={this.state.mealType}
                 postFood={this.postFood}
                 style={styles.flatList}
+                maxToRenderPerBatch={2}
               />
             )}
           />
