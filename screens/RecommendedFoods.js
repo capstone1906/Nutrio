@@ -40,10 +40,6 @@ const styles = StyleSheet.create({
   },
 });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 465d37c430628949585e5e5193e81888d360df25
 const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
 class RecommendedFoods extends React.Component {
   constructor() {
