@@ -8,14 +8,17 @@ const getRecommendedFoods = foods => ({ type: GET_RECOMMENDED_FOODS, foods });
 export const getRecommendedFoodsThunk = food => {
   return async dispatch => {
     try {
-      const { data } = await axios.get(`${ngrok}/api/food/recommendedFoods/food`, {
-        params: {
-          calories: food.calories,
-          carbs: food.carbs,
-          protein: food.protein,
-          fat: food.fats,
-        },
-      });
+      const { data } = await axios.get(
+        `${ngrok}/api/food/recommendedFoods/food`,
+        {
+          params: {
+            calories: food.calories,
+            carbs: food.carbs,
+            protein: food.protein,
+            fat: food.fats,
+          },
+        }
+      );
 
       dispatch(getRecommendedFoods(data));
     } catch (err) {
