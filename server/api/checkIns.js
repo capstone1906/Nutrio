@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { CheckIns } = require("../db/postgres/models/index");
+const { CheckIns, Users } = require("../db/postgres/models/index");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
@@ -63,7 +63,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.put("/:id", async (req, res, next) => {
+router.put("/:id/:userId", async (req, res, next) => {
   try {
     const todaysCheckIn = await CheckIns.findOne({
       where: {
@@ -79,6 +79,17 @@ router.put("/:id", async (req, res, next) => {
       caloriesBurned: newCaloriesBurned,
       weight: req.body.weight
     });
+
+
+    const me = await Users.findOne({
+      where: {
+        id: req.params.userId
+      }
+    })
+
+    await me.update({
+      weight: todaysCheckIn.weight
+    })
 
     res.json(todaysCheckIn);
   } catch (err) {
