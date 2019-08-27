@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 /* eslint-disable max-statements */
 /* eslint-disable complexity */
 import React from 'react';
@@ -356,7 +357,7 @@ class DailyLog extends React.Component {
           quantity = food.mealFoodItems.grams;
           calories = food.calories / food.weight;
         }
-        totalCals += calories * quantity
+        totalCals += calories * quantity;
       });
       lunch.foodItems.forEach(food => {
         let quantity = food.mealFoodItems.quantity;
@@ -365,7 +366,7 @@ class DailyLog extends React.Component {
           quantity = food.mealFoodItems.grams;
           calories = food.calories / food.weight;
         }
-        totalCals += calories * quantity
+        totalCals += calories * quantity;
       });
       dinner.foodItems.forEach(food => {
         let quantity = food.mealFoodItems.quantity;
@@ -374,7 +375,7 @@ class DailyLog extends React.Component {
           quantity = food.mealFoodItems.grams;
           calories = food.calories / food.weight;
         }
-        totalCals += calories * quantity
+        totalCals += calories * quantity;
       });
       snacks.foodItems.forEach(food => {
         let quantity = food.mealFoodItems.quantity;
@@ -383,7 +384,7 @@ class DailyLog extends React.Component {
           quantity = food.mealFoodItems.grams;
           calories = food.calories / food.weight;
         }
-        totalCals += calories * quantity
+        totalCals += calories * quantity;
       });
     }
 
@@ -402,7 +403,6 @@ class DailyLog extends React.Component {
     if (percent > 1.0) {
       barColor = 'crimson';
     }
-
     return (
       <ScrollView style={styles.container}>
         {!this.props.user.activityLevel ||

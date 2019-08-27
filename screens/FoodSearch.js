@@ -16,10 +16,11 @@ import {
   Divider,
   Input,
   SearchBar,
-  Icon
+  Icon,
 } from 'react-native-elements';
 import { Ionicons } from '@expo/vector-icons';
 // import Icon from 'react-native-vector-icons/FontAwesome';
+import { nixID, nixKey } from '../secret8';
 
 export default class FoodSearch extends React.Component {
   constructor() {
@@ -47,9 +48,9 @@ export default class FoodSearch extends React.Component {
       }`,
       {
         headers: {
-          "x-app-id": "88718124",
-          "x-app-key": "e8e099aa8964c27ceef58fc2ac8d7375"
-        }
+          'x-app-id': nixID,
+          'x-app-key': nixKey,
+        },
       }
     );
 
@@ -166,5 +167,4 @@ FoodSearch.navigationOptions = {
     backgroundColor: '#1E90FF',
   },
   headerTintColor: 'white',
-
 };
