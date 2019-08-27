@@ -28,11 +28,15 @@ const FoodTimeHeader = props => {
       <View style={{ flex: 3 }}>
         <Text style={{ fontSize: 18, color: 'white' }}>{props.time}</Text>
       </View>
-      <View>
-        <Button
-          onPress={() => props.addToFavorite(props.user, props.meal.id)}
-        />
-      </View>
+      {props.mealHeader ? (
+        <View>
+          <Button
+            style={{ flex: 1, paddingRight: 60 }}
+            onPress={() => props.addToFavorite(props.user, props.meal.id)}
+            disabled={!props.meal.foodItems.length ? true : false}
+          />
+        </View>
+      ) : null}
       <View style={{ flex: 1 }}>
         <Text style={{ fontSize: 18, color: 'white' }}>Calories</Text>
       </View>
@@ -159,6 +163,7 @@ const FoodTimeContainer = props => {
         meal={props.meal}
         user={props.user}
         addToFavorite={props.addToFavorite}
+        mealHeader={true}
       />
 
       {foodItems.map((food, idx) => {

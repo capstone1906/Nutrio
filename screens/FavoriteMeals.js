@@ -9,8 +9,12 @@ import {
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import MealCard from '../components/MealCard';
-import { getFavoriteMealsThunk } from '../components/store/favoriteMeals';
+import {
+  getFavoriteMealsThunk,
+  removeFromFavoriteMealsThunk,
+} from '../components/store/favoriteMeals';
 import { postFood } from '../components/store/meals';
+
 
 const styles = StyleSheet.create({
   loader: {
@@ -26,6 +30,9 @@ const styles = StyleSheet.create({
 class FavoriteMeals extends Component {
   constructor() {
     super();
+    this.state ={
+      loading: true
+    }
     this.postFood = this.postFood.bind(this);
   }
   postFood(foodItems, mealId) {
@@ -54,25 +61,35 @@ class FavoriteMeals extends Component {
   componentDidMount() {
     this.props.getFavs(this.props.user.id);
   }
+  componentDidUpdate(){
+    if(this.state.loading){
+      this.setState({
+        loading: false
+      })
+    }
+  }
 
   render() {
-    if (!this.props.favoriteMeals.length) {
+    if (this.state.loading) {
       return (
         <View style={styles.loader}>
           <ActivityIndicator size="large" color="#1E90FF" />
         </View>
       );
     } else {
+      console.log(typeof this.props.removeFavorite)
       return (
         <ScrollView>
-          {this.props.favoriteMeals.map(favMeal => (
+          {this.props.favoriteMeals.length ? this.props.favoriteMeals.map(favMeal => (
             <MealCard
               key={favMeal.id}
               meal={favMeal}
               postFood={this.postFood}
               mealType={favMeal.entreeType}
+              favorite={true}
+              removeFavorite={this.props.removeFavorite}
             />
-          ))}
+          )) : (<Text>You have no favorites</Text>)}
         </ScrollView>
       );
     }
@@ -100,6 +117,8 @@ const mapDispatch = dispatch => {
     getFavs: userId => dispatch(getFavoriteMealsThunk(userId)),
     postFood: (food, mealId, quantity, grams, userId) =>
       dispatch(postFood(food, mealId, quantity, grams, userId)),
+    removeFavorite: (userId, mealId) =>
+      dispatch(removeFromFavoriteMealsThunk(userId, mealId)),
   };
 };
 

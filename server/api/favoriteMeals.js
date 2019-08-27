@@ -44,3 +44,19 @@ router.post('/:userId/:mealId', async (req, res, next) => {
     next(err);
   }
 });
+
+router.delete('/:userId/:mealId', async (req, res, next) => {
+  try {
+    console.log('req.params', req.params)
+    const favoriteMeal = await FavoriteMeals.findOne({
+      where: {
+        userId: Number(req.params.userId),
+        mealId: Number(req.params.mealId),
+      },
+    });
+    await favoriteMeal.destroy()
+    res.json(favoriteMeal)
+  } catch (err) {
+    next(err);
+  }
+});
