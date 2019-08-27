@@ -61,7 +61,7 @@ class FoodSearchItem extends React.Component {
       protein: this.state.foodInfo.nf_protein,
       carbohydrates: this.state.foodInfo.nf_total_carbohydrate,
       weight: this.state.foodInfo.serving_weight_grams,
-      servingSize: this.state.foodInfo.serving_unit,
+      servingSize: this.state.foodInfo.serving_unit
     };
 
     var quantity = 0;
