@@ -113,7 +113,7 @@ async function seed() {
       weight: 205 - ((Math.floor(Math.random() * 5) + 10) / 100) * i,
       caloriesBurned: Math.floor(500 - Math.random() * 100),
       caloriesConsumed: Math.floor(1500 - Math.random() * 100),
-      createdAt: new Date(2019, 7, -118 + i),
+      createdAt: new Date(2019, 7, -110 + i),
       userId: 1,
     });
   }
@@ -1351,11 +1351,16 @@ async function seed() {
     });
   }
 
+  // food1 - food20 is breakfast
+  // food21 - food42 is lunch
+  // food43 - food66 is dinner
+  // food67 - food 80 is snacks
+
   // mealFoodItems - Breakfast
   for (let i = 1; i <= 60; i++) {
     let arr = [];
     while (arr.length < 3) {
-      let random = Math.floor(Math.random() * 10) + 1;
+      let random = Math.floor(Math.random() * 20 + 1);
       if (arr.indexOf(random) === -1) arr.push(random);
     }
     for (let j = 0; j < arr.length; j++) {
@@ -1372,24 +1377,7 @@ async function seed() {
   for (let i = 61; i <= 120; i++) {
     let arr = [];
     while (arr.length < 3) {
-      let random = Math.floor(Math.random() * 10) + 1;
-      if (arr.indexOf(random) === -1) arr.push(random);
-    }
-    for (let j = 0; j < arr.length; j++) {
-      const mealItems = await MealFoodItems.create({
-        foodItemId: arr[j] + 10,
-        mealId: i,
-        quantity: 1,
-      });
-      MealFoodItems.beforeCreateSeed(mealItems);
-    }
-  }
-
-  // mealFoodItems - Dinner
-  for (let i = 121; i <= 180; i++) {
-    let arr = [];
-    while (arr.length < 3) {
-      let random = Math.floor(Math.random() * 10) + 1;
+      let random = Math.floor(Math.random() * 22 + 1);
       if (arr.indexOf(random) === -1) arr.push(random);
     }
     for (let j = 0; j < arr.length; j++) {
@@ -1402,16 +1390,33 @@ async function seed() {
     }
   }
 
-  // mealFoodItems - Snacks
-  for (let i = 181; i <= 240; i++) {
+  // mealFoodItems - Dinner
+  for (let i = 121; i <= 180; i++) {
     let arr = [];
     while (arr.length < 3) {
-      let random = Math.floor(Math.random() * 10) + 1;
+      let random = Math.floor(Math.random() * 24 + 1);
       if (arr.indexOf(random) === -1) arr.push(random);
     }
     for (let j = 0; j < arr.length; j++) {
       const mealItems = await MealFoodItems.create({
-        foodItemId: arr[j] + 30,
+        foodItemId: arr[j] + 42,
+        mealId: i,
+        quantity: 1,
+      });
+      MealFoodItems.beforeCreateSeed(mealItems);
+    }
+  }
+
+  // mealFoodItems - Snacks
+  for (let i = 181; i <= 240; i++) {
+    let arr = [];
+    while (arr.length < 3) {
+      let random = Math.floor(Math.random() * 14 + 1);
+      if (arr.indexOf(random) === -1) arr.push(random);
+    }
+    for (let j = 0; j < arr.length; j++) {
+      const mealItems = await MealFoodItems.create({
+        foodItemId: arr[j] + 66,
         mealId: i,
         quantity: 1,
       });
