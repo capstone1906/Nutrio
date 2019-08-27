@@ -68,11 +68,18 @@ class FoodItem extends React.Component {
     };
   }
 
+
   async componentDidMount() {
     await this.setState({
       food: this.props.food,
       mealId: this.props.mealId,
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.food.mealFoodItems.quantity !== this.props.food.mealFoodItems.quantity) {
+      this.setState({food: this.props.food})
+    }
   }
 
   render() {
@@ -154,7 +161,7 @@ const FoodTimeContainer = props => {
         return (
           <FoodItem
             food={food}
-            key={food.id}
+            key={food.food_name}
             navigation={props.navigation}
             mealId={props.meal.id}
             addToDelete={props.addToDelete}
@@ -343,54 +350,21 @@ class DailyLog extends React.Component {
       dinner = foods.todaysMeals[2];
       snacks = foods.todaysMeals[3];
 
-      console.log("HERE", breakfast,lunch, dinner, snacks)
     }
 
     var calorieLimit = 0;
     var totalCals = 0;
+    var calsBurned = 0
 
     if (this.props.user.dailyGoal && foods.todaysMeals.length > 0) {
       calorieLimit = this.props.user.dailyGoal.calorieLimit;
 
-      breakfast.foodItems.forEach(food => {
-        let quantity = food.mealFoodItems.quantity;
-        let calories = food.calories;
-        if (food.mealFoodItems.grams > 0) {
-          quantity = food.mealFoodItems.grams;
-          calories = food.calories / food.weight;
-        }
-        totalCals += calories * quantity;
-      });
-      lunch.foodItems.forEach(food => {
-        let quantity = food.mealFoodItems.quantity;
-        let calories = food.calories;
-        if (food.mealFoodItems.grams > 0) {
-          quantity = food.mealFoodItems.grams;
-          calories = food.calories / food.weight;
-        }
-        totalCals += calories * quantity;
-      });
-      dinner.foodItems.forEach(food => {
-        let quantity = food.mealFoodItems.quantity;
-        let calories = food.calories;
-        if (food.mealFoodItems.grams > 0) {
-          quantity = food.mealFoodItems.grams;
-          calories = food.calories / food.weight;
-        }
-        totalCals += calories * quantity;
-      });
-      snacks.foodItems.forEach(food => {
-        let quantity = food.mealFoodItems.quantity;
-        let calories = food.calories;
-        if (food.mealFoodItems.grams > 0) {
-          quantity = food.mealFoodItems.grams;
-          calories = food.calories / food.weight;
-        }
-        totalCals += calories * quantity;
-      });
+      totalCals = this.props.checkIns.todaysCheckIn.caloriesConsumed
+      calsBurned = this.props.checkIns.todaysCheckIn.caloriesBurned
+
     }
 
-    var percent = Number(totalCals / calorieLimit).toFixed(1);
+    var percent = Number((totalCals.toFixed(0) - calsBurned) / calorieLimit).toFixed(1);
     var barColor;
     if (isNaN(percent)) {
       percent = 0;
@@ -443,10 +417,11 @@ class DailyLog extends React.Component {
 
             <View style={styles.progress}>
               <View
-                style={{ justifyContent: 'center', flexDirection: 'column' }}
+                style={{ justifyContent: 'center', flexDirection: 'column', paddingLeft: 10 }}
               >
-                <Text>Calories: </Text>
-                <Text> {totalCals.toFixed(0)}</Text>
+                <Text>Cals consumed </Text>
+                <Text>- cals burned: </Text>
+                <Text> {totalCals.toFixed(0)} - {calsBurned} = {totalCals.toFixed(0)-calsBurned}</Text>
               </View>
 
               <Progress.Bar

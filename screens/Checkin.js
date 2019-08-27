@@ -77,7 +77,7 @@ class Checkin extends React.Component {
     this.props.updateCheckIn(this.props.checkIns.todaysCheckIn.id, {
       weight: number,
       caloriesBurned: this.state.caloriesBurned
-    });
+    },this.props.user.id);
   };
 
   render() {
@@ -173,7 +173,7 @@ const mapDispatch = dispatch => {
   return {
     getUser: () => dispatch(getUserThunk()),
     getCheckIns: () => dispatch(getCheckInsThunk()),
-    updateCheckIn: (id, checkIn) => dispatch(updateCheckIn(id, checkIn))
+    updateCheckIn: (id, checkIn, userId) => dispatch(updateCheckIn(id, checkIn, userId))
   };
 };
 
