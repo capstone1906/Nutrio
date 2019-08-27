@@ -48,7 +48,7 @@ const getRecommendedMeals = meal => {
   return session
     .run(
       `MATCH ()-[r:HAD_MEAL]->(m:Meal {entreeType: $type})
-    WHERE m.totalCalories < $calories AND  m.totalCarbs < $carbs AND m.totalFat < $fat AND m.totalProtein < $protein
+    WHERE 0 < m.totalCalories < $calories AND 0 < m.totalCarbs < $carbs AND  0 < m.totalFat < $fat AND 0 < m.totalProtein < $protein
     RETURN sum(r.timesEaten) as total, m.id
     ORDER BY total DESC`,
       {
