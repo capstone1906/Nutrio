@@ -3,7 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import { Card, Text, Button } from 'react-native-elements';
 import MealCardChart from './CardChart';
 import { connect } from 'react-redux';
-import totalCalc from './utils/helper'
+import totalCalc from './utils/helper';
+
 
 const styles = StyleSheet.create({
   card: {
@@ -74,6 +75,14 @@ function MealCard(props) {
             props.postFood(props.meal.foodItems, mealId, 0, 0, props.user);
           }}
         />
+        {props.favorite ? (
+          <Button
+            title="Remove From Favorite"
+            onPress={() => {
+              props.removeFavorite(props.user.id, props.meal.id)
+            }}
+          />
+        ) : null}
       </View>
     </Card>
   );
