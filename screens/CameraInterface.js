@@ -8,6 +8,7 @@ import {
   StatusBar,
   StyleSheet,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
@@ -18,6 +19,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import axios from 'axios';
 import SelectMultiple from 'react-native-select-multiple';
+import { nixID, nixKey } from '../secret8';
 
 const { width: winWidth } = Dimensions.get('window');
 const Clarifai = require('clarifai');
@@ -34,6 +36,7 @@ export default class CameraInterface extends React.Component {
     predictions: [],
     chosenImage: null,
     selectedFoods: [],
+    loading: false,
   };
 
   async componentDidMount() {
@@ -75,8 +78,8 @@ export default class CameraInterface extends React.Component {
         },
         {
           headers: {
-            "x-app-id": "88718124",
-            "x-app-key": "e8e099aa8964c27ceef58fc2ac8d7375",
+            'x-app-id': nixID,
+            'x-app-key': nixKey,
             'x-remote-user-id': '0',
           },
         }
@@ -96,7 +99,9 @@ export default class CameraInterface extends React.Component {
     const results = predictions.outputs[0].data.concepts;
 
     var filteredResults = [];
-
+    this.setState({
+      loading: true,
+    });
     for (let i = 0; i < results.length; i++) {
       const ifExist = await this.checkIfExist(results[i]);
       if (ifExist === true) {
@@ -106,7 +111,9 @@ export default class CameraInterface extends React.Component {
         );
       }
     }
-
+    this.setState({
+      loading: false,
+    });
     console.log('filtered:', filteredResults);
 
     this.setState({ chosenImage: photo });
@@ -161,101 +168,115 @@ export default class CameraInterface extends React.Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <StatusBar hidden={true} />
-          {!this.state.chosenImage && (
-            <Camera
-              ref={ref => {
-                this.camera = ref;
-              }}
-              style={{ flex: 1 }}
-              type={this.state.type}
-            >
-              <View style={styles.container}>
-                {/* bottom toolbar */}
-                <Grid style={styles.bottomToolbar}>
-                  <Row>
-                    <Col style={styles.alignCenter}>
-                      <TouchableOpacity>
-                        <Ionicons
-                          onPress={this._pickImage}
-                          name="ios-photos"
-                          color="white"
-                          size={65}
-                        />
-                      </TouchableOpacity>
-                    </Col>
-                    <Col size={2} style={styles.alignCenter}>
-                      <TouchableOpacity>
-                        <Ionicons
-                          onPress={this.objectDetection}
-                          name="ios-camera"
-                          color="white"
-                          size={90}
-                        />
-                      </TouchableOpacity>
-                    </Col>
-                    <Col style={styles.alignCenter}>
-                      <TouchableOpacity>
-                        <Ionicons
-                          onPress={() => {
-                            this.props.navigation.navigate('FoodSearch');
-                          }}
-                          name="md-close"
-                          color="white"
-                          size={75}
-                        />
-                      </TouchableOpacity>
-                    </Col>
-                  </Row>
-                </Grid>
-              </View>
-            </Camera>
-          )}
+          {this.state.loading ? (
+            <View style={styles.loader}>
+              <ActivityIndicator size="large" color="#1E90FF" />
+            </View>
+          ) : (
+            <View style={{ flex: 1 }}>
+              <StatusBar hidden={true} />
+              {!this.state.chosenImage && (
+                <Camera
+                  ref={ref => {
+                    this.camera = ref;
+                  }}
+                  style={{ flex: 1 }}
+                  type={this.state.type}
+                >
+                  <View style={styles.container}>
+                    {/* bottom toolbar */}
+                    <Grid style={styles.bottomToolbar}>
+                      <Row>
+                        <Col style={styles.alignCenter}>
+                          <TouchableOpacity>
+                            <Ionicons
+                              onPress={this._pickImage}
+                              name="ios-photos"
+                              color="white"
+                              size={65}
+                            />
+                          </TouchableOpacity>
+                        </Col>
+                        <Col size={2} style={styles.alignCenter}>
+                          <TouchableOpacity>
+                            <Ionicons
+                              onPress={this.objectDetection}
+                              name="ios-camera"
+                              color="white"
+                              size={90}
+                            />
+                          </TouchableOpacity>
+                        </Col>
+                        <Col style={styles.alignCenter}>
+                          <TouchableOpacity>
+                            <Ionicons
+                              onPress={() => {
+                                this.props.navigation.navigate('FoodSearch');
+                              }}
+                              name="md-close"
+                              color="white"
+                              size={75}
+                            />
+                          </TouchableOpacity>
+                        </Col>
+                      </Row>
+                    </Grid>
+                  </View>
+                </Camera>
+              )}
 
-          {this.state.chosenImage && (
-            <View>
-              <SelectMultiple
-                labelStyle={{ fontSize: 25 }}
-                checkboxStyle={{ width: 27, height: 27, marginRight: 15 }}
-                items={predictions}
-                selectedItems={this.state.selectedFoods}
-                onSelectionsChange={this.onSelectionsChange}
-                style={{ marginBottom: 37 }}
-                keyExtractor={(item, index) => index.toString()}
-              />
-              <Grid style={styles.resultToolbar}>
-                <Row>
-                  <Col>
-                    <TouchableOpacity style={{ backgroundColor: '#d9534e' }}>
-                      <Ionicons
-                        style={styles.closeButton}
-                        onPress={() => {
-                          this.props.navigation.navigate('FoodSearch');
-                        }}
-                        name="md-close"
-                        color="white"
-                        size={35}
-                      />
-                    </TouchableOpacity>
-                  </Col>
-                  <Col>
-                    <TouchableOpacity style={{ backgroundColor: '#337ab7' }}>
-                      <Ionicons
-                        style={styles.closeButton}
-                        onPress={() => {
-                          this.props.navigation.navigate('QuickAddFood', {
-                            foodsSelected: this.state.selectedFoods,
-                            mealId: this.props.navigation.getParam('mealId'),
-                          });
-                        }}
-                        name="md-checkmark"
-                        color="white"
-                        size={35}
-                      />
-                    </TouchableOpacity>
-                  </Col>
-                </Row>
-              </Grid>
+              {this.state.chosenImage && (
+                <View>
+                  <SelectMultiple
+                    labelStyle={{ fontSize: 25 }}
+                    checkboxStyle={{ width: 27, height: 27, marginRight: 15 }}
+                    items={predictions}
+                    selectedItems={this.state.selectedFoods}
+                    onSelectionsChange={this.onSelectionsChange}
+                    style={{ marginBottom: 37 }}
+                    keyExtractor={(item, index) => index.toString()}
+                  />
+                  <Grid style={styles.resultToolbar}>
+                    <Row>
+                      <Col>
+                        <TouchableOpacity
+                          style={{ backgroundColor: '#d9534e' }}
+                        >
+                          <Ionicons
+                            style={styles.closeButton}
+                            onPress={() => {
+                              this.props.navigation.navigate('FoodSearch');
+                            }}
+                            name="md-close"
+                            color="white"
+                            size={35}
+                          />
+                        </TouchableOpacity>
+                      </Col>
+                      <Col>
+                        <TouchableOpacity
+                          style={{ backgroundColor: '#337ab7' }}
+                        >
+                          <Ionicons
+                            style={styles.closeButton}
+                            onPress={() => {
+                              this.props.navigation.navigate('QuickAddFood', {
+                                foodsSelected: this.state.selectedFoods,
+                                mealId: this.props.navigation.getParam(
+                                  'mealId'
+                                ),
+                              });
+                            }}
+                            name="md-checkmark"
+                            color="white"
+                            size={35}
+                          />
+                        </TouchableOpacity>
+                      </Col>
+                    </Row>
+                  </Grid>
+                </View>
+              )}
             </View>
           )}
         </View>
@@ -299,12 +320,20 @@ const styles = StyleSheet.create({
     height: 37,
     bottom: 0,
   },
+  loader: {
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    backgroundColor: '#F5ECCD',
+  },
 });
 
 CameraInterface.navigationOptions = {
-  headerTitle: "Food Scanner",
+  headerTitle: 'Food Scanner',
   headerStyle: {
-    backgroundColor: "#1E90FF"
+    backgroundColor: '#1E90FF',
   },
-  headerTintColor: "white"
+  headerTintColor: 'white',
 };

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 /* eslint-disable max-statements */
 /* eslint-disable complexity */
 import React from 'react';
@@ -413,7 +414,6 @@ class DailyLog extends React.Component {
     if (percent > 1.0) {
       barColor = 'crimson';
     }
-
     return (
       <ScrollView style={styles.container}>
         {!this.props.user.activityLevel ||
