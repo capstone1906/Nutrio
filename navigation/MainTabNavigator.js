@@ -49,6 +49,7 @@ const MealsStack = createStackNavigator(
     Meals: Meals,
     RecommendedMeals: RecommendedMeals,
     RecommendedFoods: RecommendedFoods,
+    DailyLog: DailyLog
   },
   config
 );

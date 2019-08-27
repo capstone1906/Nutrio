@@ -5,11 +5,12 @@ import {
   FlatList,
   List,
   ActivityIndicator,
+  AlertIOS,
 } from 'react-native';
 import { getRecommendedFoodsThunk } from '../components/store/recommendedFoods';
 import { connect } from 'react-redux';
 import FoodCard from '../components/FoodCard';
-import { Button, Text } from 'react-native-elements';
+import { Button, Text, ButtonGroup } from 'react-native-elements';
 import { postFood } from '../components/store/meals';
 
 const styles = StyleSheet.create({
@@ -40,32 +41,33 @@ const styles = StyleSheet.create({
   },
 });
 
-const FoodButton = props => {
-  return (
-    <Button
-      style={styles.button}
-      title={props.title}
-      type={props.state === props.title ? 'outline' : 'solid'}
-      onPress={() => props.handlePress(props.title)}
-    />
-  );
-};
+// const FoodButton = props => {
+//   return (
+//     <Button
+//       style={styles.button}
+//       title={props.title}
+//       type={props.state === props.title ? 'outline' : 'solid'}
+//       onPress={() => props.handlePress(props.title)}
+//     />
+//   );
+// };
 
 const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
 class RecommendedFoods extends React.Component {
   constructor() {
     super();
     this.state = {
-      activeButton: 'Breakfast',
+      selectedIndex: 0,
+      mealType: 'Breakfast',
     };
     this.handlePress = this.handlePress.bind(this);
     this.postFood = this.postFood.bind(this);
   }
   componentDidMount() {
-    this.handlePress(this.state.activeButton);
+    this.handlePress(this.state.selectedIndex);
   }
 
-  postFood(food, mealId) {
+  async postFood(food, mealId) {
     let newFood = {
       food_name: food.food_name,
       calories: food.calories,
@@ -77,16 +79,23 @@ class RecommendedFoods extends React.Component {
     };
     let quantity = 1;
     let grams = 0;
-    this.props.postFood(newFood, mealId, quantity, grams, this.props.user.id);
-
-    this.props.navigation.pop();
-    this.props.navigation.pop();
+    const foodRes = await this.props.postFood(
+      newFood,
+      mealId,
+      quantity,
+      grams,
+      this.props.user.id
+    );
+    if (foodRes.foodItem) {
+      AlertIOS.alert('Success!!!!', `Added to ${this.state.mealType}`);
+    }
   }
   async handlePress(evt, type) {
+    let mealType = meals[evt];
     let food = {};
     const dailyGoals = this.props.user.dailyGoal;
     const todayMeal = this.props.meals.todaysMeals.filter(meal => {
-      return meal.entreeType === evt ? meal : null;
+      return meal.entreeType === mealType ? meal : null;
     })[0];
     const todayCalories = todayMeal.foodItems.reduce((accum, val) => {
       return (accum += val.calories);
@@ -114,21 +123,22 @@ class RecommendedFoods extends React.Component {
 
     await this.props.getRecs(food);
     this.setState({
-      activeButton: evt,
+      selectedIndex: evt,
+      mealType,
     });
   }
   render() {
     return (
       <View>
-        <View style={styles.buttonContainer}>
-          {meals.map((meal, idx) => (
-            <FoodButton
-              key={idx}
-              title={meal}
-              handlePress={this.handlePress}
-              state={this.state.activeButton}
-            />
-          ))}
+        <View>
+          <ButtonGroup
+            onPress={this.handlePress}
+            selectedIndex={this.state.selectedIndex}
+            buttons={['Breakfast', 'Lunch', 'Dinner', 'Snacks']}
+            containerStyle={{ height: 50, marginRight: 20 }}
+            selectedTextStyle={{ color: 'white' }}
+            buttonStyle={{ backgroundColor: '#058ED9' }}
+          />
         </View>
         {!this.props.recommendedFoods.length ? (
           <View style={styles.loader}>
@@ -139,12 +149,12 @@ class RecommendedFoods extends React.Component {
             this.props.checkIns.todaysCheckIn.caloriesBurned ? (
           <View>
             <Text h1 style={styles.warningText}>
-              {`You've hit your calorie limit for ${this.state.activeButton}`}
+              {`You've hit your calorie limit for ${this.state.mealType}`}
             </Text>
             <Button
               title="Click to remove calorie and macro limit"
               onPress={() => {
-                this.handlePress(this.state.activeButton, 'unlimited');
+                this.handlePress(this.state.selectedIndex, 'unlimited');
               }}
               style={styles.warningButton}
             />
@@ -156,7 +166,7 @@ class RecommendedFoods extends React.Component {
               <FoodCard
                 key={item.id}
                 food={item}
-                mealType={this.state.activeButton}
+                mealType={this.state.mealType}
                 postFood={this.postFood}
                 style={styles.flatList}
               />
