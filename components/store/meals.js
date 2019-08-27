@@ -131,11 +131,12 @@ export const postFood = (
   userId
 ) => async dispatch => {
   try {
-    var res2 = await axios.post(
+    var {data} = await axios.post(
       `${ngrok}/api/mealFoodItems/${mealId}/${quantity}/${grams}`,
       food
     );
     dispatch(getMealsThunk('', userId));
+    return data
   } catch (err) {
     console.error(err);
   }
