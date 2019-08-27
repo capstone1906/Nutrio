@@ -8,6 +8,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { getUserThunk } from "../components/store/user";
 import { getCheckInsThunk, updateCheckIn } from "../components/store/checkIns";
 import Exercise from "./exercise";
+import { HitTestResultTypes } from "expo/build/AR";
 
 class Checkin extends React.Component {
   constructor() {
@@ -34,28 +35,36 @@ class Checkin extends React.Component {
       updatedWeight: "0",
       minutesPerformed: 0,
       caloriesBurned: 0,
-      selectedExercise: {}
+      selectedExercise: {},
     };
     this.updateLog = this.updateLog.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.selectExercise = this.selectExercise.bind(this);
+    this.disableInput = this.disableInput.bind(this)
   }
 
   selectExercise(exercise) {
-    this.setState({ selectedExercise: exercise });
+    this.setState({ selectedExercise: exercise,showInput: true });
+  }
+
+  disableInput() {
+    if(this.state.selectedExercise.met) {
+      this.setState({selectedExercise: {}})
+    }
   }
 
   handleChange(event) {
     var text = event.nativeEvent.text;
+    var caloriesBurned = (
+      this.state.selectedExercise.met *
+      (this.props.user.weight / 2.2) *
+      (text / 60)
+    ).toFixed(0);
 
     this.setState({
       minutesPerformed: text,
-      caloriesBurned: (
-        this.state.exercise.met *
-        (this.props.user.weight / 2.2) *
-        (text / 60)
-      ).toFixed(0)
-    });
+      caloriesBurned: parseInt(caloriesBurned),
+    })
   }
 
   componentDidMount = () => {
@@ -64,17 +73,10 @@ class Checkin extends React.Component {
   };
 
   updateLog = () => {
-    // var cals = this.state.caloriesBurned;
-    // if (isNaN(this.state.caloriesBurned)) {
-    //   cals = 0;
-    // }
-    // this.props.updateCheckIn(this.props.checkIns.todaysCheckIn.id, {
-    //   caloriesBurned: cals
-    // });
-
     let number = Number(this.state.updatedWeight + ".0");
     this.props.updateCheckIn(this.props.checkIns.todaysCheckIn.id, {
-      weight: number
+      weight: number,
+      caloriesBurned: this.state.caloriesBurned
     });
   };
 
@@ -116,6 +118,9 @@ class Checkin extends React.Component {
           selectExercise={this.selectExercise}
           handleChange={this.handleChange}
           selectedExercise={this.state.selectedExercise}
+          caloriesBurned={this.state.caloriesBurned}
+          minutesPerformed={this.state.minutesPerformed}
+          disableInput={this.disableInput}
         />
 
         <View style={styles.submit}>

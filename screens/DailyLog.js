@@ -437,10 +437,6 @@ class DailyLog extends React.Component {
                   this.props.getMeals(date, this.props.user.id);
                 }}
               />
-              <Button
-                onPress={() => this.props.navigation.navigate('Checkin')}
-                title="Check-In"
-              />
             </View>
 
             <View style={styles.progress}>

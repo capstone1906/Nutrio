@@ -32,6 +32,7 @@ export const getCheckInsThunk = () => async dispatch => {
 export const updateCheckIn = (id, checkIn) => async dispatch => {
   try {
     var res2 = await axios.put(`${ngrok}/api/checkIns/${id}`, checkIn);
+
     var res = await axios.get(`${ngrok}/api/checkIns/`);
     dispatch(getCheckIns(res.data));
   } catch (err) {

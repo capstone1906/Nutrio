@@ -71,10 +71,11 @@ router.put("/:id", async (req, res, next) => {
 
     var newCaloriesBurned =
       parseInt(todaysCheckIn.caloriesBurned) +
-      parseInt(req.body.caloriesBurned);
+      parseInt(req.body.caloriesBurned || 0);
 
     await todaysCheckIn.update({
-      caloriesBurned: newCaloriesBurned
+      caloriesBurned: newCaloriesBurned,
+      weight: req.body.weight
     });
 
     res.json(todaysCheckIn);
