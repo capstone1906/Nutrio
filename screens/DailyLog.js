@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 import DatePicker from 'react-native-datepicker';
 import { getMealsThunk, deleteMealItem } from '../components/store/meals';
 import { getUserThunk } from '../components/store/user';
+import { addToFavoriteMealsThunk } from '../components/store/favoriteMeals';
 
 import { Button, Divider, Icon } from 'react-native-elements';
 
@@ -25,6 +26,11 @@ const FoodTimeHeader = props => {
     <View style={styles.FoodTimeHeader}>
       <View style={{ flex: 3 }}>
         <Text style={{ fontSize: 18, color: 'white' }}>{props.time}</Text>
+      </View>
+      <View>
+        <Button
+          onPress={() => props.addToFavorite(props.user, props.meal.id)}
+        />
       </View>
       <View style={{ flex: 1 }}>
         <Text style={{ fontSize: 18, color: 'white' }}>Calories</Text>
@@ -41,7 +47,7 @@ const ExerciseContainer = props => {
 
   return (
     <View style={styles.FoodTimeContainer}>
-      <FoodTimeHeader time={props.time} />
+      <FoodTimeHeader time={props.time} meals={props.meals} />
       <View style={styles.foodItem}>
         <View style={{ flex: 2, paddingRight: 80 }}>
           <Text style={styles.foodName}>Calories Burned</Text>
@@ -147,7 +153,12 @@ const FoodTimeContainer = props => {
 
   return (
     <View style={styles.FoodTimeContainer}>
-      <FoodTimeHeader time={props.time} />
+      <FoodTimeHeader
+        time={props.time}
+        meal={props.meal}
+        user={props.user}
+        addToFavorite={props.addToFavorite}
+      />
 
       {foodItems.map((food, idx) => {
         return (
@@ -356,7 +367,7 @@ class DailyLog extends React.Component {
           quantity = food.mealFoodItems.grams;
           calories = food.calories / food.weight;
         }
-        totalCals += calories * quantity
+        totalCals += calories * quantity;
       });
       lunch.foodItems.forEach(food => {
         let quantity = food.mealFoodItems.quantity;
@@ -365,7 +376,7 @@ class DailyLog extends React.Component {
           quantity = food.mealFoodItems.grams;
           calories = food.calories / food.weight;
         }
-        totalCals += calories * quantity
+        totalCals += calories * quantity;
       });
       dinner.foodItems.forEach(food => {
         let quantity = food.mealFoodItems.quantity;
@@ -374,7 +385,7 @@ class DailyLog extends React.Component {
           quantity = food.mealFoodItems.grams;
           calories = food.calories / food.weight;
         }
-        totalCals += calories * quantity
+        totalCals += calories * quantity;
       });
       snacks.foodItems.forEach(food => {
         let quantity = food.mealFoodItems.quantity;
@@ -383,7 +394,7 @@ class DailyLog extends React.Component {
           quantity = food.mealFoodItems.grams;
           calories = food.calories / food.weight;
         }
-        totalCals += calories * quantity
+        totalCals += calories * quantity;
       });
     }
 
@@ -437,6 +448,10 @@ class DailyLog extends React.Component {
                   this.props.getMeals(date, this.props.user.id);
                 }}
               />
+              <Button
+                title="Fav Meals"
+                onPress={() => this.props.navigation.navigate('FavoriteMeals')}
+              />
             </View>
 
             <View style={styles.progress}>
@@ -469,6 +484,8 @@ class DailyLog extends React.Component {
               deleteItems={this.deleteItems}
               addToDelete={this.addToDelete}
               editLog={this.state.editLog}
+              user={this.props.user.id}
+              addToFavorite={this.props.addToFavorite}
             />
             <FoodTimeContainer
               time="Lunch"
@@ -477,6 +494,8 @@ class DailyLog extends React.Component {
               deleteItems={this.deleteItems}
               addToDelete={this.addToDelete}
               editLog={this.state.editLog}
+              user={this.props.user.id}
+              addToFavorite={this.props.addToFavorite}
             />
             <FoodTimeContainer
               time="Dinner"
@@ -485,6 +504,8 @@ class DailyLog extends React.Component {
               deleteItems={this.deleteItems}
               addToDelete={this.addToDelete}
               editLog={this.state.editLog}
+              user={this.props.user.id}
+              addToFavorite={this.props.addToFavorite}
             />
             <FoodTimeContainer
               time="Snacks"
@@ -493,6 +514,8 @@ class DailyLog extends React.Component {
               deleteItems={this.deleteItems}
               addToDelete={this.addToDelete}
               editLog={this.state.editLog}
+              user={this.props.user.id}
+              addToFavorite={this.props.addToFavorite}
             />
             <ExerciseContainer
               todaysCheckIn={this.props.checkIns.todaysCheckIn}
@@ -584,6 +607,8 @@ const mapDispatch = dispatch => {
     getCheckIns: () => dispatch(getCheckInsThunk()),
     deleteMealItem: (foodId, mealId) =>
       dispatch(deleteMealItem(foodId, mealId)),
+    addToFavorite: (userId, mealId) =>
+      dispatch(addToFavoriteMealsThunk(userId, mealId)),
   };
 };
 

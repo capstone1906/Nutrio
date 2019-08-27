@@ -41,16 +41,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// const FoodButton = props => {
-//   return (
-//     <Button
-//       style={styles.button}
-//       title={props.title}
-//       type={props.state === props.title ? 'outline' : 'solid'}
-//       onPress={() => props.handlePress(props.title)}
-//     />
-//   );
-// };
 
 const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
 class RecommendedFoods extends React.Component {

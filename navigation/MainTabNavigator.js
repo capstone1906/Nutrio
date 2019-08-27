@@ -21,6 +21,7 @@ import Exercise from '../screens/exercise';
 import SingleExercise from '../screens/singleExercise';
 import QuickAddFood from '../screens/QuickAddFood';
 import Checkin from '../screens/Checkin';
+import FavoriteMeals from '../screens/FavoriteMeals'
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -94,6 +95,7 @@ const DailyLogStack = createStackNavigator(
     SingleExercise: SingleExercise,
     FoodSearchItem: FoodSearchItem,
     Checkin: Checkin,
+    FavoriteMeals: FavoriteMeals
   },
   config
 );
