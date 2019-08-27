@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ngrok } from '../../secret';
+import { ngrok } from '../../secret8';
 
 /**
  * ACTION TYPES
@@ -20,14 +20,14 @@ const getExercises = exercises => ({ type: GET_EXERCISES, exercises });
  * THUNK CREATORS
  */
 
-export const getExercisesThunk = (name) => async dispatch => {
+export const getExercisesThunk = name => async dispatch => {
   try {
     var res = await axios.get(`${ngrok}/api/exercises/${name}`);
     dispatch(getExercises(res.data));
   } catch (err) {
     console.error(err);
   }
-}
+};
 
 /**
  * REDUCER
