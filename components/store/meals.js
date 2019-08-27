@@ -30,10 +30,10 @@ const deleteFromMeal = (foodId, mealId, meal) => ({
  * THUNK CREATORS
  */
 
-export const deleteMealItem = (foodId, mealId) => async dispatch => {
+export const deleteMealItem = (foodId, mealId, userId) => async dispatch => {
   try {
     const { data } = await axios.delete(
-      `${ngrok}/api/mealFoodItems/${foodId}/${mealId}`
+      `${ngrok}/api/mealFoodItems/${foodId}/${mealId}/${userId}`
     );
     dispatch(deleteFromMeal(foodId, mealId, data));
   } catch (err) {
@@ -43,7 +43,10 @@ export const deleteMealItem = (foodId, mealId) => async dispatch => {
 
 export const getMealsThunk = (dateVar, userId) => async dispatch => {
   try {
-    var res = await axios.get(`${ngrok}/api/meals/${userId}`);
+    var res = await axios.get(`${ngrok}/api/meals/${userId}`, {params: {
+      date: dateVar
+    }});
+    
     var todaysDate = dateVar;
     if (!dateVar) {
       todaysDate = new Date();
@@ -131,8 +134,8 @@ export const postFood = (
   userId
 ) => async dispatch => {
   try {
-    var { data } = await axios.post(
-      `${ngrok}/api/mealFoodItems/${mealId}/${quantity}/${grams}`,
+    var {data} = await axios.post(
+      `${ngrok}/api/mealFoodItems/${mealId}/${quantity}/${grams}/${userId}`,
       food
     );
     dispatch(getMealsThunk('', userId));
