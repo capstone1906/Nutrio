@@ -60,8 +60,7 @@ class RecommendedMeals extends React.Component {
       }
       this.props.postFood(newFood, mealId, quantity, grams, this.props.user.id);
     });
-    this.props.navigation.pop();
-    this.props.navigation.pop();
+    this.props.navigation.navigate('DailyLog')
   }
   async handlePress(evt) {
     const dailyGoals = this.props.user.dailyGoal;
