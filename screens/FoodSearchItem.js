@@ -154,7 +154,7 @@ class FoodSearchItem extends React.Component {
               <View style={styles.FoodTimeHeader}>
                 <View style={{ flex: 1 }}>
                   {this.state.serving === 1 ? (
-                    <Text style={styles.headerName}>
+                    <Text style={styles.values}>
                       {Math.floor(
                         this.state.foodInfo.nf_calories *
                           (this.state.quantity === 0 ? 1 : this.state.quantity)
@@ -381,6 +381,10 @@ const styles = StyleSheet.create({
   headerName:{
     fontWeight: '700',
     fontSize: 18
+  },
+  values:{
+    fontWeight: '500',
+    fontSize: 16
   }
 });
 
