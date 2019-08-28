@@ -7,7 +7,7 @@ router.get('/', async (req, res, next) => {
   try {
     const me = await Users.findOne({
       where: {
-        id: 1, //fix later
+        id: 1 //fix later
       },
       include: [DailyGoals, LongTermGoals],
     });
