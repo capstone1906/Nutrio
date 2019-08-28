@@ -563,6 +563,7 @@ class DailyLog extends React.Component {
                 <Text style={{ fontSize: 10 }}>burned</Text>
                 <Text> </Text>
                 <Text style={{ fontSize: 10 }}> remaining </Text>
+
               </View>
 
               <View
@@ -584,6 +585,7 @@ class DailyLog extends React.Component {
                   <Text style={{ fontSize: 16, fontWeight: 700 }}>
                     {totalCals.toFixed(0) - calsBurned}
                   </Text>
+
 
                   <Text style={{ fontSize: 10 }}> total </Text>
                 </View>
