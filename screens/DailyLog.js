@@ -1,7 +1,7 @@
 /* eslint-disable react/no-multi-comp */
 /* eslint-disable max-statements */
 /* eslint-disable complexity */
-import React from 'react';
+import React from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -10,38 +10,38 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert
-} from 'react-native';
-import { connect } from 'react-redux';
+} from "react-native";
+import { connect } from "react-redux";
 
-import DatePicker from 'react-native-datepicker';
-import { getMealsThunk, deleteMealItem } from '../components/store/meals';
-import { getUserThunk } from '../components/store/user';
-import { addToFavoriteMealsThunk } from '../components/store/favoriteMeals';
+import DatePicker from "react-native-datepicker";
+import { getMealsThunk, deleteMealItem } from "../components/store/meals";
+import { getUserThunk } from "../components/store/user";
+import { addToFavoriteMealsThunk } from "../components/store/favoriteMeals";
 
-import { Button, Divider, Icon } from 'react-native-elements';
+import { Button, Divider, Icon } from "react-native-elements";
 
-import * as Progress from 'react-native-progress';
-import { getCheckInsThunk } from '../components/store/checkIns';
+import * as Progress from "react-native-progress";
+import { getCheckInsThunk } from "../components/store/checkIns";
 
 const FoodTimeHeader = props => {
   return (
     <View style={styles.FoodTimeHeader}>
       <View style={{ flex: 3 }}>
-        <Text style={{ fontSize: 18, color: 'white' }}>{props.time}</Text>
+        <Text style={{ fontSize: 18, color: "white", fontWeight: 500 }}>{props.time}</Text>
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 18, color: 'white' }}>Calories</Text>
+        <Text style={{ fontSize: 18, color: "white", fontWeight: 500 }}>Calories</Text>
       </View>
       {props.mealHeader ? (
         <View>
           <Icon
-            name={!props.meal.foodItems.length ? 'star-outline' : 'star-face'}
-            disabledStyle={{ backgroundColor: '#1E90FF' }}
+            name={!props.meal.foodItems.length ? "star-outline" : "star-face"}
+            disabledStyle={{ backgroundColor: "#1E90FF" }}
             color="#FFFF86"
             type="material-community"
             onPress={() => {
               props.addToFavorite(props.user, props.meal.id);
-              Alert.alert('Success!!', 'Added to Favorite Meals');
+              Alert.alert("Success!!", "Added to Favorite Meals");
             }}
             disabled={!props.meal.foodItems.length}
           />
@@ -70,7 +70,7 @@ const ExerciseContainer = props => {
         </View>
       </View>
 
-      <Divider style={{ backgroundColor: 'blue' }} />
+      <Divider style={{ backgroundColor: "blue" }} />
     </View>
   );
 };
@@ -81,14 +81,14 @@ class FoodItem extends React.Component {
     this.state = {
       pressed: false,
       food: {},
-      mealId: 0,
+      mealId: 0
     };
   }
 
   async componentDidMount() {
     await this.setState({
       food: this.props.food,
-      mealId: this.props.mealId,
+      mealId: this.props.mealId
     });
   }
 
@@ -104,13 +104,16 @@ class FoodItem extends React.Component {
   render() {
     var food = {};
     var calories = 0;
+    var foodName = ''
 
     if (this.state.food.mealFoodItems) {
       food = this.state.food;
       calories = food.mealFoodItems.calories;
+      foodName = food.food_name.charAt(0).toUpperCase() + food.food_name.slice(1)
     } else {
       return null;
     }
+
 
     return (
       <View key={food.food_name} backgroundColor="white">
@@ -122,9 +125,9 @@ class FoodItem extends React.Component {
                   this.setState({ pressed: !this.state.pressed });
                 }
               : () => {
-                  this.props.navigation.navigate('FoodSearchItem', {
+                  this.props.navigation.navigate("FoodSearchItem", {
                     food: food,
-                    mealId: this.state.mealId,
+                    mealId: this.state.mealId
                   });
                 }
           }
@@ -134,14 +137,14 @@ class FoodItem extends React.Component {
               <View style={{ paddingRight: 10 }}>
                 <Icon
                   type="material-community"
-                  name={this.state.pressed ? 'square' : 'square-outline'}
+                  name={this.state.pressed ? "square" : "square-outline"}
                   color="black"
                 />
               </View>
             ) : null}
 
             <View style={{ flex: 2, paddingRight: 80 }}>
-              <Text style={styles.foodName}>{food.food_name}</Text>
+              <Text style={styles.foodName}>{foodName}</Text>
 
               {food.mealFoodItems.quantity > 0 ? (
                 <Text style={styles.foodAmount}>
@@ -159,7 +162,7 @@ class FoodItem extends React.Component {
             </View>
           </View>
         </TouchableOpacity>
-        <Divider style={{ backgroundColor: 'blue' }} />
+        <Divider style={{ backgroundColor: "blue" }} />
       </View>
     );
   }
@@ -196,15 +199,23 @@ const FoodTimeContainer = props => {
         );
       })}
 
+
+    <View style={{marginLeft: 100}}> 
       <Button
         buttonStyle={styles.addFoodButton}
         title="Add food"
         onPress={() => {
-          props.navigation.navigate('FoodSearch', {
-            mealId: props.meal.id,
+          props.navigation.navigate("FoodSearch", {
+            mealId: props.meal.id
           });
         }}
+        icon={{
+          name: "plus-circle-outline",
+          type: "material-community",
+          color: "white"
+        }}
       />
+      </View>
     </View>
   );
 };
@@ -221,26 +232,41 @@ class DailyLog extends React.Component {
     var day = dateNow.getDate().toString();
 
     if (month < 10) {
-      month = '0' + month;
+      month = "0" + month;
     }
     if (day < 10) {
-      day = '0' + day;
+      day = "0" + day;
     }
 
-    todaysDate = year + '-' + month + '-' + day;
+    todaysDate = year + "-" + month + "-" + day;
 
     this.state = {
       date: todaysDate,
       meals: [],
       editLog: false,
       showDatePicker: false,
-      itemsToDelete: [],
+      itemsToDelete: []
     };
 
     this.deleteItems = this.deleteItems.bind(this);
     this.resetCaloriesBurned = this.resetCaloriesBurned.bind(this);
     this.toggleLog = this.toggleLog.bind(this);
     this.addToDelete = this.addToDelete.bind(this);
+    this.dateChange = this.dateChange.bind(this)
+  }
+
+  dateChange(date) {
+    this.setState({ date: date });
+    this.props.getMeals(date, this.props.user.id);
+
+    this.props.navigation.setParams({
+      toggleLog: this.toggleLog,
+      itemsToDelete: this.state.itemsToDelete,
+      deleteItems: this.deleteItems,
+      navigate: this.props.navigation.navigate,
+      date: date,
+      dateChange: this.dateChange
+    });
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -250,18 +276,50 @@ class DailyLog extends React.Component {
       itemsToDelete = params.itemsToDelete;
     }
 
+
     return {
-      headerTitle: 'Daily log',
+      headerTitle: ({ focused }) => (
+        <View style={styles.date}>
+        <DatePicker
+          style={{ width: 150, borderColor: 'white' }}
+          date={params.date}
+          mode="date"
+          placeholder="select date"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: "absolute",
+              left: 0,
+              top: 4,
+              marginLeft: 0,
+              color: 'white'
+            },
+            dateInput: {
+              marginLeft: 36,
+              color: 'white'
+            },
+            dateText: {
+              color: 'white'
+            }
+          }}
+          onDateChange={date => {
+            params.dateChange(date)
+          }}
+        />
+      </View>
+      ),
+
       headerStyle: {
-        backgroundColor: '#1E90FF',
+        backgroundColor: "#1E90FF"
       },
-      headerTintColor: 'white',
+      headerTintColor: "white",
 
       headerLeft: ({ focused }) => (
         <View style={{ paddingLeft: 5, marginLeft: 5 }}>
           <Icon
             name={
-              itemsToDelete.length > 0 ? 'trash-can-outline' : 'pencil-outline'
+              itemsToDelete.length > 0 ? "trash-can-outline" : "pencil-outline"
             }
             type="material-community"
             color="white"
@@ -275,8 +333,8 @@ class DailyLog extends React.Component {
                   }
             }
           />
-          <Text style={{ color: 'white' }}>
-            {itemsToDelete.length > 0 ? 'Delete items' : 'Edit log'}
+          <Text style={{ color: "white" }}>
+            {itemsToDelete.length > 0 ? "Delete items" : "Edit log"}
           </Text>
         </View>
       ),
@@ -287,12 +345,12 @@ class DailyLog extends React.Component {
             type="material-community"
             color="white"
             onPress={() => {
-              params.navigate('Checkin');
+              params.navigate("Checkin");
             }}
           />
-          <Text style={{ color: 'white' }}> Check in</Text>
+          <Text style={{ color: "white" }}> Check in</Text>
         </View>
-      ),
+      )
     };
   };
 
@@ -302,6 +360,8 @@ class DailyLog extends React.Component {
       itemsToDelete: this.state.itemsToDelete,
       deleteItems: this.deleteItems,
       navigate: this.props.navigation.navigate,
+      date: this.state.date,
+      dateChange: this.dateChange
     });
   }
 
@@ -326,7 +386,7 @@ class DailyLog extends React.Component {
     }
 
     await this.setState({
-      itemsToDelete: newState,
+      itemsToDelete: newState
     });
 
     this.props.navigation.setParams({
@@ -334,6 +394,8 @@ class DailyLog extends React.Component {
       itemsToDelete: this.state.itemsToDelete,
       deleteItems: this.deleteItems,
       navigate: this.props.navigation.navigate,
+      date: this.state.date,
+      dateChange: this.dateChange
     });
   }
 
@@ -357,6 +419,8 @@ class DailyLog extends React.Component {
       itemsToDelete: [],
       deleteItems: this.deleteItems,
       navigate: this.props.navigation.navigate,
+      date: this.state.date,
+      dateChange: this.dateChange
     });
   }
 
@@ -439,13 +503,13 @@ class DailyLog extends React.Component {
     }
 
     if (percent < 0.9) {
-      barColor = 'orange';
+      barColor = "orange";
     }
     if (percent >= 0.9) {
-      barColor = '#4CEF90';
+      barColor = "#4CEF90";
     }
     if (percent > 1.0) {
-      barColor = 'crimson';
+      barColor = "crimson";
     }
     return (
       <ScrollView style={styles.container}>
@@ -457,40 +521,6 @@ class DailyLog extends React.Component {
           </View>
         ) : (
           <View>
-            <View style={styles.date}>
-              <DatePicker
-                style={{ width: 150, paddingBottom: 10 }}
-                date={this.state.date}
-                mode="date"
-                placeholder="select date"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0,
-                  },
-                  dateInput: {
-                    marginLeft: 36,
-                  },
-                }}
-                onDateChange={date => {
-                  this.setState({ date: date });
-                  this.props.getMeals(date, this.props.user.id);
-                }}
-              />
-              <Button
-                title="Fav Meals"
-                icon={{
-                  name:'star-face',
-                  type:'material-community',
-                  color:'#FFFF86'
-                }}
-                onPress={() => this.props.navigation.navigate('FavoriteMeals')}
-              />
-            </View>
 
             <View style={styles.progress}>
               <View
@@ -498,22 +528,19 @@ class DailyLog extends React.Component {
                   justifyContent: "space-evenly",
                   flexDirection: "row",
                   width: "100%",
-                  paddingBottom: 5
+                  paddingTop: 5
                 }}
               >
-              
-
-                <Text>{totalCals.toFixed(0)}</Text>
+                <Text style={{fontWeight: 700, fontSize: 16}}>{totalCals.toFixed(0)}</Text>
                 <Text></Text>
                 <Text></Text>
 
-
-                <Text>{calsBurned}</Text>
+                <Text style={{fontWeight: 700, fontSize: 16}}>{calsBurned}</Text>
                 <Text></Text>
 
                 <Text> </Text>
 
-                <Text>
+                <Text style={{fontWeight: 700, fontSize: 16}}>
                   {calorieLimit.toFixed(0) - totalCals.toFixed(0) - calsBurned}
                 </Text>
               </View>
@@ -526,20 +553,32 @@ class DailyLog extends React.Component {
                   paddingBottom: 5
                 }}
               >
-
-                <Text>consumed </Text>
+                <Text style={{fontSize: 10}}>consumed </Text>
                 <Text> </Text>
-                <Text>burned</Text>
+                <Text style={{fontSize: 10}}>burned</Text>
                 <Text> </Text>
-                <Text> remaining </Text>
+                <Text style={{fontSize: 10}}> remaining </Text>
               </View>
 
-              <View style={{ flexDirection: "row", justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    alignContent: "center",
+                    padding: 5
+                  }}
+                >
+                  <Text style={{fontSize: 16, fontWeight: 700}}>{totalCals.toFixed(0) - calsBurned}</Text>
 
-                <View style={{justifyContent: 'center', alignItems: 'center', alignContent: 'center', padding: 5,}}>
-                  <Text>{totalCals.toFixed(0) - calsBurned}</Text>
-
-                  <Text> total </Text>
+                  <Text style={{fontSize: 10}}> total </Text>
                 </View>
 
                 <View>
@@ -551,16 +590,36 @@ class DailyLog extends React.Component {
                   />
                 </View>
 
-                <View style={{justifyContent: 'center', alignItems: 'center', alignContent: 'center', padding: 5,}}>
-                  <Text>{calorieLimit.toFixed(0)}</Text>
-                  <Text>Limit</Text>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    alignContent: "center",
+                    padding: 5
+                  }}
+                >
+                  <Text style={{fontSize: 16, fontWeight: 700}}>{calorieLimit.toFixed(0)}</Text>
+                  <Text style={{fontSize: 10}}>Limit</Text>
                 </View>
               </View>
-
-              <View
-                style={{ justifyContent: "center", flexDirection: "column" }}
-              ></View>
             </View>
+
+
+          <View style={{padding: 20,}}>
+
+          <View style={{width: 125, paddingBottom: 10, marginLeft: 100, marginBottom: 15 }} >
+              <Button
+                title="Fav Meals"
+                icon={{
+                  name: "star-face",
+                  type: "material-community",
+                  color: "#FFFF86"
+                }}
+                onPress={() => this.props.navigation.navigate("FavoriteMeals")}
+                buttonStyle={{backgroundColor: "#1E90FF"}}
+              />
+            </View>
+
 
             <FoodTimeContainer
               time="Breakfast"
@@ -608,9 +667,10 @@ class DailyLog extends React.Component {
             />
             <ExerciseContainer
               todaysCheckIn={this.props.checkIns.todaysCheckIn}
-              time="exercise"
+              time="Exercise"
               resetCaloriesBurned={this.resetCaloriesBurned}
             />
+            </View>
           </View>
         )}
       </ScrollView>
@@ -620,77 +680,72 @@ class DailyLog extends React.Component {
 
 const styles = StyleSheet.create({
   foodName: {
-    fontSize: 18,
+    fontSize: 18
   },
   foodItem: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingLeft: 10,
     paddingTop: 5,
     paddingBottom: 5,
-    backgroundColor: 'white',
+    backgroundColor: "white"
   },
   date: {
     justifyContent: "space-around",
     flexDirection: "row"
   },
   progress: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center",
-    marginTop: 20,
-    marginBottom: 25,
+    flex: 1,
+    paddingTop: 5,
+    marginBottom: 5,
     backgroundColor: "white",
-    borderRadius: 4,
-    borderWidth: 5,
-    borderColor: "#1E90FF",
-    padding: 3,
-    width: '100%'
+    borderBottomWidth: 3,
+    borderBottomColor: "#1E90FF",
+    width: "100%"
   },
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#F5ECCD',
+    
+    backgroundColor: "#F5ECCD"
   },
 
   FoodTimeHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#1E90FF',
+    flexDirection: "row",
+    backgroundColor: "#1E90FF",
     height: 40,
-    justifyContent: 'space-between',
-    color: 'white',
+    justifyContent: "space-between",
+    color: "white",
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 4
   },
   FoodTimeContainer: {
-    marginBottom: 30,
+    marginBottom: 30
   },
   addFoodButton: {
-    width: 100,
-    height: 50,
-    backgroundColor: '#1E90FF',
+    width: 115,
+    height: 45,
+    backgroundColor: "#1E90FF",
     marginTop: 5,
-    marginLeft: 5,
+    marginLeft: 5
   },
   foodAmount: {
     fontSize: 12,
-    color: 'grey',
+    color: "grey"
   },
   loader: {
-    height: '100%',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    backgroundColor: '#F5ECCD',
-  },
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+    backgroundColor: "#F5ECCD"
+  }
 });
 
 const mapState = state => {
   return {
     meals: state.meals,
     user: state.user,
-    checkIns: state.checkIns,
+    checkIns: state.checkIns
   };
 };
 
@@ -702,7 +757,7 @@ const mapDispatch = dispatch => {
     addToFavorite: (userId, mealId) =>
       dispatch(addToFavoriteMealsThunk(userId, mealId)),
     deleteMealItem: (foodId, mealId, userId) =>
-      dispatch(deleteMealItem(foodId, mealId, userId)),
+      dispatch(deleteMealItem(foodId, mealId, userId))
   };
 };
 
