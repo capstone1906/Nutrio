@@ -200,7 +200,7 @@ const FoodTimeContainer = props => {
       })}
 
 
-    <View style={{marginLeft: 100}}> 
+    <View style={{marginLeft: 100, width: 115}}> 
       <Button
         buttonStyle={styles.addFoodButton}
         title="Add food"
