@@ -117,9 +117,9 @@ class RecommendedMeals extends React.Component {
         ) : (
           <FlatList
             data={this.props.recommendedMeals}
+            keyExtractor={(item, index) => item.id}
             renderItem={({ item }) => (
               <MealCard
-                key={item.id}
                 meal={item}
                 postFood={this.postFood}
                 style={styles.flatList}

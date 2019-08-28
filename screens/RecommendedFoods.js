@@ -137,7 +137,7 @@ class RecommendedFoods extends React.Component {
         return (accum += val.calories);
       }, 0);
       this.setState({
-        todayCalories: todayCalories,
+        todayCalories: todayCalories - 1,
       });
     }
     return (
@@ -175,9 +175,9 @@ class RecommendedFoods extends React.Component {
           <FlatList
             style={{ backgroundColor: '#F5ECCD' }}
             data={this.props.recommendedFoods}
+            keyExtractor={(item, index) => item.id}
             renderItem={({ item }) => (
               <FoodCard
-                key={item.id}
                 food={item}
                 mealType={this.state.mealType}
                 postFood={this.postFood}
