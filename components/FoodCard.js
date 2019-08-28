@@ -30,13 +30,14 @@ function FoodCard(props) {
           {foodNameHelper(props.food.food_name)}
         </Text>
         <Text style={styles.text}>Total Calories: {props.food.calories}</Text>
+        <Text style={styles.text}>Serving Size: 1 {props.food.servingSize}</Text>
       </View>
       <View style={styles.chartContainer}>
         <CardChart food={props.food} />
       </View>
-      <View>
+      <View style={{flexDirection: 'row', justifyContent:'center'}}>
         <Button
-          title="Add to Meal"
+          title={`Add to ${props.mealType}`}
           type="solid"
           onPress={() => {
             const mealId = props.meals.todaysMeals.filter(meal => {
