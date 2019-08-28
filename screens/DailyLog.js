@@ -27,10 +27,10 @@ const FoodTimeHeader = props => {
   return (
     <View style={styles.FoodTimeHeader}>
       <View style={{ flex: 3 }}>
-        <Text style={{ fontSize: 18, color: "white", fontWeight: 500 }}>{props.time}</Text>
+        <Text style={{ fontSize: 18, color: "white", fontWeight: '500' }}>{props.time}</Text>
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={{ fontSize: 18, color: "white", fontWeight: 500 }}>Calories</Text>
+        <Text style={{ fontSize: 18, color: "white", fontWeight: '500' }}>Calories</Text>
       </View>
       {props.mealHeader ? (
         <View>
@@ -531,17 +531,17 @@ class DailyLog extends React.Component {
                   paddingTop: 5
                 }}
               >
-                <Text style={{fontWeight: 700, fontSize: 16}}>{totalCals.toFixed(0)}</Text>
+                <Text style={{fontWeight: '700', fontSize: 16}}>{totalCals.toFixed(0)}</Text>
                 <Text></Text>
                 <Text></Text>
 
-                <Text style={{fontWeight: 700, fontSize: 16}}>{calsBurned}</Text>
+                <Text style={{fontWeight: '700', fontSize: 16}}>{calsBurned}</Text>
                 <Text></Text>
 
                 <Text> </Text>
 
-                <Text style={{fontWeight: 700, fontSize: 16}}>
-                  {calorieLimit.toFixed(0) - totalCals.toFixed(0) - calsBurned}
+                <Text style={{fontWeight: '700', fontSize: 16}}>
+                  {calorieLimit.toFixed(0) - totalCals.toFixed(0) + calsBurned}
                 </Text>
               </View>
 
@@ -553,11 +553,11 @@ class DailyLog extends React.Component {
                   paddingBottom: 5
                 }}
               >
-                <Text style={{fontSize: 10}}>consumed </Text>
+                <Text style={{fontSize: 10}}>consumed {'    '}</Text>
                 <Text> </Text>
-                <Text style={{fontSize: 10}}>burned</Text>
+                <Text style={{fontSize: 10}}>{'       '}burned</Text>
                 <Text> </Text>
-                <Text style={{fontSize: 10}}> remaining </Text>
+                <Text style={{fontSize: 10}}> {'           '}remaining </Text>
               </View>
 
               <View
@@ -576,7 +576,7 @@ class DailyLog extends React.Component {
                     padding: 5
                   }}
                 >
-                  <Text style={{fontSize: 16, fontWeight: 700}}>{totalCals.toFixed(0) - calsBurned}</Text>
+                  <Text style={{fontSize: 16, fontWeight: '700'}}>{totalCals.toFixed(0) - calsBurned}</Text>
 
                   <Text style={{fontSize: 10}}> total </Text>
                 </View>
@@ -598,7 +598,7 @@ class DailyLog extends React.Component {
                     padding: 5
                   }}
                 >
-                  <Text style={{fontSize: 16, fontWeight: 700}}>{calorieLimit.toFixed(0)}</Text>
+                  <Text style={{fontSize: 16, fontWeight: '700'}}>{calorieLimit.toFixed(0)}</Text>
                   <Text style={{fontSize: 10}}>Limit</Text>
                 </View>
               </View>
