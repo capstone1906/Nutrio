@@ -483,33 +483,71 @@ class DailyLog extends React.Component {
             <View style={styles.progress}>
               <View
                 style={{
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  paddingLeft: 10
+                  justifyContent: "space-evenly",
+                  flexDirection: "row",
+                  width: "100%",
+                  paddingBottom: 5
                 }}
               >
-                <Text>Cals consumed </Text>
-                <Text>- cals burned: </Text>
+              
+
+                <Text>{totalCals.toFixed(0)}</Text>
+                <Text></Text>
+                <Text></Text>
+
+
+                <Text>{calsBurned}</Text>
+                <Text></Text>
+
+                <Text> </Text>
+
                 <Text>
-                  {" "}
-                  {totalCals.toFixed(0)} - {calsBurned} ={" "}
-                  {totalCals.toFixed(0) - calsBurned}
+                  {calorieLimit.toFixed(0) - totalCals.toFixed(0) - calsBurned}
                 </Text>
               </View>
 
-              <Progress.Bar
-                progress={percent}
-                width={225}
-                height={15}
-                color={barColor}
-              />
+              <View
+                style={{
+                  justifyContent: "space-evenly",
+                  flexDirection: "row",
+                  width: "100%",
+                  paddingBottom: 5
+                }}
+              >
+
+                <Text>consumed </Text>
+                <Text> </Text>
+                <Text>burned</Text>
+                <Text> </Text>
+                <Text> remaining </Text>
+              </View>
+
+              <View style={{ flexDirection: "row", justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+
+                <View style={{justifyContent: 'center', alignItems: 'center', alignContent: 'center', padding: 5,}}>
+                  <Text>{totalCals.toFixed(0) - calsBurned}</Text>
+
+                  <Text> total </Text>
+                </View>
+
+                <View>
+                  <Progress.Bar
+                    progress={percent}
+                    width={225}
+                    height={15}
+                    color={barColor}
+                  />
+                </View>
+
+                <View style={{justifyContent: 'center', alignItems: 'center', alignContent: 'center', padding: 5,}}>
+                  <Text>{calorieLimit.toFixed(0)}</Text>
+                  <Text>Limit</Text>
+                </View>
+              </View>
 
               <View
                 style={{ justifyContent: "center", flexDirection: "column" }}
-              >
-                <Text>Limit: </Text>
-                <Text> {calorieLimit.toFixed(0)}</Text>
-              </View>
+              ></View>
             </View>
 
             <FoodTimeContainer
@@ -581,16 +619,21 @@ const styles = StyleSheet.create({
   },
   date: {
     justifyContent: "space-around",
-    // paddingLeft: 75,
     flexDirection: "row"
   },
   progress: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
-    paddingTop: 20,
-    paddingBottom: 25
+    marginTop: 20,
+    marginBottom: 25,
+    backgroundColor: "white",
+    borderRadius: 4,
+    borderWidth: 5,
+    borderColor: "#1E90FF",
+    padding: 3,
+    width: '100%'
   },
   container: {
     flex: 1,

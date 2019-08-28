@@ -3,11 +3,11 @@ const { Users, DailyGoals, LongTermGoals } = require('../db/postgres/models/inde
 module.exports = router;
 
 
-router.get('/', async (req, res, next) => {
+router.get('/:email', async (req, res, next) => {
   try {
     const me = await Users.findOne({
       where: {
-        id: 1, //fix later
+        email: req.params.email
       },
       include: [DailyGoals, LongTermGoals],
     });
