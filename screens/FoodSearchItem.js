@@ -161,7 +161,7 @@ class FoodSearchItem extends React.Component {
                       )}
                     </Text>
                   ) : (
-                    <Text>
+                    <Text style={styles.values}>
                       {Number(
                         this.state.foodInfo.caloriesGram *
                           (this.state.quantity === 0 ? 1 : this.state.quantity)
@@ -171,14 +171,14 @@ class FoodSearchItem extends React.Component {
                 </View>
                 <View style={{ flex: 1 }}>
                   {this.state.serving === 1 ? (
-                    <Text>
+                    <Text style={styles.values}>
                       {Math.floor(
                         this.state.foodInfo.nf_total_carbohydrate *
                           (this.state.quantity === 0 ? 1 : this.state.quantity)
                       )}
                     </Text>
                   ) : (
-                    <Text>
+                    <Text style={styles.values}>
                       {Number(
                         this.state.foodInfo.carbsGram *
                           (this.state.quantity === 0 ? 1 : this.state.quantity)
@@ -188,14 +188,14 @@ class FoodSearchItem extends React.Component {
                 </View>
                 <View style={{ flex: 1 }}>
                   {this.state.serving === 1 ? (
-                    <Text>
+                    <Text style={styles.values}>
                       {Math.floor(
                         this.state.foodInfo.nf_total_fat *
                           (this.state.quantity === 0 ? 1 : this.state.quantity)
                       )}
                     </Text>
                   ) : (
-                    <Text>
+                    <Text style={styles.values}>
                       {Number(
                         this.state.foodInfo.fatGram *
                           (this.state.quantity === 0 ? 1 : this.state.quantity)
@@ -205,14 +205,14 @@ class FoodSearchItem extends React.Component {
                 </View>
                 <View style={{ flex: 1 }}>
                   {this.state.serving === 1 ? (
-                    <Text>
+                    <Text style={styles.values}>
                       {Math.floor(
                         this.state.foodInfo.nf_protein *
                           (this.state.quantity === 0 ? 1 : this.state.quantity)
                       )}
                     </Text>
                   ) : (
-                    <Text>
+                    <Text style={styles.values}>
                       {Number(
                         this.state.foodInfo.proteinGram *
                           (this.state.quantity === 0 ? 1 : this.state.quantity)
@@ -229,10 +229,12 @@ class FoodSearchItem extends React.Component {
                 <Text style={styles.info}>Serving size:</Text>
               </View>
 
-              <View>
+              <View style={{width: '20%', height: 30, margin: 3}}>
                 <SelectInput
+                  style={{borderColor: 'black', borderWidth: 1, borderRadius:3}}
                   value={this.state.serving}
                   options={options}
+                  labelStyle={{fontSize: 18, textAlign: 'center'}}
                   onValueChange={(itemValue, itemIndex) => {
                     if (itemValue === 0) {
                       this.setState({
@@ -253,15 +255,16 @@ class FoodSearchItem extends React.Component {
                 <Text style={styles.info}>Number of servings:</Text>
               </View>
 
-              <View>
+              <View style={{width: '20%', height: 30, margin: 3}}>
                 <TextInput
                   keyboardType="number-pad"
                   keyboardAppearance="dark"
                   style={{
-                    height: 40,
                     borderColor: 'gray',
                     borderWidth: 1,
-                    width: 40,
+                    fontSize: 18,
+                    textAlign: 'center',
+                    borderRadius: 3
                   }}
                   onChangeText={text => this.setState({ quantity: text })}
                   value={this.state.quantity.toString()}
@@ -365,9 +368,8 @@ const styles = StyleSheet.create({
   },
   servingSize: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
-    maxWidth: 300,
+    justifyContent: 'flex-start',
+    width: '90%',
   },
   info: {
     fontSize: 20,
