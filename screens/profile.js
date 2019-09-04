@@ -42,6 +42,7 @@ class Profile extends React.Component {
     };
 
     this.textInput = {};
+    
     this.edits = {
       one: false,
       two: false,

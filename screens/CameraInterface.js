@@ -19,13 +19,13 @@ import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import axios from 'axios';
 import SelectMultiple from 'react-native-select-multiple';
-import { nixID, nixKey } from '../secret8';
+import { nixID, nixKey, clarifaiKey } from '../secret8';
 
 const { width: winWidth } = Dimensions.get('window');
 const Clarifai = require('clarifai');
 
 const clarifai = new Clarifai.App({
-  apiKey: 'ec193b71319e40fa9568a580e4358a6b',
+  apiKey: clarifaiKey,
 });
 process.nextTick = setImmediate;
 
