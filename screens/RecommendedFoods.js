@@ -141,7 +141,7 @@ class RecommendedFoods extends React.Component {
       });
     }
     return (
-      <View style={{ backgroundColor: '#F5ECCD' }}>
+      <View style={{ backgroundColor: '#F5ECCD', flex: 1 }}>
         <View>
           <ButtonGroup
             onPress={this.handlePress}
