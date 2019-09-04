@@ -24,7 +24,7 @@ Nutrio is a Calorie tracker inspired by apps like MyFitnessPal. It allows you to
       export const nixKey = 'your key here';
       export const clarifaiKey = 'your key here'
  
- 6) createdb nutrition-tracker
+ 6) if postgres CLI tools installed run createdb nutrition-tracker in terminal, or create a database in the postgres GUI with the name nutrition-tracker
  7) open Neo4j interface, create a database with the name "Nutrition-Tracker"
  8) npm install
  9) npm run seed
