@@ -19,9 +19,9 @@ Nutrio is a Calorie tracker inspired by apps like MyFitnessPal. It allows you to
  4) Create a file in the top level of your directory, name it secret8.js
  5) Copy and paste these lines, filling in the info for Ngrok, Nutritionix, and clarifai
  
-      export const ngrok = 'your key here';
-      export const nixID = 'your key here'
-      export const nixKey = 'your key here'
+      export const ngrok = 'your ngrok URL';
+      export const nixID = 'your key here';
+      export const nixKey = 'your key here';
       export const clarifaiKey = 'your key here'
  
  6) createdb nutrition-tracker
