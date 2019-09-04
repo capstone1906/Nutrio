@@ -71,7 +71,8 @@ export default class FoodSearch extends React.Component {
 
     return (
       <View style={styles.screen}>
-        <Text>Scan Your Plate</Text>
+        <Text style={{fontWeight: '500', fontSize: 20}}>Scan Your Plate</Text>
+
         <View style={styles.cameraToolbar}>
           <TouchableOpacity>
             <Ionicons
@@ -82,13 +83,22 @@ export default class FoodSearch extends React.Component {
               }}
               name="ios-camera"
               color="crimson"
-              size={90}
+              size={150}
             />
           </TouchableOpacity>
+
         </View>
 
-        <Text>Search for Food Items</Text>
-        <View style={{ justifyContent: 'center' }}>
+
+        <View style={styles.results}>
+        <Divider style={{ backgroundColor: 'blue' }} />
+
+        <View style={{marginLeft: 70}}>
+        <Text style={{fontWeight: '500', fontSize: 20}}>Search for Food Items</Text>
+        </View>
+
+
+        <View style={{marginLeft: 30}}>
           <Input
             inputContainerStyle={{
               borderBottomWidth: 0,
@@ -107,10 +117,10 @@ export default class FoodSearch extends React.Component {
             keyboardAppearance="dark"
             onChange={this.handleChange}
           />
-        </View>
+      </View>
 
         {this.state.searchName !== '' && (
-          <ScrollView style={styles.results}>
+          <ScrollView >
             {foods.map(food => {
               return (
                 <TouchableOpacity key={food.food_name}>
@@ -131,6 +141,9 @@ export default class FoodSearch extends React.Component {
             })}
           </ScrollView>
         )}
+
+        </View>
+
       </View>
     );
   }
@@ -144,17 +157,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
     backgroundColor: '#F5ECCD',
+    alignContent: 'center'
   },
   cameraToolbar: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: 100,
+    height: 150,
     width: winWidth,
   },
   results: {
+    marginTop: 40,
+    justifyContent: 'center',
     width: '90%',
-    alignContent: 'center',
+    // alignItems: 'center',
+
   },
   foodName: {
     fontSize: 20,

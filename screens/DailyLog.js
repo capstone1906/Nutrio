@@ -203,21 +203,22 @@ const FoodTimeContainer = props => {
         );
       })}
 
-      <View style={{ marginLeft: 100 }}>
-        <Button
-          buttonStyle={styles.addFoodButton}
-          title="Add food"
-          onPress={() => {
-            props.navigation.navigate('FoodSearch', {
-              mealId: props.meal.id,
-            });
-          }}
-          icon={{
-            name: 'plus-circle-outline',
-            type: 'material-community',
-            color: 'white',
-          }}
-        />
+    <View style={{marginLeft: 100, width: 115}}> 
+      <Button
+        buttonStyle={styles.addFoodButton}
+        title="Add food"
+        onPress={() => {
+          props.navigation.navigate("FoodSearch", {
+            mealId: props.meal.id
+          });
+        }}
+        icon={{
+          name: "plus-circle-outline",
+          type: "material-community",
+          color: "white"
+        }}
+      />
+
       </View>
     </View>
   );
