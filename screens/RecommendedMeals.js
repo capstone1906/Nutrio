@@ -99,7 +99,7 @@ class RecommendedMeals extends React.Component {
   }
   render() {
     return (
-      <View>
+      <View style={{backgroundColor: '#F5ECCD'}}>
         <View>
           <ButtonGroup
             onPress={this.handlePress}

@@ -348,7 +348,8 @@ class Profile extends React.Component {
               title="save changes"
               disabled={this.state.buttonToggle}
               buttonStyle={{
-                width: 100,
+                // width: 100,
+                marginLeft: 5,
                 height: 50,
                 backgroundColor: "limegreen",
                 fontSize: 12
