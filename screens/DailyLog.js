@@ -546,7 +546,7 @@ class DailyLog extends React.Component {
                 <Text> </Text>
 
                 <Text style={{ fontWeight: 700, fontSize: 16 }}>
-                  {calorieLimit.toFixed(0) - totalCals.toFixed(0) - calsBurned}
+                  {calorieLimit.toFixed(0) - totalCals.toFixed(0) + calsBurned}
                 </Text>
               </View>
 

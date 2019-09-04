@@ -62,9 +62,9 @@ function MealCard(props) {
       <View style={styles.chartContainer}>
         <MealCardChart meal={props.meal} helper={totalCalc} />
       </View>
-      <View>
+      <View style={{flexDirection: 'row', justifyContent: 'center'}}>
         <Button
-          title="Add Meal"
+          title={`Add to ${props.meal.entreeType}`}
           type="solid"
           onPress={() => {
             const mealId = props.meals.todaysMeals.filter(meal => {
@@ -77,7 +77,8 @@ function MealCard(props) {
         />
         {props.favorite ? (
           <Button
-            title="Remove From Favorite"
+            buttonStyle={{marginLeft: 5, backgroundColor: 'red' }}
+            title="Remove"
             onPress={() => {
               props.removeFavorite(props.user.id, props.meal.id)
             }}

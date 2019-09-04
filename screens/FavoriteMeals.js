@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#F5ECCD',
   },
+  container: {
+    backgroundColor: '#F5ECCD'
+  }
 });
 
 class FavoriteMeals extends Component {
@@ -79,7 +82,7 @@ class FavoriteMeals extends Component {
     } else {
       console.log(typeof this.props.removeFavorite)
       return (
-        <ScrollView>
+        <ScrollView style={styles.container}>
           {this.props.favoriteMeals.length ? this.props.favoriteMeals.map(favMeal => (
             <MealCard
               key={favMeal.id}

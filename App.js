@@ -17,6 +17,7 @@ import store from './components/store';
 import { Provider } from 'react-redux';
 
 export default function App(props) {
+  console.disableYellowBox = true;
   const [isLoadingComplete, setLoadingComplete] = useState(false);
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (

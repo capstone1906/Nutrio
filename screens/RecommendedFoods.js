@@ -4,7 +4,7 @@ import {
   View,
   FlatList,
   ActivityIndicator,
-  AlertIOS,
+  Alert,
 } from 'react-native';
 import { getRecommendedFoodsThunk } from '../components/store/recommendedFoods';
 import { connect } from 'react-redux';
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    height: '100%'
   },
   button: {
     margin: 5,
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   warningButton: {
-    width: '90%',
+    // width: '90%',
     alignSelf: 'center',
     borderRadius: 10,
     marginTop: 15,
@@ -77,7 +78,7 @@ class RecommendedFoods extends React.Component {
       this.props.user.id
     );
     if (foodRes.foodItem) {
-      AlertIOS.alert('Success!!!!', `Added to ${this.state.mealType}`);
+      Alert.alert('Success!!!!', `Added to ${this.state.mealType}`);
     }
   }
   async handlePress(evt, type) {
@@ -140,7 +141,7 @@ class RecommendedFoods extends React.Component {
       });
     }
     return (
-      <View>
+      <View style={{ backgroundColor: '#F5ECCD', flex: 1 }}>
         <View>
           <ButtonGroup
             onPress={this.handlePress}
@@ -172,6 +173,7 @@ class RecommendedFoods extends React.Component {
           </View>
         ) : (
           <FlatList
+            style={{ backgroundColor: '#F5ECCD' }}
             data={this.props.recommendedFoods}
             keyExtractor={(item, index) => item.id}
             renderItem={({ item }) => (

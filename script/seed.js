@@ -120,10 +120,10 @@ async function seed() {
 
   // Create daily goal
   await DailyGoals.create({
-    calorieLimit: 2000,
+    calorieLimit: 2400,
     caloriesToBurn: 200,
     carbLimit: 200,
-    proteinLimit: 150,
+    proteinLimit: 200,
     fatLimit: 180,
     userId: 1,
   });
@@ -819,7 +819,7 @@ async function seed() {
   const food41 = {
     food_name: 'caprese salad',
     calories: 220,
-    fat: 17,
+    fat: 5,
     carbohydrates: 5,
     protein: 13,
     servingSize: 'cup',
@@ -1030,7 +1030,7 @@ async function seed() {
     calories: 182,
     fat: 8,
     carbohydrates: 0,
-    protein: 25,
+    protein: 15,
     servingSize: 'piece',
     weight: 106,
   };
@@ -1038,8 +1038,8 @@ async function seed() {
     food_name: 'lamb',
     calories: 250,
     fat: 18,
-    carbohydrates: 0,
-    protein: 21,
+    carbohydrates: 1,
+    protein: 10,
     servingSize: 'oz',
     weight: 85,
   };
@@ -1468,6 +1468,75 @@ async function seed() {
       userId: Math.floor(Math.random() * 6) + 1,
     });
   }
+
+  const mealDisplayDinner1 = await Meals.create({
+    name: 'Low-Carb Dinner',
+    entreeType: 'Dinner',
+  });
+  console.log(mealDisplayDinner1.id);
+
+  const mealDisplayDinner2 = await Meals.create({
+    name: 'High-Protein',
+    entreeType: 'Dinner',
+  });
+
+  const mealDisplayDinner3 = await Meals.create({
+    name: 'High-Fat Dinner',
+    entreeType: 'Dinner',
+  });
+
+  const mealDinner1food1 = await MealFoodItems.create({
+    mealId: mealDisplayDinner1.id,
+    foodItemId: 47,
+    quantity: 1,
+  });
+  const mealDinner1food2 = await MealFoodItems.create({
+    mealId: mealDisplayDinner1.id,
+    foodItemId: 41,
+    quantity: 1,
+  });
+  const mealDinner1food3 = await MealFoodItems.create({
+    mealId: mealDisplayDinner1.id,
+    foodItemId: 53,
+    quantity: 1,
+  });
+
+  MealFoodItems.beforeCreateSeed(mealDinner1food1);
+  MealFoodItems.beforeCreateSeed(mealDinner1food2);
+  MealFoodItems.beforeCreateSeed(mealDinner1food3);
+
+  const mealDinner2Food1 = await MealFoodItems.create({
+    mealId: mealDisplayDinner2.id,
+    foodItemId: 64,
+    quantity: 1
+  })
+  const mealDinner2Food2 = await MealFoodItems.create({
+    mealId: mealDisplayDinner2.id,
+    foodItemId: 65,
+    quantity: 1
+  })
+  const mealDinner2Food3 = await MealFoodItems.create({
+    mealId: mealDisplayDinner2.id,
+    foodItemId: 66,
+    quantity: 1
+  })
+  MealFoodItems.beforeCreateSeed(mealDinner2Food1);
+  MealFoodItems.beforeCreateSeed(mealDinner2Food2);
+  MealFoodItems.beforeCreateSeed(mealDinner2Food3)
+
+  await UserMeals.create({
+    userId: 3,
+    mealId: mealDisplayDinner1.id,
+    timesEaten: 40,
+  });
+
+  await UserMeals.create({
+    userId: 3,
+    mealId: mealDisplayDinner2.id,
+    timesEaten: 35,
+  });
+
+  await
   console.log(green(`seeded successfully`));
 }
 
