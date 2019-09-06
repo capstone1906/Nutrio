@@ -18,12 +18,12 @@ Nutrio is a Calorie tracker inspired by apps like MyFitnessPal. It allows you to
  3) Visit https://www.clarifai.com/ and register for a free API key
  4) Create a file in the top level of your directory, name it secret8.js
  5) Copy and paste these lines, filling in the info for Ngrok, Nutritionix, and clarifai
- `
+ ```
       export const ngrok = 'your ngrok URL';
       export const nixID = 'your key here';
       export const nixKey = 'your key here';
       export const clarifaiKey = 'your key here'  
-      `
+```
  
  6) if postgres CLI tools installed run `createdb nutrition-tracker` in terminal, or create a database in the postgres GUI with the name `nutrition-tracker`
  7) open Neo4j interface, create a database with the name `Nutrition-Tracker`
